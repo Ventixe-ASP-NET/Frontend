@@ -1,0 +1,6 @@
+﻿header {
+    grid-area: header;
+    padding: 1.6rem;
+    border-radius: var(--border-radius);
+    background-color: var(--header-background-color);
+}

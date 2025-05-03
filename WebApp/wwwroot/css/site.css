@@ -2,6 +2,8 @@
 
 *, *::before, *::after {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 :root {
@@ -77,6 +79,9 @@
     --button-secondary-text-color: var(--secondary-100);
     --button-secondary-border-color: var(--cool-gray-10);
     --button-secondary-background-color: var(--cool-gray-10);
+    --button-secondary-hover-text-color: var(--gray-10);
+    --button-secondary-hover-border-color: var(--secondary-90);
+    --button-secondary-hover-background-color: var(--secondary-90);
     --button-outline-text-color: var(--gray-90);
     --button-outline-border-color: var(--gray-30);
     --button-outline-background-color: transparent;
@@ -90,6 +95,8 @@
     --checkbox-checked-background-color: var(--primary-100);
     --checkbox-checked-border-color: var(--primary-100);
     --checkbox-checked-text-color: var(--gray-10);
+    --border-radius: 1rem;
+    --transition: all 0.2s ease-in-out;
 }
 
 html, body {
@@ -99,9 +106,138 @@ html, body {
     font-family: var(--font);
     color: var(--text-color);
     background-color: var(--background-color);
+    height: 100%;
 }
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     color: var(--headline-color);
+}
+
+
+.btn {
+    font-family: var(--font);
+    color: var(--button-text-color);
+    border: 1px solid var(--button-border-color);
+    background-color: var(--button-background-color);
+    transition: var(--transition);
+    border-radius: var(--border-radius);
+    padding: 0.9rem 1.5rem;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+    .btn:hover {
+        color: var(--button-text-color);
+        border: 1px solid var(--button-border-color);
+        background-color: var(--button-background-color);
+    }
+
+.btn-primary {
+    color: var(--button-primary-text-color);
+    border: 1px solid var(--button-primary-border-color);
+    background-color: var(--button-primary-background-color);
+}
+
+    .btn-primary:hover {
+        color: var(--button-primary-hover-text-color);
+        border: 1px solid var(--button-primary-hover-border-color);
+        background-color: var(--button-primary-hover-background-color);
+    }
+
+.btn-secondary {
+    color: var(--button-secondary-text-color);
+    border: 1px solid var(--button-secondary-border-color);
+    background-color: var(--button-secondary-background-color);
+}
+
+    .btn-secondary:hover {
+        color: var(--button-secondary-hover-text-color);
+        border: 1px solid var(--button-secondary-hover-border-color);
+        background-color: var(--button-secondary-hover-background-color);
+    }
+
+
+
+/* sidebar */
+.sidebar-navigation ul {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+    .sidebar-navigation ul a {
+        text-decoration: none;
+        color: var(--text-color);
+        transition: var(--transition);
+        display: inline-flex;
+        flex-direction: row;
+        gap: 0.4rem;
+        align-items: center;
+        width: 100%;
+    }
+
+        .sidebar-navigation ul a::before {
+            content: "";
+            height: 1.8rem;
+            width: 4px;
+            background-color: var(--link-hover-color);
+            position: absolute;
+            left: 0;
+            border-top-right-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .sidebar-navigation ul a.active {
+            color: var(--link-color);
+            font-weight: 600;
+        }
+
+        .sidebar-navigation ul a:hover {
+            color: var(--link-hover-color);
+        }
+
+        .sidebar-navigation ul a.active::before,
+        .sidebar-navigation ul a:hover::before {
+            opacity: 1;
+        }
+
+@media screen and (max-width: 800px) {
+    .sidebar-navigation ul a, 
+    .logout-btn {
+        padding: 0.5rem;
+        border-radius: 100%;
+    }
+
+        .sidebar-navigation ul a::before {
+            display: none;
+        }
+
+        .sidebar-navigation ul a span:last-of-type {
+            display: none;
+        }
+
+        .sidebar-navigation ul a.active {
+            background-color: var(--link-color);
+            color: var(--button-primary-text-color);
+        }
+
+        .sidebar-navigation ul a:hover {
+            background-color: var(--link-hover-color);
+            color: var(--button-primary-text-color);
+        }
+
+
+    .logout-btn span:last-of-type {
+        display: none;
+    }
 }

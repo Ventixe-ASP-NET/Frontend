@@ -1,0 +1,41 @@
+﻿/* more styling in site.css */
+
+aside {
+    grid-area: aside;
+    border-radius: var(--border-radius);
+    background-color: var(--nav-background-color);
+    display: flex;
+    flex-direction: column;
+    padding: 1.6rem;
+    position:relative;
+}
+
+.logo {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 24px;
+    font-weight: 500;
+    display: inline-flex;
+    gap: 0.6rem;
+    margin-bottom: 2.6rem;
+}
+
+.logout-btn {
+    margin-top: auto;
+}
+
+@media screen and (max-width: 800px) {
+    aside {
+        align-items: center;
+    }
+
+    .logo span {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    aside {
+        display: none;
+    }
+}

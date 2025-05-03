@@ -1,6 +1,41 @@
 ﻿@{
 }
 
-<nav>
-    sidebar
-</nav>
+<aside>
+    <a class="logo" href="@Url.Content("~/")">
+        <img src="images/ventixe-logo.svg" alt="Ventixe logo" />
+        <span>Ventixe</span>
+    </a>
+
+    <nav class="sidebar-navigation">
+        <ul>
+            <li>
+                <a class="@(Context.Request.Path == "/" ? "active" : "")" asp-controller="Dashboard" asp-action="Index">
+                    <span class="material-symbols-rounded">
+                        grid_view
+                    </span>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <li>
+                <a class="@(Context.Request.Path == "/bookings" ? "active" : "")" asp-controller="Bookings" asp-action="Index">
+                    <span class="material-symbols-rounded">
+                        check_box
+                    </span>
+                    <span>Bookings</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+
+    <button class="btn btn-secondary logout-btn">
+        <span class="material-symbols-rounded">
+            logout
+        </span>
+        <span>
+            Sign out
+        </span>
+    </button>
+</aside>
