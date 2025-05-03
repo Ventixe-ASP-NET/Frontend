@@ -1,0 +1,54 @@
+﻿/* more styling in site.css */
+
+#aside-menu {
+    grid-area: aside;
+    border-radius: var(--border-radius);
+    background-color: var(--nav-background-color);
+    display: flex;
+    flex-direction: column;
+    padding: 1.6rem;
+    position:relative;
+}
+
+.logo {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 24px;
+    font-weight: 500;
+    display: inline-flex;
+    gap: 0.6rem;
+    margin-bottom: 2.6rem;
+}
+
+@media screen and (max-width: 800px) {
+    #aside-menu {
+        align-items: center;
+    }
+
+    .logo span {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    #aside-menu {
+        transition: var(--transition);
+        align-items: start;
+        position: fixed;
+        height: 100%;
+        top: 0;
+        left: -260px;
+        width: 220px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        z-index: 100;
+    }
+
+    .logo span {
+        display: initial;
+    }
+
+    .show {
+        left: 0 !important;
+    }
+}

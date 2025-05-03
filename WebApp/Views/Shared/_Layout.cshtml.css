@@ -1,0 +1,30 @@
+﻿.wrapper {
+    min-height: 100%;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 220px 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "aside header" "aside main";
+    padding: 1rem;
+}
+
+main {
+    grid-area: main;
+    padding: 1.6rem;
+    border-radius: var(--border-radius);
+    background-color: var(--header-background-color);
+    min-height: 100%;
+}
+
+@media screen and (max-width: 800px) {
+    .wrapper {
+        grid-template-columns: 70px 1fr;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .wrapper {
+        grid-template-columns: 1fr;
+        grid-template-areas: "header" "main";
+    }
+}
