@@ -2,5 +2,15 @@
 }
 
 <header>
-    header
+    <a class="logo" href="@Url.Content("~/")">
+        <img src="images/ventixe-logo.svg" alt="Ventixe logo" />
+    </a>
+
+    <p class="site-title">@ViewData["Title"]</p>
+
+    <button class="btn btn-rounded" id="menu-btn">
+        <span class="material-symbols-rounded">
+            menu
+        </span>
+    </button>
 </header>

@@ -1,6 +1,6 @@
 ﻿/* more styling in site.css */
 
-aside {
+#aside-menu {
     grid-area: aside;
     border-radius: var(--border-radius);
     background-color: var(--nav-background-color);
@@ -20,12 +20,8 @@ aside {
     margin-bottom: 2.6rem;
 }
 
-.logout-btn {
-    margin-top: auto;
-}
-
 @media screen and (max-width: 800px) {
-    aside {
+    #aside-menu {
         align-items: center;
     }
 
@@ -35,7 +31,24 @@ aside {
 }
 
 @media screen and (max-width: 390px) {
-    aside {
-        display: none;
+    #aside-menu {
+        transition: var(--transition);
+        align-items: start;
+        position: fixed;
+        height: 100%;
+        top: 0;
+        left: -260px;
+        width: 220px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        z-index: 100;
+    }
+
+    .logo span {
+        display: initial;
+    }
+
+    .show {
+        left: 0 !important;
     }
 }

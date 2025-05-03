@@ -163,6 +163,11 @@ h1, h2, h3, h4, h5, h6 {
         background-color: var(--button-secondary-hover-background-color);
     }
 
+.btn-rounded {
+    padding: 0.5rem;
+    border-radius: 100%;
+}
+
 
 
 /* sidebar */
@@ -211,6 +216,10 @@ h1, h2, h3, h4, h5, h6 {
             opacity: 1;
         }
 
+.logout-btn {
+    margin-top: auto;
+}
+
 @media screen and (max-width: 800px) {
     .sidebar-navigation ul a, 
     .logout-btn {
@@ -239,5 +248,44 @@ h1, h2, h3, h4, h5, h6 {
 
     .logout-btn span:last-of-type {
         display: none;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .sidebar-navigation ul a,
+    .logout-btn {
+        color: var(--text-color);
+        border-radius: var(--border-radius);
+    }
+
+    .sidebar-navigation ul a{
+        padding: 0;
+        background-color: initial !important;
+    }
+
+
+    .logout-btn {
+        background-color: var(--button-secondary-background-color);
+        width: 100%;
+    }
+
+    .sidebar-navigation ul a.active {
+        color: var(--link-color);
+    }
+
+    .sidebar-navigation ul a:hover {
+        color: var(--link-hover-color);
+    }
+
+    .sidebar-navigation ul a::before {
+        display: initial;
+    }
+
+    .sidebar-navigation ul a span:last-of-type {
+        display: initial;
+    }
+
+    .logout-btn span:last-of-type {
+        display: initial;
     }
 }
