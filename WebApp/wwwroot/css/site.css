@@ -106,7 +106,6 @@ html, body {
     font-family: var(--font);
     color: var(--text-color);
     background-color: var(--background-color);
-    height: 100%;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -166,6 +165,26 @@ h1, h2, h3, h4, h5, h6 {
 .btn-rounded {
     padding: 0.5rem;
     border-radius: 100%;
+}
+
+
+
+/* forms */
+.form-wrapper {
+    padding: 1.6rem;
+    margin: 2rem;
+    border-radius: var(--border-radius);
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items:start;
+    max-width: 500px;
+    width: 100%;
+}
+
+.form-wrapper form {
+    border: solid 1px black;
 }
 
 
