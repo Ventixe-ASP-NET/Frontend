@@ -1,11 +1,43 @@
-﻿@{
+﻿@model SignUpViewModel
+
+@{
     ViewData["Title"] = "Sign up";
 }
 
 <div class="form-wrapper">
     <h1>@ViewData["Title"]</h1>
 
-    <form>
+    <form method="post" asp-controller="Auth" asp-action="SignUp" novalidate>
+        <div class="form-input-wrapper">
+            <label asp-for="FormData.FirstName"></label>
+            <input asp-for="FormData.FirstName" />
+            <span asp-validation-for="FormData.FirstName"></span>
+        </div>
 
+        <div class="form-input-wrapper">
+            <label asp-for="FormData.LastName"></label>
+            <input asp-for="FormData.LastName" />
+            <span asp-validation-for="FormData.LastName"></span>
+        </div>
+
+        <div class="form-input-wrapper">
+            <label asp-for="FormData.Email"></label>
+            <input asp-for="FormData.Email" />
+            <span asp-validation-for="FormData.Email"></span>
+        </div>
+
+        <div class="form-input-wrapper">
+            <label asp-for="FormData.Password"></label>
+            <input asp-for="FormData.Password" value="@Model.FormData.Password" />
+            <span asp-validation-for="FormData.Password"></span>
+        </div>
+
+        <div class="form-input-wrapper">
+            <label asp-for="FormData.ConfirmPassword"></label>
+            <input asp-for="FormData.ConfirmPassword" value="@Model.FormData.ConfirmPassword" />
+            <span asp-validation-for="FormData.ConfirmPassword"></span>
+        </div>
+
+        <input type="submit" class="btn btn-primary" value="Sign up" />
     </form>
 </div>
