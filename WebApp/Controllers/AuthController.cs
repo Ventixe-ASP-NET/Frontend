@@ -1,13 +1,16 @@
 ﻿using Account.Interfaces;
 using Account.Models;
+using Authentication.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 
 namespace WebApp.Controllers;
 
-public class AuthController(IAccountService accountService) : Controller
+public class AuthController(IAccountService accountService, SignInManager<AppUserEntity> signInManager) : Controller
 {
     private readonly IAccountService _accountService = accountService;
+    private readonly SignInManager<AppUserEntity> _signInManager = signInManager;
 
 
     [HttpGet]
@@ -81,5 +84,61 @@ public class AuthController(IAccountService accountService) : Controller
     {
         await _accountService.SignOutAsync();
         return RedirectToAction("SignIn", "Auth");
+    }
+
+
+
+    [HttpPost]
+    public IActionResult ExternalSignIn(string provider, string returnUrl = null!)
+    {
+        ViewBag.ReturnUrl = returnUrl;
+        var viewModel = new SignInViewModel();
+
+        if (string.IsNullOrEmpty(provider))
+        {
+            ViewBag.ErrorMessage = "Invalid provider";
+            return View("Auth/SignIn", viewModel);
+        }
+
+        var redirectUrl = Url.Action("ExternalSignInCallback", "Auth", new { returnUrl })!;
+        var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+        return Challenge(properties, provider);
+    }
+
+
+    public async Task<IActionResult> ExternalSignInCallback(string returnUrl = null!, string remoteError = null!)
+    {
+        returnUrl ??= Url.Content("/");
+        ViewBag.ReturnUrl = returnUrl;
+        var viewModel = new SignInViewModel();
+
+        if (string.IsNullOrEmpty(remoteError))
+        {
+            ViewBag.ErrorMessage = remoteError;
+            return View("Auth/SignIn", viewModel);
+        }
+
+        var info = await _signInManager.GetExternalLoginInfoAsync();
+        if (info == null)
+            return RedirectToAction("SignIn", "Auth");
+
+        var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+        if (signInResult.Succeeded)
+        {
+            return LocalRedirect(returnUrl);
+        }
+        else
+        {
+            var accountResult = await _accountService.SignUpExternalAsync(info);
+            if (accountResult.Succeeded)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            else
+            {
+                ViewBag.ErrorMessage = accountResult.Message;
+                return View("Auth/SignIn", viewModel);
+            }
+        }
     }
 }

@@ -31,4 +31,13 @@
 
         <p>Don't have an account? <a asp-controller="Auth" asp-action="SignUp">Sign up</a></p>
     </form>
+
+
+    
+
+    <form method="post" asp-controller="Auth" asp-action="ExternalSignIn" novalidate class="external-signin-form">
+        <input type="hidden" name="returnUrl" value="@ViewBag?.ReturnUrl" />
+
+        <button class="btn btn-secondary" type="submit" name="provider" value="GitHub">Sign in with GitHub</button>
+    </form>
 </div>
