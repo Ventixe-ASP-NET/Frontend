@@ -1,3 +1,5 @@
+using Account.Interfaces;
+using Account.Services;
 using Authentication.Contexts;
 using Authentication.Entities;
 using Authentication.SeedData;
@@ -6,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddDbContext<AuthenticationDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("AccountDatabase")));
 builder.Services.AddIdentity<AppUserEntity, IdentityRole>(x =>
@@ -18,7 +22,7 @@ builder.Services.AddIdentity<AppUserEntity, IdentityRole>(x =>
 
 builder.Services.ConfigureApplicationCookie(x =>
 {
-    x.LoginPath = "/auth/login";
+    x.LoginPath = "/auth/signin";
     x.Cookie.SameSite = SameSiteMode.None;
     x.SlidingExpiration = true;
     x.ExpireTimeSpan = TimeSpan.FromDays(14);

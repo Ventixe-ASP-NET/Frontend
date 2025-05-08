@@ -1,0 +1,13 @@
+﻿.success {
+    font-size: 1.4rem;
+    display: inline-flex;
+    flex-direction: row;
+    gap: 0.4rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap:wrap;
+}
+
+    .success span {
+        font-size: 2rem;
+    }

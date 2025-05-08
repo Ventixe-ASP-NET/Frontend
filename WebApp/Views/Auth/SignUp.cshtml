@@ -38,6 +38,27 @@
             <span asp-validation-for="FormData.ConfirmPassword"></span>
         </div>
 
+
+        @if (!string.IsNullOrEmpty(ViewBag?.ErrorMessage))
+        {
+            <p class="error-message">@ViewBag?.ErrorMessage</p>
+        }
+
         <input type="submit" class="btn btn-primary" value="Sign up" />
+
+
+        @if (Model.AccountCreated)
+        {
+            <p class="success">
+                <span class="material-symbols-rounded">
+                    check_circle
+                </span>
+                Account created! 
+                <a asp-controller="Auth" asp-action="SignIn">Sign in</a>
+            </p>
+        } else
+        {
+            <p>Already have an account? <a asp-controller="Auth" asp-action="SignIn">Sign in</a></p>
+        }
     </form>
 </div>

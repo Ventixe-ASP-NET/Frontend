@@ -114,6 +114,16 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--headline-color);
 }
 
+a {
+    color: var(--link-color);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+a:hover {
+    color: var(--link-hover-color);
+}
+
 
 .btn {
     font-family: var(--font);
@@ -205,7 +215,7 @@ h1, h2, h3, h4, h5, h6 {
     gap: 0.5rem;
 }
 
-    .form-input-wrapper label {
+    .form-input-wrapper label{
         font-size: 0.9rem;
     }
 
@@ -224,7 +234,7 @@ h1, h2, h3, h4, h5, h6 {
             outline-color: var(--input-border-focus-color);
         }
 
-.field-validation-error {
+.field-validation-error, .error-message {
     font-size: 0.9rem;
     color: var(--error-color);
 }
