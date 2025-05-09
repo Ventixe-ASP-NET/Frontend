@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Account\Account.csproj" />
-    <ProjectReference Include="..\Authentication\Account.csproj" />
   </ItemGroup>
 
 </Project>

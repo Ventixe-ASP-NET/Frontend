@@ -1,9 +1,8 @@
-﻿using Account.Factories;
+﻿using Account.Entities;
+using Account.Factories;
 using Account.Interfaces;
 using Account.Models;
-using Authentication.Entities;
 using Microsoft.AspNetCore.Identity;
-using WebApp.Models;
 
 namespace Account.Services;
 

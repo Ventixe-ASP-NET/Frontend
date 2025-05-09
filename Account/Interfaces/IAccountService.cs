@@ -1,6 +1,5 @@
 ﻿using Account.Models;
 using Microsoft.AspNetCore.Identity;
-using WebApp.Models;
 
 namespace Account.Interfaces
 {

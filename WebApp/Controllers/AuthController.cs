@@ -1,6 +1,6 @@
-﻿using Account.Interfaces;
+﻿using Account.Entities;
+using Account.Interfaces;
 using Account.Models;
-using Authentication.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;

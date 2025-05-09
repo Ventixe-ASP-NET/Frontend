@@ -1,7 +1,7 @@
-﻿using Authentication.Entities;
+﻿using Account.Entities;
+using Account.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
-using WebApp.Models;
 
 namespace Account.Factories;
 

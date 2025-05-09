@@ -1,4 +1,6 @@
-﻿namespace WebApp.Models;
+﻿using Account.Models;
+
+namespace WebApp.Models;
 
 public class SignUpViewModel
 {

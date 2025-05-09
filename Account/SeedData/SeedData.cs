@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Authentication.SeedData;
+namespace Account.SeedData;
 
 public static class SeedData
 {

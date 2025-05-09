@@ -1,8 +1,8 @@
+using Account.Contexts;
+using Account.Entities;
 using Account.Interfaces;
+using Account.SeedData;
 using Account.Services;
-using Authentication.Contexts;
-using Authentication.Entities;
-using Authentication.SeedData;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,13 +13,13 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IAccountService, AccountService>();
 
-builder.Services.AddDbContext<AuthenticationDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("AccountDatabase")));
+builder.Services.AddDbContext<AccountDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("AccountDatabase")));
 builder.Services.AddIdentity<AppUserEntity, IdentityRole>(x =>
 {
     x.Password.RequiredLength = 8;
     x.User.RequireUniqueEmail = true;
 })
-    .AddEntityFrameworkStores<AuthenticationDbContext>()
+    .AddEntityFrameworkStores<AccountDbContext>()
     .AddDefaultTokenProviders();
 
 builder.Services.ConfigureApplicationCookie(x =>
