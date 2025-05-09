@@ -97,7 +97,7 @@ public class AuthController(IAccountService accountService, SignInManager<AppUse
         if (string.IsNullOrEmpty(provider))
         {
             ViewBag.ErrorMessage = "Invalid provider";
-            return View("Auth/SignIn", viewModel);
+            return View("SignIn", viewModel);
         }
 
         var redirectUrl = Url.Action("ExternalSignInCallback", "Auth", new { returnUrl })!;
@@ -112,10 +112,10 @@ public class AuthController(IAccountService accountService, SignInManager<AppUse
         ViewBag.ReturnUrl = returnUrl;
         var viewModel = new SignInViewModel();
 
-        if (string.IsNullOrEmpty(remoteError))
+        if (!string.IsNullOrEmpty(remoteError))
         {
             ViewBag.ErrorMessage = remoteError;
-            return View("Auth/SignIn", viewModel);
+            return View("SignIn", viewModel);
         }
 
         var info = await _signInManager.GetExternalLoginInfoAsync();
@@ -137,7 +137,7 @@ public class AuthController(IAccountService accountService, SignInManager<AppUse
             else
             {
                 ViewBag.ErrorMessage = accountResult.Message;
-                return View("Auth/SignIn", viewModel);
+                return View("SignIn", viewModel);
             }
         }
     }

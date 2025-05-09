@@ -33,11 +33,19 @@
     </form>
 
 
+    <div class="form-divider">
+        <span>or</span>
+    </div>
+
     
+    <div class="external-signin-form-wrapper">
+        <form method="post" asp-controller="Auth" asp-action="ExternalSignIn" novalidate class="external-signin-form">
+            <input type="hidden" name="returnUrl" value="@ViewBag?.ReturnUrl" />
 
-    <form method="post" asp-controller="Auth" asp-action="ExternalSignIn" novalidate class="external-signin-form">
-        <input type="hidden" name="returnUrl" value="@ViewBag?.ReturnUrl" />
-
-        <button class="btn btn-secondary" type="submit" name="provider" value="GitHub">Sign in with GitHub</button>
-    </form>
+            <button class="btn btn-secondary btn-img" type="submit" name="provider" value="GitHub">
+                <img src="~/images/github-mark.svg" alt="GitHub logo"/>
+                <span>Sign in with GitHub</span>
+            </button>
+        </form>
+    </div>
 </div>

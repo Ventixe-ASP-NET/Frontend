@@ -80,9 +80,9 @@
     --button-secondary-text-color: var(--secondary-100);
     --button-secondary-border-color: var(--cool-gray-10);
     --button-secondary-background-color: var(--cool-gray-10);
-    --button-secondary-hover-text-color: var(--gray-10);
-    --button-secondary-hover-border-color: var(--secondary-90);
-    --button-secondary-hover-background-color: var(--secondary-90);
+    --button-secondary-hover-text-color: var(--secondary-90);
+    --button-secondary-hover-border-color: transparent;
+    --button-secondary-hover-background-color: var(--gray-20);
     --button-outline-text-color: var(--gray-90);
     --button-outline-border-color: var(--gray-30);
     --button-outline-background-color: transparent;
@@ -179,6 +179,14 @@ a:hover {
 }
 
 
+.btn-img img {
+    height: 1.6rem;
+}
+    .btn-img:hover img {
+        filter: brightness(1.1);
+    }
+
+
 /* sidebar + auth layout */
 .logo {
     text-decoration: none;
@@ -200,7 +208,7 @@ a:hover {
 }
 
     .form-wrapper h1 {
-        margin-bottom: 1.8rem;
+        margin-bottom: 1.2rem;
     }
 
     .form-wrapper form {
@@ -208,10 +216,6 @@ a:hover {
         flex-direction: column;
         gap: 1rem;
         width: 100%;
-    }
-
-    .form-wrapper input[type="submit"] {
-        margin-top: 0.8rem;
     }
 
 .form-input-wrapper {
