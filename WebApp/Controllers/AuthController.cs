@@ -13,44 +13,105 @@ public class AuthController(IAccountService accountService, SignInManager<AppUse
     private readonly SignInManager<AppUserEntity> _signInManager = signInManager;
 
 
-    [HttpGet]
-    public IActionResult SignUp()
+    [HttpGet("auth/signup")]
+    public IActionResult SignUpEmail()
     {
-        var viewModel = new SignUpViewModel();
+        var viewModel = new SignUpEmailViewModel();
         return View(viewModel);
     }
 
 
-    [HttpPost]
-    public async Task<IActionResult> SignUp(SignUpFormModel formData)
+    [HttpPost("auth/signup")]
+    public async Task<IActionResult> HandleSignUpEmail(SignUpEmailViewModel viewModel)
     {
-        var viewModel = new SignUpViewModel();
-
         if (!ModelState.IsValid)
+            return View(nameof(SignUpEmail), viewModel);
+
+        var existsResult = await _accountService.AlreadyExistsAsync(viewModel.Email);
+        if (existsResult)
         {
-            viewModel.FormData = formData;
-            return View(viewModel);
+            ViewBag.ErrorMessage = "An account already exists";
+            return View(nameof(SignUpEmail), viewModel);
         }
 
-        var result = await _accountService.SignUpAsync(formData);
+        var result = await _accountService.RequestVerificationCodeAsync(viewModel.Email);
+        if (!result.Succeeded)
+        {
+            ViewBag.ErrorMessage = "Unable to send verification code";
+            return View(nameof(SignUpEmail), viewModel);
+        }
+
+        return RedirectToAction(nameof(SignUpConfirmAccount), new SignUpConfirmAccountViewModel { Email = viewModel.Email });
+    }
+
+
+
+    [HttpGet("auth/confirm-account")]
+    public IActionResult SignUpConfirmAccount(SignUpConfirmAccountViewModel viewModel)
+    {
+        return View(viewModel);
+    }
+
+
+    [HttpPost("auth/confirm-account")]
+    public async Task<IActionResult> HandleSignUpConfirmAccount(SignUpConfirmAccountViewModel viewModel)
+    {
+        if (string.IsNullOrWhiteSpace(viewModel.Email))
+            return RedirectToAction(nameof(SignUpEmail));
+
+        if (string.IsNullOrWhiteSpace(viewModel.Code))
+        {
+            ViewBag.ErrorMessage = "Verification code is required";
+            return View(nameof(SignUpConfirmAccount), viewModel);
+        }
+
+        var result = await _accountService.VerifyVerificationCodeAsync(viewModel.Email, viewModel.Code);
+        if (!result.Succeeded)
+        {
+            ViewBag.ErrorMessage = "Invalid or expired verification code";
+            return View(nameof(SignUpConfirmAccount), viewModel);
+        }
+
+        return RedirectToAction(nameof(SignUpPassword), new SignUpPasswordViewModel { Email = viewModel.Email });
+    }
+
+
+
+    [HttpGet("auth/password")]
+    public IActionResult SignUpPassword(SignUpPasswordViewModel viewModel)
+    {
+        if (string.IsNullOrWhiteSpace(viewModel.Email))
+            return RedirectToAction(nameof(SignUpEmail));
+
+        return View(viewModel);
+    }
+
+
+    [HttpPost("auth/password")]
+    public async Task<IActionResult> HandleSignUpPassword(SignUpPasswordViewModel viewModel)
+    {
+        if (string.IsNullOrWhiteSpace(viewModel.Email))
+            return RedirectToAction(nameof(SignUpEmail));
+
+        if (!ModelState.IsValid)
+            return View(nameof(SignUpPassword), viewModel);
+
+        var result = await _accountService.SignUpAsync(viewModel.Email, viewModel.Password);
         if (!result.Succeeded)
         {
             ViewBag.ErrorMessage = result.Message;
-            return View(viewModel);
+            return View(nameof(SignUpPassword), viewModel);
         }
 
-        ModelState.Clear();
-        viewModel.AccountCreated = true;
-        return View(viewModel);
+        return RedirectToAction(nameof(SignIn), new SignInViewModel { AccountCreated = true });
     }
 
 
 
     [HttpGet]
-    public IActionResult SignIn(string returnUrl = "/")
+    public IActionResult SignIn(SignInViewModel viewModel, string returnUrl = "/")
     {
         ViewBag.ReturnUrl = returnUrl;
-        var viewModel = new SignInViewModel();
         return View(viewModel);
     }
 
@@ -85,7 +146,6 @@ public class AuthController(IAccountService accountService, SignInManager<AppUse
         await _accountService.SignOutAsync();
         return RedirectToAction("SignIn", "Auth");
     }
-
 
 
     [HttpPost]

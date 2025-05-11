@@ -11,6 +11,7 @@ using System.Security.Claims;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddHttpClient();
 builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddDbContext<AccountDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("AccountDatabase")));

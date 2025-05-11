@@ -1,22 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Account.Models;
+namespace WebApp.Models;
 
-public class SignUpFormModel
+public class SignUpPasswordViewModel
 {
-    [Display(Name = "First name")]
-    [Required(ErrorMessage = "First name required")]
-    public string FirstName { get; set; } = null!;
-
-
-    [Display(Name = "Last name")]
-    [Required(ErrorMessage = "Last name required")]
-    public string LastName { get; set; } = null!;
-
-
-    [Display(Name = "Email")]
-    [Required(ErrorMessage = "Email required")]
-    [EmailAddress]
+    [Required]
     public string Email { get; set; } = null!;
 
 
@@ -33,3 +21,5 @@ public class SignUpFormModel
     [Compare(nameof(Password), ErrorMessage = "Passwords do not match")]
     public string ConfirmPassword { get; set; } = null!;
 }
+
+

@@ -7,6 +7,16 @@
 <div class="form-wrapper">
     <h1>@ViewData["Title"]</h1>
 
+    @if (Model.AccountCreated)
+    {
+        <p class="account-created">
+            <span class="material-symbols-rounded">
+                check_circle
+            </span>
+            Account created!
+        </p>
+    }
+
     <form method="post" asp-controller="Auth" asp-action="SignIn" novalidate>
         <input type="hidden" name="returnUrl" value="@ViewBag?.ReturnUrl" />
 
@@ -29,7 +39,7 @@
 
         <input type="submit" class="btn btn-primary" value="Sign in" />
 
-        <p>Don't have an account? <a asp-controller="Auth" asp-action="SignUp">Sign up</a></p>
+        <p>Don't have an account? <a asp-controller="Auth" asp-action="SignUpEmail">Sign up</a></p>
     </form>
 
 

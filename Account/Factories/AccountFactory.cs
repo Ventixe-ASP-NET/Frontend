@@ -1,5 +1,4 @@
 ﻿using Account.Entities;
-using Account.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
@@ -7,18 +6,6 @@ namespace Account.Factories;
 
 public class AccountFactory
 {
-    public static AppUserEntity MapSignUp(SignUpFormModel formData)
-    {
-        var user = new AppUserEntity
-        {
-            UserName = formData.Email,
-            Email = formData.Email,
-        };
-
-        return user;
-    }
-
-
     public static AppUserEntity MapSignUpExternal(ExternalLoginInfo info)
     {
         //string firstName = string.Empty;
