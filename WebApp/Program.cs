@@ -1,7 +1,27 @@
+using System.Net.Http.Headers;
+
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
+
+
+var eventBaseApi = builder.Configuration["EventApi:BaseEventUrl"];
+if(string.IsNullOrEmpty(eventBaseApi))
+{
+    throw new ArgumentNullException("EventApi:BaseEventUrl", "BaseEventUrl is not set in appsettings.json");
+}
+
+builder.Services.AddHttpClient("EventApi", client =>
+{
+    client.BaseAddress = new Uri(eventBaseApi);
+    client.DefaultRequestHeaders.Accept.Add(
+        new MediaTypeWithQualityHeaderValue("application/json"));
+});
+
+
 var app = builder.Build();
+
 
 app.UseHsts();
 app.UseHttpsRedirection();

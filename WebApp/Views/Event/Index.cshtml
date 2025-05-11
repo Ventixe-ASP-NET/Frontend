@@ -1,0 +1,26 @@
+﻿@model IEnumerable<DisplayEventsDto>
+
+<h1>Events</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Venue</th>
+            <th>City</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ev in Model)
+        {
+            <tr>
+                <td>@ev.Id</td>
+                <td>@ev.EventName</td>
+                <td>@ev.Description</td>
+                <td>@ev.Location.VenueName</td>
+                <td>@ev.Location.City</td>
+            </tr>
+        }
+    </tbody>
+</table>

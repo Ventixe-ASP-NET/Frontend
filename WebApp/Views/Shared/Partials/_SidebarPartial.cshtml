@@ -26,6 +26,15 @@
                     <span>Bookings</span>
                 </a>
             </li>
+
+            <li>
+                <a class="@(Context.Request.Path == "/event" ? "active" : "")" asp-controller="Event" asp-action="Index">
+                    <span class="material-symbols-rounded">
+                        check_box
+                    </span>
+                    <span>Events</span>
+                </a>
+            </li>
         </ul>
     </nav>
 
