@@ -2,7 +2,7 @@
 {
     public class EventListDtoWrapper
     {
-        // matches the root “events” property
+   
         public List<DisplayEventsDto> Events { get; set; } = new();
     }
 
@@ -12,7 +12,7 @@
         public string EventName { get; set; } = null!;
         public string Description { get; set; } = null!;
 
-        // Status as an int (or an enum you define)
+        // Status as an int
         public int Status { get; set; }
 
         public DateTime StartDate { get; set; }
