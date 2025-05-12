@@ -185,19 +185,19 @@ public class AuthController(IAccountService accountService, SignInManager<AppUse
         var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
         if (signInResult.Succeeded)
         {
-            return LocalRedirect(returnUrl);
+            return LocalRedirect("/");
         }
         else
         {
             var accountResult = await _accountService.SignUpExternalAsync(info);
             if (accountResult.Succeeded)
             {
-                return LocalRedirect(returnUrl);
+                return RedirectToAction(nameof(SignIn), new SignInViewModel { AccountCreated = true });
             }
             else
             {
                 ViewBag.ErrorMessage = accountResult.Message;
-                return View("SignIn", viewModel);
+                return RedirectToAction("SignIn", "Auth");
             }
         }
     }

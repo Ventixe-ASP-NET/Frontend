@@ -131,7 +131,7 @@ public class AccountService(UserManager<AppUserEntity> userManager, SignInManage
             if (result.Succeeded)
             {
                 await _userManager.AddLoginAsync(appUserEntity, info);
-                await _signInManager.SignInAsync(appUserEntity, isPersistent: false);
+                //await _signInManager.SignInAsync(appUserEntity, isPersistent: false);
             }
 
             var roleResult = await _userManager.AddToRoleAsync(appUserEntity, "Admin");
