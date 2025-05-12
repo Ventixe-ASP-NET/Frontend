@@ -4,10 +4,8 @@ using System.Net.Http.Headers;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
-
-
 var eventBaseApi = builder.Configuration["EventApi:BaseEventUrl"];
-if(string.IsNullOrEmpty(eventBaseApi))
+if (string.IsNullOrEmpty(eventBaseApi))
 {
     throw new ArgumentNullException("EventApi:BaseEventUrl", "BaseEventUrl is not set in appsettings.json");
 }
@@ -21,6 +19,7 @@ builder.Services.AddHttpClient("EventApi", client =>
 
 
 var app = builder.Build();
+
 
 
 app.UseHsts();
