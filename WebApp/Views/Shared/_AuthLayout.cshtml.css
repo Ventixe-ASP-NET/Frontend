@@ -1,0 +1,23 @@
+﻿.wrapper {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--gray-20);
+    padding: 1.6rem;
+
+    &> div {
+        padding: 1.6rem;
+        border-radius: var(--border-radius);
+        background-color: var(--background-color);
+    }
+}
+
+.logo {
+    margin-top: 2rem;
+}
+
+
+
+
