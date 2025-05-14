@@ -1,5 +1,6 @@
-﻿<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" />
-
+﻿@using WebApp.Views.Bookings.BookingModels
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" />
+@model List<BookingWithEventModel>
 @{
     ViewData["Title"] = "Bookings";
 }
@@ -11,5 +12,5 @@
         @await Html.PartialAsync("Partials/_TopLeft")
         @await Html.PartialAsync("Partials/_TopRight")
     </div>
-    @await Html.PartialAsync("Partials/_BottomSection")
+    @await Html.PartialAsync("Partials/_BottomSection", Model)
 </section>

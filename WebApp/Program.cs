@@ -11,6 +11,17 @@ using System.Security.Claims;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddHttpClient("bookingGateway", c =>
+{
+    c.BaseAddress = new Uri("https://bookingeventgateway-f8b4d2ahagc5faev.swedencentral-01.azurewebsites.net/");
+});
+
+builder.Services.AddHttpClient("eventApi", c =>
+{
+    c.BaseAddress = new Uri("https://ventixe-event-rest-api-cxeqehfrcqcvdkck.swedencentral-01.azurewebsites.net/");
+});
+
+
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<IAccountService, AccountService>();
 
