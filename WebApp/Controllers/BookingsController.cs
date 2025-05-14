@@ -1,13 +1,23 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Grpc.Net.Client;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Views.Bookings;
 
-namespace WebApp.Controllers;
-
-[Authorize(Roles = "Admin")]
-public class BookingsController : Controller
+namespace WebApp.Controllers
 {
-    public IActionResult Index()
+    public class BookingsController : Controller
     {
-        return View();
+        private readonly HttpClient _httpClient;
+
+        public BookingsController(IHttpClientFactory httpClientFactory)
+        {
+            _httpClient = httpClientFactory.CreateClient();
+            _httpClient.BaseAddress = new Uri("https://bookingserviceventixe-fbb7amdzfsh4b4d6.swedencentral-01.azurewebsites.net/");
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var bookings = await _httpClient.GetFromJsonAsync<List<BookingModel>>("/api/bookings");
+            return View(bookings);
+        }
     }
 }
