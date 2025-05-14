@@ -1,0 +1,61 @@
+﻿@model SignInViewModel
+
+@{
+    ViewData["Title"] = "Sign in";
+}
+
+<div class="form-wrapper">
+    <h1>@ViewData["Title"]</h1>
+
+    @if (Model.AccountCreated)
+    {
+        <p class="account-created">
+            <span class="material-symbols-rounded">
+                check_circle
+            </span>
+            Account created!
+        </p>
+    }
+
+    <form method="post" asp-controller="Auth" asp-action="SignIn" novalidate>
+        <input type="hidden" name="returnUrl" value="@ViewBag?.ReturnUrl" />
+
+        <div class="form-input-wrapper">
+            <label asp-for="FormData.Email"></label>
+            <input asp-for="FormData.Email" />
+            <span asp-validation-for="FormData.Email"></span>
+        </div>
+
+        <div class="form-input-wrapper">
+            <label asp-for="FormData.Password"></label>
+            <input asp-for="FormData.Password" value="@Model.FormData.Password" />
+            <span asp-validation-for="FormData.Password"></span>
+        </div>
+
+        @if (!string.IsNullOrEmpty(ViewBag?.ErrorMessage))
+        {
+            <p class="error-message">@ViewBag?.ErrorMessage</p>
+        }
+
+        <input type="submit" class="btn btn-primary" value="Sign in" />
+
+        <p>Don't have an account? <a asp-controller="Auth" asp-action="SignUpEmail">Sign up</a></p>
+    </form>
+
+
+    <div class="form-divider">
+        <span>or</span>
+    </div>
+
+    
+    <div class="external-signin-form-wrapper">
+        <form method="post" asp-controller="Auth" asp-action="ExternalSignIn" novalidate class="external-signin-form">
+            <input type="hidden" name="returnUrl" value="@ViewBag?.ReturnUrl" />
+
+            <button class="btn btn-secondary btn-img" type="submit" name="provider" value="GitHub">
+                <img src="~/images/github-mark.svg" alt="GitHub logo"/>
+                <span>Sign in with GitHub</span>
+            </button>
+        </form>
+    </div>
+</div>

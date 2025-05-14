@@ -1,0 +1,28 @@
+﻿@model SignUpConfirmAccountViewModel
+
+@{
+    ViewData["Title"] = "Verify email";
+}
+
+<div class="form-wrapper">
+    <h1>@ViewData["Title"]</h1>
+    <p>A verification code has been sent to your email address. If it hasn't arrived within 5 minutes, check your spam folder or try again.</p>
+
+    <form method="post" asp-controller="Auth" asp-action="HandleSignUpConfirmAccount" novalidate>
+        <input type="hidden" asp-for="Email" value="@Model.Email"/>
+
+        <div class="form-input-wrapper">
+            <label asp-for="Code"></label>
+            <input asp-for="Code" />
+        </div>
+
+        @if (!string.IsNullOrEmpty(ViewBag?.ErrorMessage))
+        {
+            <p class="error-message">@ViewBag?.ErrorMessage</p>
+        }
+
+        <input type="submit" class="btn btn-primary" value="Verify" />
+
+        <p>Go back to <a asp-controller="Auth" asp-action="SignUpEmail">Sign up</a></p>
+    </form>
+</div>
