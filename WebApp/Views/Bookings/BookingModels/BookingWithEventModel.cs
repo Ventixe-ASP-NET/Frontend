@@ -7,7 +7,7 @@ namespace WebApp.Views.Bookings.BookingModels
         // Booking info
         public int Id { get; set; }
         public string BookingName { get; set; }
-        public int InvoiceId { get; set; }
+        public string InvoiceId { get; set; }
         public DateTime CreatedAt { get; set; }
         public string EventId { get; set; }
 
@@ -19,7 +19,7 @@ namespace WebApp.Views.Bookings.BookingModels
         public DateTime? EndDate { get; set; }
 
         public EventLocationModel? Location { get; set; }
-        public List<EventTicketTypeModel> TicketTypes { get; set; } = new();
+        public List<BookedTicketModel> BookedTickets { get; set; } = new();
     }
 
     public class EventLocationModel
@@ -31,14 +31,12 @@ namespace WebApp.Views.Bookings.BookingModels
         public string Country { get; set; } = string.Empty;
     }
 
-    public class EventTicketTypeModel
+    public class BookedTicketModel
     {
-        public Guid Id { get; set; }
-        [JsonPropertyName("ticketType_")]
+        public Guid TicketTypeId { get; set; }
         public string TicketType { get; set; } = string.Empty;
-        public decimal Price { get; set; }
-        public int TotalTickets { get; set; }
-        public int TicketsSold { get; set; }
-        public int TicketsLeft { get; set; }
+        public int Quantity { get; set; }
+        public decimal PricePerTicket { get; set; }
+        public decimal TotalPrice => Quantity * PricePerTicket;
     }
 }

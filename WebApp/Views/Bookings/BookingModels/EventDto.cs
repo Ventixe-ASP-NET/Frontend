@@ -1,4 +1,6 @@
-﻿namespace WebApp.Views.Bookings.BookingModels
+﻿using System.Text.Json.Serialization;
+
+namespace WebApp.Views.Bookings.BookingModels
 {
     public class EventDto
     {
@@ -19,5 +21,16 @@
     {
         public int Id { get; set; }
         public string CategoryName { get; set; } = string.Empty;
+    }
+
+    public class EventTicketTypeModel
+    {
+        public Guid Id { get; set; }
+        [JsonPropertyName("ticketType_")]
+        public string TicketType { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+        public int TotalTickets { get; set; }
+        public int TicketsSold { get; set; }
+        public int TicketsLeft { get; set; }
     }
 }

@@ -50,24 +50,29 @@
             <tbody>
                 @foreach (var booking in Model)
                 {
-                    <tr>
-                        <td>@booking.InvoiceId</td>
-                        <td>
-                            <div class="main">@booking.CreatedAt.ToString("yyyy/MM/dd")</div>
-                            <div class="sub">@booking.CreatedAt.ToString("hh:mm tt")</div>
-                        </td>
-                        <td>@booking.BookingName</td>
-                        <td>
-                            <div class="main">@booking.EventName</div>
-                            <div class="sub">@booking.Category ?? "Unknown"</div>
-                        </td>
-                        <td><span class="badge badge-diamond">–</span></td> <!-- placeholder -->
-                        <td>–</td>
-                        <td>–</td>
-                        <td>–</td>
-                        <td><span class="status confirmed">Confirmed</span></td>
-                        <td>–</td>
-                    </tr>
+                    foreach (var ticket in booking.BookedTickets)
+                    {
+                        <tr>
+                            <td>@booking.InvoiceId</td>
+                            <td>
+                                <div class="main">@booking.CreatedAt.ToString("yyyy/MM/dd")</div>
+                                <div class="sub">@booking.CreatedAt.ToString("hh:mm tt")</div>
+                            </td>
+                            <td>@booking.BookingName</td>
+                            <td>
+                                <div class="main">@booking.EventName</div>
+                                <div class="sub">@booking.Category ?? "Unknown"</div>
+                            </td>
+                            <td>
+                                <span class="badge badge-diamond">@ticket.TicketType</span>
+                            </td>
+                            <td>$@ticket.PricePerTicket.ToString("0.00")</td>
+                            <td>@ticket.Quantity</td>
+                            <td>$@((ticket.PricePerTicket * ticket.Quantity).ToString("0.00"))</td>
+                            <td><span class="status confirmed">Confirmed</span></td>
+                            <td>–</td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>
