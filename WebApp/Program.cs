@@ -20,6 +20,10 @@ builder.Services.AddHttpClient("eventApi", c =>
 {
     c.BaseAddress = new Uri("https://ventixe-event-rest-api-cxeqehfrcqcvdkck.swedencentral-01.azurewebsites.net/");
 });
+builder.Services.AddHttpClient("bookingApi", c =>
+{
+    c.BaseAddress = new Uri("https://bookingserviceventixe-fbb7amdzfsh4b4d6.swedencentral-01.azurewebsites.net");
+});
 
 
 builder.Services.AddHttpClient();

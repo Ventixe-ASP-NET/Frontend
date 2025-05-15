@@ -1,0 +1,29 @@
+﻿@model List<WebApp.Views.Bookings.BookingModels.BookingWithEventModel>
+
+<div class="booking-controls-top">
+    <div class="filter-group">
+        <button class="filter-btn active">All</button>
+        <button class="filter-btn">Confirmed</button>
+        <button class="filter-btn">Pending</button>
+        <button class="filter-btn">Cancelled</button>
+    </div>
+
+    <div class="search-and-dropdowns">
+        <div class="search-input">
+            <input type="text" id="bookingSearch" placeholder="Search event name..." />
+            <span class="search-icon">🔍</span>
+        </div>
+
+        <select id="categoryFilter" class="dropdown-select">
+            <option value="">All Categories</option>
+            @foreach (var category in Model
+            .Where(b => !string.IsNullOrWhiteSpace(b.Category))
+            .Select(b => b.Category!.Trim())
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(c => c))
+            {
+                <option value="@category.ToLower()">@category</option>
+            }
+        </select>
+    </div>
+</div>
