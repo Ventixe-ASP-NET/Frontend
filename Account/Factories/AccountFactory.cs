@@ -1,4 +1,5 @@
 ﻿using Account.Entities;
+using Account.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
@@ -28,5 +29,36 @@ public class AccountFactory
         };
 
         return user;
+    }
+
+
+    public static AppUser? EntityToAppUser(AppUserEntity entity, string role = "")
+    {
+        if (entity == null) return null;
+
+        var profile = new AppUserProfile
+        {
+            FirstName = "",
+            LastName = "",
+            Phone = "",
+            Email = entity?.Email!
+        };
+
+        var address = new AppUserAddress
+        {
+            StreetAddress = "",
+            PostalCode = "",
+            City = ""
+        };
+
+        var appUser = new AppUser
+        {
+            Id = entity?.Id!,
+            Role = role,
+            AppUserProfile = profile,
+            AppUserAddress = address
+        };
+
+        return appUser;
     }
 }

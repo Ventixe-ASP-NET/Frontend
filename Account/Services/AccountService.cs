@@ -5,6 +5,7 @@ using Account.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http.Json;
+using System.Security.Claims;
 
 namespace Account.Services;
 
@@ -30,6 +31,85 @@ public class AccountService(UserManager<AppUserEntity> userManager, SignInManage
         {
             return false;
         }
+    }
+
+
+    public async Task<AppUser?> GetByEmailAsync(string email)
+    {
+        try
+        {
+            var appUserEntity = await _userManager.FindByEmailAsync(email);
+
+            if (appUserEntity == null) return null;
+
+            var role = await GetRoleByAppUserEntity(appUserEntity);
+
+            var appUser = AccountFactory.EntityToAppUser(appUserEntity, role);
+
+            return appUser;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+
+    public async Task<AppUser?> GetByUserIdAsync(string id)
+    {
+        try
+        {
+            var appUserEntity = await _userManager.FindByIdAsync(id);
+
+            if (appUserEntity == null) return null;
+
+            var role = await GetRoleByAppUserEntity(appUserEntity);
+
+            var appUser = AccountFactory.EntityToAppUser(appUserEntity, role);
+
+            return appUser;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+
+    // In a controller, use this method like this:
+    // var signedInUser = await _accountService.GetSignedInAppUserAsync(User);
+    public async Task<AppUser?> GetSignedInAppUserAsync(ClaimsPrincipal? user)
+    {
+        try
+        {
+            if (user == null) return null;
+
+            var appUserEntity = await _userManager.FindByNameAsync(user?.Identity?.Name!);
+
+            if (appUserEntity == null) return null;
+
+            var role = await GetRoleByAppUserEntity(appUserEntity);
+
+            var appUser = AccountFactory.EntityToAppUser(appUserEntity, role);
+
+            return appUser;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+
+    private async Task<string> GetRoleByAppUserEntity(AppUserEntity appUserEntity)
+    {
+        var role = "";
+        var roles = await _userManager.GetRolesAsync(appUserEntity);
+
+        if (roles.Count > 0)
+            role = roles[0];
+
+        return role;
     }
 
 
