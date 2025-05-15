@@ -1,5 +1,4 @@
-﻿@using WebApp.Views.Bookings.BookingModels
-@model BookingIndexViewModel
+﻿@model WebApp.Views.Bookings.BookingModels.BookingIndexViewModel
 
 <div class="top-left">
     <div class="top-left-section">
@@ -51,15 +50,6 @@
                         <p class="stat-value">$@Model.Stats.TotalEarnings.ToString("N0")</p>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="top-left-section fixed">
-        <div class="info-section">
-            
-            <div class="info-box fixed-height">
-                @await Html.PartialAsync("Partials/_BookingChart", Model.Chart)
             </div>
         </div>
     </div>

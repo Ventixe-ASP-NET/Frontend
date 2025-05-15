@@ -97,7 +97,7 @@ namespace WebApp.Controllers
             ViewBag.Page = page;
             ViewBag.PageSize = pageSize;
 
-            return View(model);
+            return View("Dashboard/Index", model);
         }
 
 
@@ -119,7 +119,7 @@ namespace WebApp.Controllers
                 EventData = activeEvents // 👈 detta används i dina boxes
             };
 
-            return View(viewModel);
+            return View("CreateBooking/Create", viewModel);
         }
     }
 }

@@ -1,0 +1,31 @@
+﻿@using WebApp.Views.Bookings.BookingModels
+@model EventDto
+
+<div class="event-card"
+     data-title="@Model.EventName.ToLower()"
+     data-category="@Model.Category?.CategoryName.ToLower()">
+
+    <div class="event-left">
+        <div class="event-category">@Model.Category?.CategoryName</div>
+        <div class="event-title">@Model.EventName</div>
+        <div class="event-description">@Model.Description</div>
+    </div>
+
+    <div class="event-meta">
+        <div class="event-location">@Model.Location?.VenueName, @Model.Location?.City</div>
+        <div class="event-date">@Model.StartDate.ToString("yyyy-MM-dd HH:mm") → @Model.EndDate.ToString("yyyy-MM-dd HH:mm")</div>
+        <div class="event-total-tickets">@Model.TicketTypes.Sum(t => t.TicketsLeft) tickets left</div>
+    </div>
+
+    <div class="event-ticket-info">
+        <div class="event-price">
+            @if (Model.TicketTypes.Any())
+            {
+                <span>$@Model.TicketTypes.Min(t => t.Price.ToString("0.00"))</span>
+            }
+        </div>
+        <button class="book-now-btn">Book Now</button>
+    </div>
+
+    @await Html.PartialAsync("CreateBooking/_BookingForm", Model)
+</div>

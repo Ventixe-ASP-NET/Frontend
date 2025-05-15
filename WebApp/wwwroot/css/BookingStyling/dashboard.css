@@ -1,0 +1,162 @@
+﻿.dashboard-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    flex: 1;
+    overflow: hidden;
+
+}
+
+/* == Layout för top section == */
+.top-stack {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: stretch;
+}
+
+/* == Vänsterkolumn med statistik och chart == */
+.top-left {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+    min-width: 0;
+}
+
+/* == Högerkolumn med sidoinfo == */
+.top-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* == Statistikboxarnas layout == */
+.stats-row {
+    display: flex;
+    gap: 12px;
+    height: 100%;
+}
+
+.stat-box {
+    flex: 1;
+    min-height: 130px;
+    background-color: #fff;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: 0.2s ease;
+}
+
+.stat-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px;
+}
+
+.icon-circle {
+    background-color: #F26CF9;
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .icon-circle .material-symbols-rounded {
+        font-size: 22px;
+    }
+
+.menu-dots-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+    .menu-dots-vertical span {
+        width: 3px;
+        height: 3px;
+        background-color: #333;
+        border-radius: 50%;
+    }
+
+.stat-info .stat-label {
+    color: #858585;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.stat-info .stat-value {
+    color: #37437D;
+    font-weight: 700;
+    font-size: 22px;
+}
+
+/* == CHART == */
+.chart-card {
+    padding: 1rem;
+    background: #fff;
+    border-radius: 12px;
+    height: 270px; /* 👈 lagom till stats-boxarna */
+     /* kortare höjd, annars sticker canvas ut */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    font-size: 18px;
+   
+}
+    .chart-header h4 {
+        color: #000000;
+    }
+
+.chart-select {
+    border: none;
+    background-color: #f0f0ff;
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #37437D;
+    cursor: pointer;
+    height: 40px;
+}
+
+/* == Top-right innehåll == */
+.top-right-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    background-color: #fff;
+    border-radius: 12px;
+    justify-content: space-between;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    gap: 12px;
+    
+}
+.booking-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}

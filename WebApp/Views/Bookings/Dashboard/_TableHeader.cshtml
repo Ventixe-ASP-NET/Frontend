@@ -26,7 +26,9 @@
         : "↕";
 
         <th>
-            <a asp-action="Index" asp-route-sort="@col.Key" asp-route-order="@sort.nextOrder">
+            <a asp-action="Index"
+               asp-route-sort="@col.Key"
+               asp-route-order="@sort.nextOrder">
                 <span class="column-title">@col.Label</span>
                 <span class="sort-icon @(isActive ? "active" : "")">@icon</span>
             </a>

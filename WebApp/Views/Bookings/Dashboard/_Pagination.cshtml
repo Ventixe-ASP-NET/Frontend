@@ -15,14 +15,7 @@
                 var options = new[] { 8, 16, 32 };
                 foreach (var opt in options)
                 {
-                    if (opt == pageSize)
-                    {
-                        <option value="@opt" selected>@opt</option>
-                    }
-                    else
-                    {
-                        <option value="@opt">@opt</option>
-                    }
+                    <option value="@opt" selected="@(opt == pageSize ? "selected" : null)">@opt</option>
                 }
             }
         </select>
@@ -32,7 +25,11 @@
     <div class="pagination-buttons">
         @if (page > 1)
         {
-            <a asp-action="Index" asp-route-page="@(page - 1)" asp-route-pageSize="@pageSize" asp-route-sort="@currentSort" asp-route-order="@currentOrder">❮</a>
+            <a asp-action="Index"
+               asp-route-page="@(page - 1)"
+               asp-route-pageSize="@pageSize"
+               asp-route-sort="@currentSort"
+               asp-route-order="@currentOrder">❮</a>
         }
 
         @for (int i = 1; i <= totalPages; i++)
@@ -54,7 +51,11 @@
 
         @if (page < totalPages)
         {
-            <a asp-action="Index" asp-route-page="@(page + 1)" asp-route-pageSize="@pageSize" asp-route-sort="@currentSort" asp-route-order="@currentOrder">❯</a>
+            <a asp-action="Index"
+               asp-route-page="@(page + 1)"
+               asp-route-pageSize="@pageSize"
+               asp-route-sort="@currentSort"
+               asp-route-order="@currentOrder">❯</a>
         }
     </div>
 </div>

@@ -1,0 +1,39 @@
+﻿@model WebApp.Views.Bookings.BookingModels.BookingIndexViewModel
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" />
+@{
+    ViewData["Title"] = "Bookings";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/BookingStyling/layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/BookingStyling/dashboard.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/BookingStyling/booking-table.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/js/BookingScript/bookingFilter.js" asp-append-version="true"></script>
+    <script src="~/js/BookingScript/chartUpdater.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+}
+
+<section class="dashboard-wrapper">
+    <div class="top-stack">
+        <div class="top-left">
+            @await Html.PartialAsync("Dashboard/_StatsSection", Model)
+            @await Html.PartialAsync("Dashboard/_ChartSection", Model.Chart)
+        </div>
+        <div class="top-right">
+            @await Html.PartialAsync("Dashboard/_TopRight")
+        </div>
+    </div>
+
+    <div class="booking-card">
+        @await Html.PartialAsync("Dashboard/_FilterControls", Model.Bookings)
+        @await Html.PartialAsync("Dashboard/_BookingTable", Model.Bookings)
+        @await Html.PartialAsync("Dashboard/_Pagination", new
+            {
+                Page = ViewBag.Page,
+                PageSize = ViewBag.PageSize,
+                TotalCount = ViewBag.TotalCount
+            })
+    </div>
+</section>

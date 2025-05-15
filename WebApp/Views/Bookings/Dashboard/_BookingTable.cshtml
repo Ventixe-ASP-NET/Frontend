@@ -1,0 +1,31 @@
+﻿@model List<WebApp.Views.Bookings.BookingModels.BookingWithEventModel>
+
+@{
+    var currentSort = Context.Request.Query["sort"].ToString();
+    var currentOrder = Context.Request.Query["order"].ToString();
+
+    Func<string, (string nextOrder, string symbol)> nextSortLogic = (string column) =>
+    {
+        if (currentSort != column) return ("asc", "");
+        if (currentOrder == "asc") return ("desc", "▲");
+        if (currentOrder == "desc") return ("none", "▼");
+        return ("asc", "");
+    };
+}
+
+<div class="booking-table-container">
+    <table class="booking-table">
+        <thead>
+            @await Html.PartialAsync("Dashboard/_TableHeader", (currentSort, currentOrder, nextSortLogic))
+        </thead>
+        <tbody>
+            @foreach (var booking in Model)
+            {
+                foreach (var ticket in booking.BookedTickets)
+                {
+                    @await Html.PartialAsync("Dashboard/_TableRow", (booking, ticket))
+                }
+            }
+        </tbody>
+    </table>
+</div>
