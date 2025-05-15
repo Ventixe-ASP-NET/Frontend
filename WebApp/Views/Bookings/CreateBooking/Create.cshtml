@@ -1,0 +1,45 @@
+﻿@model WebApp.Views.Bookings.BookingModels.CreateBookingViewModel
+
+@{
+    ViewData["Title"] = "Create Booking";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/BookingStyling/layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/BookingStyling/create-booking.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/js/BookingScript/bookingCreate.js" asp-append-version="true"></script>
+}
+
+<div class="create-booking-wrapper">
+    <div class="create-top">
+        <div class="filter-container">
+            <div class="search-box">
+                <input type="text" id="eventSearch" placeholder="Search..." />
+            </div>
+            <div class="category-box">
+                <select id="categoryFilter">
+                    <option value="">All categories</option>
+                    @foreach (var category in Model.EventData
+                    .Where(e => e.Category != null)
+                    .Select(e => e.Category.CategoryName)
+                    .Distinct())
+                    {
+                        <option value="@category">@category</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="create-middle">
+        @foreach (var ev in Model.EventData)
+        {
+            @await Html.PartialAsync("CreateBooking/_EventCard", ev)
+        }
+    </div>
+
+    <div class="create-bottom"></div>
+</div>
