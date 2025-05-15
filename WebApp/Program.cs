@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using WebApp.Services.Event;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,8 @@ builder.Services.AddHttpClient("EventApi", client =>
     client.DefaultRequestHeaders.Accept.Add(
         new MediaTypeWithQualityHeaderValue("application/json"));
 });
+
+builder.Services.AddScoped<IEventService, HttpEventService>();
 
 
 var app = builder.Build();

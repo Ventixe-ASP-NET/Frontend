@@ -1,26 +1,71 @@
 ﻿@model IEnumerable<DisplayEventsDto>
+@using System.Linq;
 
-<h1>Events</h1>
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Venue</th>
-            <th>City</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var ev in Model)
+@section Styles {
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/event.css" asp-append-version="true" />
+}
+
+<div class="card-container">
+    @foreach (var ev in Model)
+    {
+        
+        var primaryTicket = ev.TicketTypes.FirstOrDefault();
+        if (primaryTicket == null)
         {
-            <tr>
-                <td>@ev.Id</td>
-                <td>@ev.EventName</td>
-                <td>@ev.Description</td>
-                <td>@ev.Location.VenueName</td>
-                <td>@ev.Location.City</td>
-            </tr>
+            <div class="card-event">
+                <p>No tickets available for @ev.EventName</p>
+            </div>
+            continue;
         }
-    </tbody>
-</table>
+
+        
+        var soldPct = ev.TotalTickets > 0
+        ? (int)(100 * (ev.TotalTickets - primaryTicket.TicketsLeft) / (double)ev.TotalTickets)
+        : 0;
+
+        <a asp-controller="Event"
+           asp-action="DetailsBySlug"
+           asp-route-slug="@ev.Slug"
+              class="card-event-link">
+
+        <div class="card-event">
+            
+            <img class="event-image"
+                 src="~/images/placeholder.png"
+                 alt="Event image placeholder" />
+
+            <div class="event-main">
+               
+                <div class="event-overview">
+                    <span class="event-category">@ev.Category.CategoryName</span>
+                    <h3 class="event-title">@ev.EventName</h3>
+                    <p class="event-description">@ev.Description</p>
+                </div>
+
+             
+                <div class="event-location-time">
+                    @ev.Location.VenueName, @ev.Location.City<br />
+                    Starts @ev.StartDate.ToString("MMMM d, yyyy") · @ev.StartDate.ToString("HH:mm")
+                    @ev.DurationHours Hours
+                </div>
+
+         
+                <div class="event-sold">
+                    @soldPct% Sold
+                </div>
+
+     
+                <div class="event-left">
+                    @primaryTicket.TicketsLeft Tickets Left
+                </div>
+
+                <div class="event-price">
+                    $@primaryTicket.Price
+                </div>
+            </div>
+        </div>
+
+        </a>
+    }
+</div>
