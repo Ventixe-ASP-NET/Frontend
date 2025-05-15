@@ -403,6 +403,7 @@ main {
 
 .pagination-buttons {
     display: flex;
+
     gap: 6px;
 }
 
@@ -418,3 +419,232 @@ main {
         background-color: #f26cf9;
         color: white;
     }
+
+.create-booking-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+/* Alla boxar har full bredd */
+.create-top,
+.create-middle,
+.create-bottom {
+    width: 100%;
+    border-radius: 12px;
+}
+
+/* Top och bottom fyller "det som blir kvar" */
+.create-top,
+.create-bottom {
+    flex: 0 0 auto;
+    height: 7.5%;
+}
+
+/* Middle tar 85% av höjden */
+.create-middle {
+    flex: 1;
+    padding: 15px;
+    border-radius: 12px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+
+}
+
+/* Raden som håller 3 info-boxar */
+.booking-row {
+    display: flex;
+    background-color: floralwhite;
+    border-radius: 12px;
+    padding: 15px;
+    gap: 15px;
+}
+
+/* Varje informationsbox */
+.booking-info-box {
+    flex: 1;
+    background-color: #aef;
+    border-radius: 10px;
+    padding: 15px;
+    min-height: 120px;
+}
+
+.create-top {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 25px;
+    height: 7.5%;
+    border-radius: 12px;
+}
+
+/* Container för båda filter-elementen */
+.filter-container {
+    display: flex;
+    gap: 10px;
+}
+
+/* Sökfält */
+.search-box input {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    width: 200px;
+}
+
+/* Dropdown */
+.category-box select {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    background-color: white;
+}
+
+.event-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 15px;
+    gap: 20px;
+    transition: box-shadow 0.2s ease;
+}
+
+    .event-card:hover {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+.event-left {
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+}
+
+.event-category {
+    font-size: 12px;
+    color: #a26ff9;
+    background-color: #f3e8ff;
+    padding: 2px 8px;
+    border-radius: 10px;
+    width: fit-content;
+    margin-bottom: 6px;
+}
+
+.event-title {
+    font-weight: 600;
+    font-size: 18px;
+    color: #1e1e1e;
+}
+
+.event-description {
+    font-size: 14px;
+    color: #777;
+    margin-top: 2px;
+}
+
+.event-meta {
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+    flex: 1;
+    color: #555;
+    gap: 4px;
+}
+
+.event-total-tickets {
+    font-weight: 500;
+    color: #333;
+    font-size: 13px;
+}
+
+.event-ticket-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 6px;
+    flex: 1;
+}
+
+.event-price span {
+    background-color: #f6e8ff;
+    color: #a26ff9;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.book-now-btn {
+    background-color: #f26cf9;
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+    .book-now-btn:hover {
+        background-color: #8b54e2;
+    }
+
+.booking-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    background-color: #f9f9ff;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+}
+
+.ticket-type-dropdown {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: white;
+    font-size: 14px;
+    min-width: 180px;
+}
+
+.ticket-amount {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    width: 100px;
+}
+
+.submit-booking-btn {
+    background-color: #f26cf9;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+    .submit-booking-btn:hover {
+        background-color: #da57e1;
+    }
+
+.booking-error {
+    width: 100%;
+    color: red;
+    font-size: 13px;
+    margin-top: 6px;
+}

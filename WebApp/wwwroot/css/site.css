@@ -41,6 +41,8 @@
     --cool-gray-80: #56565C;
     --cool-gray-90: #39393D;
     --cool-gray-100: #131314;
+    --error-color: red;
+    --green: #008000;
     --headline-color: var(--secondary-100);
     --text-color: var(--gray-100);
     --text-muted-color: var(--gray-60);
@@ -79,9 +81,9 @@
     --button-secondary-text-color: var(--secondary-100);
     --button-secondary-border-color: var(--cool-gray-10);
     --button-secondary-background-color: var(--cool-gray-10);
-    --button-secondary-hover-text-color: var(--gray-10);
-    --button-secondary-hover-border-color: var(--secondary-90);
-    --button-secondary-hover-background-color: var(--secondary-90);
+    --button-secondary-hover-text-color: var(--secondary-90);
+    --button-secondary-hover-border-color: transparent;
+    --button-secondary-hover-background-color: var(--gray-20);
     --button-outline-text-color: var(--gray-90);
     --button-outline-border-color: var(--gray-30);
     --button-outline-background-color: transparent;
@@ -106,12 +108,21 @@ html, body {
     font-family: var(--font);
     color: var(--text-color);
     background-color: var(--background-color);
-    height: 100%;
 }
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     color: var(--headline-color);
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+a:hover {
+    color: var(--link-hover-color);
 }
 
 
@@ -122,8 +133,8 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--button-background-color);
     transition: var(--transition);
     border-radius: var(--border-radius);
-    padding: 0.9rem 1.5rem;
-    font-size: 14px;
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
     text-decoration: none;
@@ -166,6 +177,76 @@ h1, h2, h3, h4, h5, h6 {
 .btn-rounded {
     padding: 0.5rem;
     border-radius: 100%;
+}
+
+
+.btn-img img {
+    height: 1.6rem;
+}
+    .btn-img:hover img {
+        filter: brightness(1.1);
+    }
+
+
+/* sidebar + auth layout */
+.logo {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 24px;
+    font-weight: 500;
+    display: inline-flex;
+    gap: 0.6rem;
+}
+
+/* forms */
+.form-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items:start;
+    max-width: 400px;
+    width: 100%;
+}
+
+    .form-wrapper h1 {
+        margin-bottom: 1.2rem;
+    }
+
+    .form-wrapper form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+    }
+
+.form-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+    .form-input-wrapper label{
+        font-size: 0.9rem;
+    }
+
+    .form-input-wrapper input {
+        padding: 0.5rem;
+        border-radius: var(--border-radius);
+        font-size: inherit;
+        font-family: inherit;
+        border: 1px solid var( --input-border-color);
+        background-color: var(--input-background-color);
+        color: var(--input-text-color);
+    }
+
+        .form-input-wrapper input:active,
+        .form-input-wrapper input:focus {
+            outline-color: var(--input-border-focus-color);
+        }
+
+.field-validation-error, .error-message {
+    font-size: 0.9rem;
+    color: var(--error-color);
 }
 
 

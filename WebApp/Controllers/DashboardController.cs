@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace WebApp.Controllers
+namespace WebApp.Controllers;
+
+[Authorize(Roles = "Admin")]
+public class DashboardController : Controller
 {
-    public class DashboardController : Controller
+    public IActionResult Index()
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        return View();
     }
 }

@@ -1,5 +1,5 @@
-﻿@{
-}
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUserEntity> signInManager
 
 <aside id="aside-menu">
     <a class="logo" href="@Url.Content("~/")">
@@ -39,12 +39,26 @@
     </nav>
 
 
-    <button class="btn btn-secondary logout-btn">
-        <span class="material-symbols-rounded">
-            logout
-        </span>
-        <span>
-            Sign out
-        </span>
-    </button>
+    @if (signInManager.IsSignedIn(User))
+    {
+        <a asp-controller="Auth" asp-action="SignOut" class="btn btn-secondary logout-btn">
+            <span class="material-symbols-rounded">
+                logout
+            </span>
+            <span>
+                Sign out
+            </span>
+        </a>
+    }
+    else
+    {
+        <a asp-controller="Auth" asp-action="SignIn" class="btn btn-secondary logout-btn">
+            <span class="material-symbols-rounded">
+                login
+            </span>
+            <span>
+                Sign in
+            </span>
+        </a>
+    }
 </aside>

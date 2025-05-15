@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+option csharp_namespace = "BookingsGrpcServer.Protos";
+
+package bookings;
+
+service BookingService {
+  rpc AddBooking (AddBookingRequest) returns (AddBookingReply);
+  rpc GetAllBookings (GetAllBookingsRequest) returns (GetAllBookingsReply);
+  rpc UpdateBooking (UpdateBookingRequest) returns (UpdateBookingReply);
+  rpc DeleteBooking (DeleteBookingRequest) returns (DeleteBookingReply);
+}
+
+message AddBookingRequest {
+  int32 invoiceId = 1;
+  string bookingName = 2;
+  string createdAt = 3; // ISO 8601 string (ex: "2025-05-06T12:00:00Z")
+  string eventId = 4;   // Guid som string
+}
+
+message AddBookingReply {
+  bool success = 1;
+  string message = 2;
+}
+
+message BookingModel {
+  int32 id = 1;
+  int32 invoiceId = 2;
+  string bookingName = 3;
+  string createdAt = 4;
+  string eventId = 5;
+}
+
+message GetAllBookingsReply {
+  repeated BookingModel bookings = 1;
+}
+
+message GetAllBookingsRequest {}
+
+message UpdateBookingRequest {
+  int32 id = 1;
+  int32 invoiceId = 2;
+  string bookingName = 3;
+  string createdAt = 4;
+  string eventId = 5;
+}
+
+message UpdateBookingReply {
+  bool success = 1;
+  string message = 2;
+}
+
+message DeleteBookingRequest {
+  int32 id = 1;
+}
+
+message DeleteBookingReply {
+  bool success = 1;
+  string message = 2;
+}
