@@ -1,0 +1,35 @@
+﻿@model (string currentSort, string currentOrder, Func<string, (string nextOrder, string symbol)> nextSortLogic)
+
+@{
+    var cols = new (string Key, string Label)[]
+    {
+        ("invoice", "Invoice ID"),
+        ("date", "Date"),
+        ("name", "Name"),
+        ("event", "Event"),
+        ("category", "Ticket Category"),
+        ("price", "Price"),
+        ("qty", "Qty"),
+        ("amount", "Amount"),
+        ("status", "Status"),
+        ("evoucher", "E-Voucher")
+    };
+}
+
+<tr>
+    @foreach (var col in cols)
+    {
+        var sort = Model.nextSortLogic(col.Key);
+        var isActive = Model.currentSort == col.Key;
+        var icon = isActive
+        ? (Model.currentOrder == "asc" ? "▲" : Model.currentOrder == "desc" ? "▼" : "↕")
+        : "↕";
+
+        <th>
+            <a asp-action="Index" asp-route-sort="@col.Key" asp-route-order="@sort.nextOrder">
+                <span class="column-title">@col.Label</span>
+                <span class="sort-icon @(isActive ? "active" : "")">@icon</span>
+            </a>
+        </th>
+    }
+</tr>

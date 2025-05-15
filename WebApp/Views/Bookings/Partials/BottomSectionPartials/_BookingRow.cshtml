@@ -1,0 +1,21 @@
+﻿@using WebApp.Views.Bookings.BookingModels
+@model (BookingWithEventModel Booking, BookedTicketModel Ticket)
+
+<tr data-title="@Model.Booking.EventName?.ToLower()" data-category="@Model.Booking.Category?.ToLower()">
+    <td>@Model.Booking.InvoiceId</td>
+    <td>
+        <div class="main">@Model.Booking.CreatedAt.ToString("yyyy/MM/dd")</div>
+        <div class="sub">@Model.Booking.CreatedAt.ToString("hh:mm tt")</div>
+    </td>
+    <td>@Model.Booking.BookingName</td>
+    <td>
+        <div class="main">@Model.Booking.EventName</div>
+        <div class="sub">@Model.Booking.Category</div>
+    </td>
+    <td><span class="badge">@Model.Ticket.TicketType</span></td>
+    <td>$@Model.Ticket.PricePerTicket.ToString("0.00")</td>
+    <td>@Model.Ticket.Quantity</td>
+    <td>$@((Model.Ticket.PricePerTicket * Model.Ticket.Quantity).ToString("0.00"))</td>
+    <td><span class="status confirmed">Confirmed</span></td>
+    <td>–</td>
+</tr>
