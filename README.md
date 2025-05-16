@@ -23,3 +23,14 @@ Then use it like this:
 	grid_view
 </span>
 ```
+
+## Diagrams
+
+Sequence diagram for Sign up user flow:
+
+![Sign up user](./Diagrams/SignUpUser.png)
+
+
+Sequence diagram for Sign up external user flow:
+
+![Sign up user external](./Diagrams/SignUpUserExternal.png)
