@@ -1,6 +1,77 @@
-﻿<div class="top-right">
-    <div class="top-right-section">
-        <div class="right-fill-box"><h1>Work in progress</h1></div>
-        <div class="right-fixed-box"></div>
+﻿@model WebApp.Views.Bookings.BookingModels.TopCategoriesModel
+
+<script>
+    window.topCategoryData = @Html.Raw(Json.Serialize(Model.Categories));
+</script>
+
+<div class="top-right-section fixed">
+    <div class="category-card">
+        <div class="category-header">
+            <h4>Bookings Category</h4>
+            <select id="categoryRangeSelect" class="chart-select">
+                <option value="today">Today</option>
+                <option value="week" selected>This Week</option>
+                <option value="month">This Month</option>
+                <option value="all">All Time</option>
+            </select>
+        </div>
+
+        <div class="category-content">
+            <div class="donut-chart-wrapper">
+                <div class="donut-overlay">
+                    <div class="total-label">Total Bookings</div>
+                    <div class="total-value">@Model.TotalBookings</div>
+                </div>
+                <canvas id="topCategoriesChart"></canvas>
+            </div>
+
+            <div class="category-bars">
+                @for (int i = 0; i < Model.Categories.Count; i++)
+                {
+                    var cat = Model.Categories[i];
+                    <div class="category-item">
+                        <div class="bar-top">
+                            <span class="bar-name">@cat.Name <span class="bar-percent">(@cat.Percentage%)</span></span>
+                            <span class="bar-value">@cat.Count</span>
+                        </div>
+                        <div class="bar-outer">
+                            <div class="bar-fill"
+                                 style="width:@cat.Percentage%; background: @($"var(--color{i})");"></div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="subcategory-card">
+        <div class="subcategory-header">
+            <span>Music</span>
+            <span class="subcategory-total">(7,661 Bookings)</span>
+        </div>
+
+        <div class="subcategory-item">
+            <div class="subcategory-label">Electronic Dance Festival</div>
+            <div class="subcategory-bar">
+                <div class="subcategory-fill" style="width: 85%;"></div>
+            </div>
+            <div class="subcategory-value">6,500 / 7,500</div>
+        </div>
+
+        <div class="subcategory-item">
+            <div class="subcategory-label">Jazz & Soul Evening</div>
+            <div class="subcategory-bar">
+                <div class="subcategory-fill" style="width: 60%;"></div>
+            </div>
+            <div class="subcategory-value">3,000 / 5,000</div>
+        </div>
+
+        <div class="subcategory-item">
+            <div class="subcategory-label">Indie Rock Showcase</div>
+            <div class="subcategory-bar">
+                <div class="subcategory-fill" style="width: 40%;"></div>
+            </div>
+            <div class="subcategory-value">2,000 / 5,000</div>
+        </div>
     </div>
 </div>
+

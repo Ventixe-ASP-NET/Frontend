@@ -12,6 +12,7 @@
 @section Scripts {
     <script src="~/js/BookingScript/bookingFilter.js" asp-append-version="true"></script>
     <script src="~/js/BookingScript/chartUpdater.js" asp-append-version="true"></script>
+    <script src="~/js/BookingScript/topCategoryChart.js" asp-append-version="true"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 }
 
@@ -22,7 +23,7 @@
             @await Html.PartialAsync("Dashboard/_ChartSection", Model.Chart)
         </div>
         <div class="top-right">
-            @await Html.PartialAsync("Dashboard/_TopRight")
+            @await Html.PartialAsync("Dashboard/_TopRight", Model.TopCategories)
         </div>
     </div>
 

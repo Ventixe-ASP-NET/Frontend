@@ -1,14 +1,18 @@
-﻿.dashboard-wrapper {
+﻿/* =================== */
+/* 🌐 Övergripande Layout / Wrapper */
+/* =================== */
+.dashboard-wrapper {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding: 1rem;
+    padding: 0rem;
     flex: 1;
     overflow: hidden;
-
 }
 
-/* == Layout för top section == */
+/* =================== */
+/* 🔝 Top-level Stack (vänster + höger sektion) */
+/* =================== */
 .top-stack {
     display: flex;
     flex-direction: row;
@@ -16,21 +20,15 @@
     align-items: stretch;
 }
 
-/* == Vänsterkolumn med statistik och chart == */
+/* =================== */
+/* 📊 Vänstersektion (statistik + linechart) */
+/* =================== */
 .top-left {
     display: flex;
     flex-direction: column;
     gap: 16px;
     flex: 1;
     min-width: 0;
-}
-
-/* == Högerkolumn med sidoinfo == */
-.top-right {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
 }
 
 /* == Statistikboxarnas layout == */
@@ -42,7 +40,7 @@
 
 .stat-box {
     flex: 1;
-    min-height: 130px;
+    min-height: 156px;
     background-color: #fff;
     border-radius: 12px;
     display: flex;
@@ -64,15 +62,15 @@
     background-color: #F26CF9;
     color: white;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
     .icon-circle .material-symbols-rounded {
-        font-size: 22px;
+        font-size: 26px;
     }
 
 .menu-dots-vertical {
@@ -82,15 +80,15 @@
 }
 
     .menu-dots-vertical span {
-        width: 3px;
-        height: 3px;
+        width: 4px;
+        height: 4px;
         background-color: #333;
         border-radius: 50%;
     }
 
 .stat-info .stat-label {
     color: #858585;
-    font-size: 14px;
+    font-size: 15px;
     margin-bottom: 4px;
 }
 
@@ -100,19 +98,17 @@
     font-size: 22px;
 }
 
-/* == CHART == */
+/* == CHART (vänster linechart) == */
 .chart-card {
     padding: 1rem;
     background: #fff;
     border-radius: 12px;
-    height: 270px; /* 👈 lagom till stats-boxarna */
-     /* kortare höjd, annars sticker canvas ut */
+    height: 310px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
-
 
 .chart-header {
     display: flex;
@@ -121,11 +117,14 @@
     margin-bottom: 1rem;
     font-weight: 700;
     font-size: 18px;
-   
 }
+
     .chart-header h4 {
         color: #000000;
     }
+.chart-wrapper {
+    height: 310px;
+}
 
 .chart-select {
     border: none;
@@ -138,7 +137,16 @@
     height: 40px;
 }
 
-/* == Top-right innehåll == */
+/* =================== */
+/* 📈 Högersektion (top categories & subcategories) */
+/* =================== */
+.top-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
 .top-right-section {
     flex: 1;
     display: flex;
@@ -148,9 +156,156 @@
     border-radius: 12px;
     justify-content: space-between;
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    gap: 12px;
     
 }
+
+.category-card {
+    background: white;
+    border-radius: 16px;
+    padding: 5px;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+    .category-header h4 {
+        color: #000;
+        font-weight: 600;
+        font-size: 18px;
+    }
+
+.category-content {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+/* == Donut Chart Styling == */
+.donut-chart-wrapper {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    margin: 0 auto;
+}
+
+.donut-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    text-align: center;
+    pointer-events: none;
+}
+
+.total-label {
+    font-size: 12px;
+    color: #888;
+}
+
+.total-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* == Category Bars == */
+.category-bars {
+    flex-grow: 1;
+}
+
+.category-item {
+    margin-bottom: 12px;
+}
+
+.bar-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.bar-outer {
+    height: 8px;
+    background: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 8px;
+    background: #F26CF9;
+    border-radius: 4px;
+}
+
+.bar-percent {
+    color: gray;
+    font-weight: normal;
+    font-size: 0.9em;
+}
+
+/* == Subcategory Box == */
+.subcategory-card {
+    margin-top: 1rem;
+    background: #f7F7F7F7;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.subcategory-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 14px;
+}
+
+.subcategory-total {
+    color: gray;
+    font-weight: normal;
+    font-size: 14px;
+}
+
+.subcategory-item {
+    margin-bottom: 0.3rem;
+}
+
+.subcategory-label {
+    font-size: 12px;
+    margin-bottom: 1px;
+}
+
+.subcategory-bar {
+    background: #f0f0f0;
+    border-radius: 8px;
+    height: 8px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.subcategory-fill {
+    height: 100%;
+    background: #37437D;
+    border-radius: 8px;
+}
+
+.subcategory-value {
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 0.2rem;
+    text-align: right;
+}
+
+/* =================== */
+/* 📦 Bokningskort (nedersta delen) */
+/* =================== */
 .booking-card {
     background-color: #fff;
     border-radius: 12px;

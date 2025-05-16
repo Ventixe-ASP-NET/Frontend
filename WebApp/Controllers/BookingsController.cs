@@ -23,6 +23,7 @@ namespace WebApp.Controllers
             var bookings = await _bookingGatewayClient.GetFromJsonAsync<List<BookingWithEventModel>>("api/bookingwithevents");
             var stats = await _bookingClient.GetFromJsonAsync<BookingStatsModel>("api/bookings/stats");
             var chart = await _bookingClient.GetFromJsonAsync<BookingChartModel>("api/bookings/stats/overview?range=week");
+            var topCategories = await _bookingGatewayClient.GetFromJsonAsync<TopCategoriesModel>("api/bookingwithevents/stats/top-categories");
 
             if (sort == "none")
             {
@@ -90,7 +91,8 @@ namespace WebApp.Controllers
             {
                 Bookings = pagedBookings,
                 Stats = stats,
-                Chart = chart // ✅ Nyckeln
+                Chart = chart, // ✅ Nyckeln
+                TopCategories = topCategories
             };
 
             ViewBag.TotalCount = totalCount;
