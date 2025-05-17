@@ -1,3 +1,8 @@
+
+using System.Net.Http.Headers;
+using WebApp.Services.Event;
+
+
 using Account.Contexts;
 using Account.Entities;
 using Account.Interfaces;
@@ -8,8 +13,29 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
+
+
+var eventBaseApi = builder.Configuration["EventApi:BaseEventUrl"];
+if (string.IsNullOrEmpty(eventBaseApi))
+{
+    throw new ArgumentNullException("EventApi:BaseEventUrl", "BaseEventUrl is not set in appsettings.json");
+}
+
+builder.Services.AddHttpClient("EventApi", client =>
+{
+    client.BaseAddress = new Uri(eventBaseApi);
+    client.DefaultRequestHeaders.Accept.Add(
+        new MediaTypeWithQualityHeaderValue("application/json"));
+});
+
+builder.Services.AddScoped<IEventService, HttpEventService>();
+
+
+
+
 
 builder.Services.AddHttpClient("bookingGateway", c =>
 {
@@ -86,6 +112,7 @@ builder.Services.AddAuthentication(x =>
 var app = builder.Build();
 
 await SeedData.SetRolesAsync(app);
+
 
 app.UseHsts();
 app.UseHttpsRedirection();
