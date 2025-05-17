@@ -1,3 +1,8 @@
+
+using System.Net.Http.Headers;
+using WebApp.Services.Event;
+
+
 using Account.Contexts;
 using Account.Entities;
 using Account.Interfaces;
@@ -8,17 +13,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-using System.Net.Http.Headers;
-using WebApp.Services.Event;
-
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddHttpClient("bookingGateway", c =>
-{
-    c.BaseAddress = new Uri("https://bookingeventgateway-f8b4d2ahagc5faev.swedencentral-01.azurewebsites.net/");
-});
+
 var eventBaseApi = builder.Configuration["EventApi:BaseEventUrl"];
 if (string.IsNullOrEmpty(eventBaseApi))
 {
@@ -33,6 +32,15 @@ builder.Services.AddHttpClient("EventApi", client =>
 });
 
 builder.Services.AddScoped<IEventService, HttpEventService>();
+
+
+
+
+
+builder.Services.AddHttpClient("bookingGateway", c =>
+{
+    c.BaseAddress = new Uri("https://bookingeventgateway-f8b4d2ahagc5faev.swedencentral-01.azurewebsites.net/");
+});
 
 builder.Services.AddHttpClient("eventApi", c =>
 {
@@ -97,8 +105,10 @@ builder.Services.AddAuthentication(x =>
         };
     });
 
+var app = builder.Build();
 
 await SeedData.SetRolesAsync(app);
+
 
 app.UseHsts();
 app.UseHttpsRedirection();
