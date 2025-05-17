@@ -1,0 +1,21 @@
+﻿@using WebApp.Views.Bookings.BookingModels
+@model EventDto
+
+<div class="booking-form" style="display: none;" data-event-id="@Model.Id">
+    <select class="ticket-type-dropdown">
+        <option value="">-- Select Ticket Type --</option>
+        @foreach (var ticket in Model.TicketTypes)
+        {
+            <option value="@ticket.Id"
+                    data-name="@ticket.TicketType"
+                    data-left="@ticket.TicketsLeft"
+                    data-price="@ticket.Price.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)">
+                @ticket.TicketType – $@ticket.Price (@ticket.TicketsLeft left)
+            </option>
+        }
+    </select>
+
+    <input type="number" class="ticket-amount" placeholder="Amount" min="1" />
+    <button class="submit-booking-btn">Confirm Booking</button>
+    <div class="booking-error"></div>
+</div>

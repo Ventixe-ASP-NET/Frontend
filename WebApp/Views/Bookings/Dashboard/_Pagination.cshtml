@@ -1,0 +1,71 @@
+﻿@{
+    var page = (int)ViewBag.Page;
+    var pageSize = (int)ViewBag.PageSize;
+    var total = (int)ViewBag.TotalCount;
+    var totalPages = (int)Math.Ceiling((double)total / pageSize);
+    var currentSort = Context.Request.Query["sort"];
+    var currentOrder = Context.Request.Query["order"];
+}
+
+<div class="pagination-container">
+    <div class="pagination-info">
+        <label for="pageSizeSelect">Showing</label>
+        <select id="pageSizeSelect" class="pagination-select" onchange="changePageSize(this)">
+            @{
+                var options = new[] { 8, 16, 32 };
+                foreach (var opt in options)
+                {
+                    <option value="@opt" selected="@(opt == pageSize ? "selected" : null)">@opt</option>
+                }
+            }
+        </select>
+        <span>out of @total</span>
+    </div>
+
+    <div class="pagination-buttons">
+        @if (page > 1)
+        {
+            <a asp-action="Index"
+               asp-route-page="@(page - 1)"
+               asp-route-pageSize="@pageSize"
+               asp-route-sort="@currentSort"
+               asp-route-order="@currentOrder">❮</a>
+        }
+
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            if (i == 1 || i == totalPages || (i >= page - 1 && i <= page + 1))
+            {
+                <a asp-action="Index"
+                   asp-route-page="@i"
+                   asp-route-pageSize="@pageSize"
+                   asp-route-sort="@currentSort"
+                   asp-route-order="@currentOrder"
+                   class="@(i == page ? "active" : "")">@i</a>
+            }
+            else if (i == 2 && page > 3 || i == totalPages - 1 && page < totalPages - 2)
+            {
+                <span class="dots">…</span>
+            }
+        }
+
+        @if (page < totalPages)
+        {
+            <a asp-action="Index"
+               asp-route-page="@(page + 1)"
+               asp-route-pageSize="@pageSize"
+               asp-route-sort="@currentSort"
+               asp-route-order="@currentOrder">❯</a>
+        }
+    </div>
+</div>
+
+<script>
+    function changePageSize(select) {
+        const selectedValue = select.value;
+        const url = new URL(window.location.href);
+        url.searchParams.set('pageSize', selectedValue);
+        url.searchParams.set('page', '1');
+        window.location.href = url.toString();
+    }
+</script>
