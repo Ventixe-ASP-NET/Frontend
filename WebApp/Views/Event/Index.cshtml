@@ -1,4 +1,6 @@
-﻿@model IEnumerable<DisplayEventsDto>
+﻿
+
+ @model IEnumerable<DisplayEventsDto>
 @using System.Linq;
 
 @section Styles {
@@ -6,11 +8,32 @@
     <link rel="stylesheet" href="~/css/event.css" asp-append-version="true" />
 }
 
+@{
+    // No longer use Model for counts
+    var countAll = (ViewData["CountAll"] as int?) ?? 0;
+    var countDraft = (ViewData["CountDraft"] as int?) ?? 0;
+    var countActive = (ViewData["CountActive"] as int?) ?? 0;
+    var countPast = (ViewData["CountPast"] as int?) ?? 0;
+
+    var current = (ViewData["CurrentStatus"] as string) ?? "All";
+    Func<EventStatus?, string> activeClass = status =>
+    {
+        var name = status?.ToString() ?? "All";
+        return name == current ? "active-tab" : "";
+    };
+}
+
+<nav class="status-tabs">
+    <a asp-action="Index" class="@(activeClass(null))">All (@countAll)</a>
+    <a asp-action="Index" asp-route-status="Draft" class="@(activeClass(EventStatus.Draft))">Draft (@countDraft)</a>
+    <a asp-action="Index" asp-route-status="Active" class="@(activeClass(EventStatus.Active))">Active (@countActive)</a>
+    <a asp-action="Index" asp-route-status="Past" class="@(activeClass(EventStatus.Past))">Past (@countPast)</a>
+</nav>
 <div class="card-container">
     @foreach (var ev in Model)
     {
-        
         var primaryTicket = ev.TicketTypes.FirstOrDefault();
+
         if (primaryTicket == null)
         {
             <div class="card-event">
@@ -19,7 +42,6 @@
             continue;
         }
 
-        
         var soldPct = ev.TotalTickets > 0
         ? (int)(100 * (ev.TotalTickets - primaryTicket.TicketsLeft) / (double)ev.TotalTickets)
         : 0;
@@ -27,45 +49,40 @@
         <a asp-controller="Event"
            asp-action="DetailsBySlug"
            asp-route-slug="@ev.Slug"
-              class="card-event-link">
+           class="card-event-link">
+            <div class="card-event">
 
-        <div class="card-event">
-            
-            <img class="event-image"
-                 src="~/images/placeholder.png"
-                 alt="Event image placeholder" />
+                <img class="event-image"
+                     src="~/images/placeholder.png"
+                     alt="@ev.EventName" />
 
-            <div class="event-main">
-               
-                <div class="event-overview">
-                    <span class="event-category">@ev.Category.CategoryName</span>
-                    <h3 class="event-title">@ev.EventName</h3>
-                    <p class="event-description">@ev.Description</p>
-                </div>
+                <div class="event-main">
 
-             
-                <div class="event-location-time">
-                    @ev.Location.VenueName, @ev.Location.City<br />
-                    Starts @ev.StartDate.ToString("MMMM d, yyyy") · @ev.StartDate.ToString("HH:mm")
-                    @ev.DurationHours Hours
-                </div>
+                    <div class="event-overview">
+                        <span class="event-category">@ev.Category.CategoryName</span>
+                        <h3 class="event-title">@ev.EventName</h3>
+                        <p class="event-description">@ev.Description</p>
+                    </div>
 
-         
-                <div class="event-sold">
-                    @soldPct% Sold
-                </div>
+                    <div class="event-info-group">
+                        <div class="event-location-time">
+                            <strong>@ev.Location.VenueName, @ev.Location.City</strong><br />
+                            @ev.StartDate.ToString("MMMM d, yyyy") · @ev.StartDate.ToString("HH:mm")<br />
+                            Duration: @ev.DurationHours hours
+                        </div>
 
-     
-                <div class="event-left">
-                    @primaryTicket.TicketsLeft Tickets Left
-                </div>
+                        <div class="event-stats">
+                            <div class="event-sold">@soldPct% Sold</div>
+                            <div class="event-left">@primaryTicket.TicketsLeft Tickets Left</div>
+                        </div>
 
-                <div class="event-price">
-                    $@primaryTicket.Price
+                        <div class="event-price">
+                            $@primaryTicket.Price
+                        </div>
+                    </div>
+
                 </div>
             </div>
-        </div>
-
         </a>
     }
 </div>

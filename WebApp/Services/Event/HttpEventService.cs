@@ -9,6 +9,14 @@ namespace WebApp.Services.Event
 
         // ? or not
         Task<DisplayEventsDto?> GetEventByIdAsync(Guid id);
+
+        Task<DisplayEventsDto?> CreateEventAsync(EventCreateDto dto);
+
+        Task<bool> ActivateEventAsync(Guid id);
+
+        Task<IEnumerable<CategoryDto>> GetAllCategoriesAsync();
+        Task<IEnumerable<LocationDto>> GetLocationsAsync();
+
     }
 
 
@@ -22,6 +30,30 @@ namespace WebApp.Services.Event
             _api = http.CreateClient("EventApi");
             _logger = logger;
         }
+
+        public async Task<DisplayEventsDto?> CreateEventAsync(EventCreateDto dto)
+        {
+            try
+            {
+                
+                var response = await _api.PostAsJsonAsync("/api/Event", dto);
+                if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                   
+                    return null;
+                }
+                response.EnsureSuccessStatusCode();
+
+                
+                return await response.Content.ReadFromJsonAsync<DisplayEventsDto>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to create event");
+                return null;
+            }
+        }
+
         public async Task<IEnumerable<DisplayEventsDto>> GetAllEventsAsync()
         {
             try
@@ -57,6 +89,48 @@ namespace WebApp.Services.Event
                 return null;
             }
 
+        }
+
+        public async Task<bool> ActivateEventAsync(Guid id)
+        {
+            try
+            {
+                var reqDto = new ChangeStatusRequest
+                {
+                    Id = id.ToString(),
+                    Status = (int)EventStatus.Active
+                };
+
+             
+                var response = await _api.PatchAsJsonAsync(
+                    $"api/event/{id}/status",
+                    reqDto
+                );
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to activate event {EventId}", id);
+                return false;
+            }
+        }
+        public async Task<IEnumerable<CategoryDto>> GetAllCategoriesAsync()
+        {
+            var resp = await _api.GetAsync("/api/Category");
+            resp.EnsureSuccessStatusCode();
+            return (await resp.Content
+                              .ReadFromJsonAsync<IEnumerable<CategoryDto>>())
+                   ?? Enumerable.Empty<CategoryDto>();
+        }
+
+        public async Task<IEnumerable<LocationDto>> GetLocationsAsync()
+        {
+            var resp = await _api.GetAsync("/api/locations");
+            resp.EnsureSuccessStatusCode();
+            return (await resp.Content
+                              .ReadFromJsonAsync<IEnumerable<LocationDto>>())
+                   ?? Enumerable.Empty<LocationDto>();
         }
     }
 }

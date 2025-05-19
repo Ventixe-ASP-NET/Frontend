@@ -18,20 +18,22 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 
-var eventBaseApi = builder.Configuration["EventApi:BaseEventUrl"];
-if (string.IsNullOrEmpty(eventBaseApi))
-{
-    throw new ArgumentNullException("EventApi:BaseEventUrl", "BaseEventUrl is not set in appsettings.json");
-}
+var cofig = builder.Configuration.GetSection("EventApi");
+var localUrl = cofig["localEventUrl"];
+var azureUrl = cofig["azureEventUrl"];
+
+var eventBaseApi = localUrl ?? azureUrl;
 
 builder.Services.AddHttpClient("EventApi", client =>
 {
-    client.BaseAddress = new Uri(eventBaseApi);
+    client.BaseAddress = new Uri(eventBaseApi!);
     client.DefaultRequestHeaders.Accept.Add(
         new MediaTypeWithQualityHeaderValue("application/json"));
 });
 
 builder.Services.AddScoped<IEventService, HttpEventService>();
+
+
 
 
 
@@ -45,6 +47,8 @@ builder.Services.AddHttpClient("bookingGateway", c =>
 builder.Services.AddHttpClient("eventApi", c =>
 {
     c.BaseAddress = new Uri("https://ventixe-event-rest-api-cxeqehfrcqcvdkck.swedencentral-01.azurewebsites.net/");
+    
+
 });
 builder.Services.AddHttpClient("bookingApi", c =>
 {

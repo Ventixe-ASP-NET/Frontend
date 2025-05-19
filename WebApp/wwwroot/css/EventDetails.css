@@ -1,0 +1,306 @@
+﻿
+.event-details-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+    font-family: sans-serif;
+}
+
+.event-header {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+}
+
+.event-hero {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.header-content {
+    padding: 16px;
+}
+
+.event-title {
+    font-size: 28px;
+    margin: 0;
+}
+
+.event-category {
+    background: var(--primary-50, #e0e0ff);
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    display: inline-block;
+    color: #000;
+}
+
+.event-meta {
+    font-size: 14px;
+    color: #555;
+}
+
+.event-main-area {
+    display: flex;
+    gap: 32px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+}
+
+.event-info {
+    flex: 2;
+    min-width: 300px;
+}
+
+.ticket-packages {
+    flex: 1;
+    min-width: 280px;
+    background: #f9f9ff;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.ticket-package {
+    border-bottom: 1px solid #ccc;
+    padding: 12px 0;
+}
+
+.ticket-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--primary-100, #3333cc);
+}
+
+.btn-select {
+    margin-top: 8px;
+    background: var(--primary-100, #3333cc);
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.event-footer {
+    margin-top: 48px;
+    text-align: center;
+}
+
+.partners {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 16px;
+}
+
+    .partners img {
+        height: 40px;
+        object-fit: contain;
+    }
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+    .event-details {
+        padding: 1rem;
+        margin: 1rem;
+    }
+
+        .event-details h2 {
+            font-size: 1.5rem;
+        }
+
+        .event-details h3 {
+            font-size: 1.1rem;
+        }
+
+        .event-details ul li {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+}
+
+
+/* ==========================================================================
+   Event Card Heading (new styles)
+   ========================================================================== */
+
+/* Block container */
+.event-card {
+    max-width: 720px;
+    margin: 2rem auto;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    background: #fff;
+    font-family: var(--font-family, sans-serif);
+}
+
+/* MEDIA + LABELS */
+.event-card__media {
+    position: relative;
+}
+
+.event-card__hero {
+    display: block;
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+}
+
+/* Label container */
+.event-card__labels {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: flex;
+    gap: 8px;
+    z-index: 2;
+}
+
+/* Base label */
+.event-card__label {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    color: #262c4a;
+    background: rgba(255,255,255,0.8);
+}
+
+/* Category modifier */
+.event-card__label--category {
+    background: var(--primary-30, #e0e0ff);
+}
+
+/* Status modifier */
+.event-card__label--status {
+    background: #fdedfe;
+    gap: 4px;
+}
+
+/* Little pink dot */
+.event-card__status-dot {
+    width: 8px;
+    height: 8px;
+    background: #f26cf9;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* BODY (title, desc, meta, actions) */
+.event-card__body {
+    padding: 16px;
+}
+
+.event-card__title {
+    font-size: 28px;
+    margin: 0 0 8px;
+}
+
+.event-card__description {
+    font-size: 16px;
+    color: #555;
+    margin: 0 0 16px;
+}
+
+.event-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 16px;
+}
+
+.event-card__meta-item strong {
+    color: #1e1e20;
+}
+
+/* Action buttons */
+.event-card__actions {
+    display: flex;
+    gap: 12px;
+}
+
+.event-card__btn {
+    background: #fff;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    cursor: pointer;
+}
+
+    .event-card__btn img {
+        width: 16px;
+        height: 16px;
+    }
+
+.event-card {
+    padding: 1rem 0; /* push the media/body away from edges */
+}
+
+/* Main info panel */
+.event-info {
+    background: var(--card-background-color);
+    border: 1px solid var(--card-border-color);
+    border-radius: var(--border-radius);
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+/* Ticket packages (already a card, just ensure margin) */
+.ticket-packages {
+    margin-bottom: 2rem;
+}
+
+/* Partners footer */
+.event-footer {
+    background: var(--card-background-color);
+    border: 1px solid var(--card-border-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+    /* And even box the partner grid itself */
+    .event-footer .partners {
+        padding: 1rem;
+        background: var(--gray-20);
+        border-radius: calc(var(--border-radius) / 2);
+    }
+
+/* If you have an “Event Information” heading inside .event-info, give it some breathing room */
+.event-info h2 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+}
+
+/* Tweak the overall page wrapper */
+.event-details-page {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+    .event-details-page > .event-card {
+        /* Remove the 720px cap */
+        max-width: none;
+        /* Stretch to fill the padded container */
+        width: 100%;
+        /* Align flush with the inner edges (the other sections use margin-bottom only) */
+        margin: 0 0 2rem;
+    }
+
+/* Ensure the hero image truly spans 100% of that area */
+.event-card__hero {
+    width: 100%;
+    height: auto;
+    max-height: 350px; /* match placeholder aspect */
+    object-fit: cover;
+}

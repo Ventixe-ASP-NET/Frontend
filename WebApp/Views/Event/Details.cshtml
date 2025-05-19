@@ -1,32 +1,103 @@
-﻿@model DisplayEventsDto
+﻿
+@model DisplayEventsDto;
 
-@{
-    ViewData["Title"] = "Event Details";
-    //Layout = "~/Views/Shared/_Layout.cshtml";
+@section Styles {
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/EventDetails.css" asp-append-version="true" />
 }
 
-<div class="event-details">
-    <h2>@Model.EventName</h2>
-    <p class="category">@*@Model.Category.CategoryName*@</p>
-    <p class="when">
-        @Model.StartDate:MMMM d, yyyy · @Model.StartDate:HH:mm
-        – @Model.EndDate:HH:mm
-    </p>
-    <p class="where">
-        @Model.Location.VenueName<br />
-        @Model.Location.StreetAddress<br />
-        @Model.Location.City, @Model.Location.PostalCode
-    </p>
-    <p class="description">@Model.Description</p>
+<div class="event-details-page">
 
-    <h3>Tickets</h3>
-    <ul>
-        @foreach (var t in Model.TicketTypes)
-        {
-            <li>
-                @t.TicketType_: @t.Price:C
-                (Left: @t.TicketsLeft of @t.TotalTickets)
-            </li>
-        }
-    </ul>
+    <header class="event-card">
+        <!-- HERO IMAGE + OVERLAY LABELS -->
+        <div class="event-card__media">
+            <img class="event-card__hero"
+                 src="https://via.placeholder.com/1200x350?text=Event+Hero+Image"
+                 alt="@Model.EventName" />
+
+            <div class="event-card__labels">
+                <span class="event-card__label event-card__label--category">
+                    @Model.Category.CategoryName
+                </span>
+                
+            </div>
+        </div>
+
+        <!-- TITLE / DESC / META / ACTIONS -->
+        <div class="event-card__body">
+            <h1 class="event-card__title">@Model.EventName</h1>
+            <p class="event-card__description">@Model.Description</p>
+            <div class="event-card__meta">
+                <div class="event-card__meta-item">
+                    <strong>@Model.StartDate.ToString("MMMM d, yyyy")</strong>
+                    · @Model.StartDate.ToString("HH:mm")
+                </div>
+                <div class="event-card__meta-item">
+                    <strong>@Model.Location.VenueName</strong>, @Model.Location.City
+                </div>
+            </div>
+            <div class="event-card__actions">
+                <button class="event-card__btn" aria-label="Bookmark">
+                    <img src="~/images/icon-bookmark.svg" alt="" />
+                </button>
+                <button class="event-card__btn" aria-label="Share">
+                    <img src="~/images/icon-share.svg" alt="" />
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main + Sidebar -->
+    <div class="event-main-area">
+        <section class="event-info">
+            <h2>Event Information</h2>
+            <p>Here you can include terms, conditions, entry info, age restrictions, etc.</p>
+            <ul>
+                <li>No outside food or drink allowed</li>
+                <li>Must be 18+ with valid ID</li>
+                <li>Doors open 30 minutes before start time</li>
+            </ul>
+        </section>
+
+        <aside class="ticket-packages">
+            <h2>Available Packages</h2>
+            @foreach (var ticket in Model.TicketTypes)
+            {
+                var soldPct = Model.TotalTickets > 0
+                ? (int)(100 * (Model.TotalTickets - ticket.TicketsLeft) / (double)Model.TotalTickets)
+                : 0;
+
+                <div class="ticket-package">
+                    <h3>@ticket.TicketType</h3>
+                    <p class="ticket-price">$@ticket.Price</p>
+                    <p>@ticket.TicketsLeft tickets left</p>
+                    <p>@soldPct% sold</p>
+                </div>
+            }
+        </aside>
+    </div>
+
+    <!-- Partner Logos -->
+    <footer class="event-footer">
+        <h2>Our Partners</h2>
+        <div class="partners">
+            <img src="~/images/partner1.png" alt="Partner 1" />
+            <img src="~/images/partner2.png" alt="Partner 2" />
+            <img src="~/images/partner3.png" alt="Partner 3" />
+        </div>
+    </footer>
+
+    @if (Model.StatusEnum == EventStatus.Draft)
+    {
+        <form asp-controller="Event"
+              asp-action="Activate"
+              asp-route-slug="@Model.Slug"
+              method="post">
+            @Html.AntiForgeryToken()
+            <button type="submit"
+                    class="event-card__btn event-card__btn--activate">
+                Activate Event
+            </button>
+        </form>
+    }
 </div>

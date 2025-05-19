@@ -14,6 +14,14 @@
 
         // Status as an int or use the enum name
         public int Status { get; set; }
+        public EventStatus StatusEnum => (EventStatus)Status;
+
+        public EventStatus OutDatedEvents =>
+            StatusEnum == EventStatus.Active && StartDate < DateTime.Now
+            ? EventStatus.Past
+            : StatusEnum;
+
+
         public CategoryDto Category { get; set; } = null!;
 
         public DateTime StartDate { get; set; }
@@ -52,7 +60,7 @@
     public class TicketTypeDto
     {
         public Guid Id { get; set; }
-        public string TicketType_ { get; set; } = null!; //Change the name 
+        public string TicketType { get; set; } = null!; //Change the name 
         public decimal Price { get; set; }
         public int TotalTickets { get; set; }
         public int TicketsSold { get; set; }

@@ -1,0 +1,51 @@
+﻿@model WebApp.Dtos.Event.EventCreateDto
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    var categories = ViewData["Categories"] as SelectList;
+    var locations = ViewData["Locations"] as SelectList;
+}
+
+<form asp-action="New" method="post">
+    @Html.AntiForgeryToken()
+
+    <!-- other fields… -->
+
+    <div class="form-group">
+        <label asp-for="StartDate"></label>
+        <input asp-for="StartDate" type="date" class="form-control" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="StartTime"></label>
+        <input asp-for="StartTime" type="time" class="form-control" />
+        <span asp-validation-for="StartTime" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DurationHours">Duration (hours)</label>
+        <input asp-for="DurationHours" type="number" min="1" class="form-control" />
+        <span asp-validation-for="DurationHours" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CategoryId"></label>
+
+        <select asp-for="CategoryId" asp-items="@(categories)">
+            <option value="">-- select a category --</option>
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EventLocationId"></label>
+        <select asp-for="EventLocationId" asp-items="@(locations)">
+            <option value="">-- select a venue --</option>
+        </select>
+        <span asp-validation-for="EventLocationId" class="text-danger"></span>
+    </div>
+
+    <!-- tickets + submit… -->
+    <button type="submit" class="btn btn-primary">Create Event</button>
+</form>
