@@ -1,23 +1,14 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
-    const chartData = window.topCategoryData || [];
+    const chartData = window.topCategoryData?.categories || [];
     const canvas = document.getElementById("topCategoriesChart");
     const select = document.getElementById("categoryRangeSelect");
     if (!canvas) return;
 
-    // 🎨 Färgteman
-    window.topCategoryColors = [
-        '#F26CF9',
-        '#37437D',
-        '#DDDEED',
-        '#EEEFFF'
-    ];
-
-    // 🔧 Skapa CSS-variabler för staplar
+    window.topCategoryColors = ['#F26CF9', '#37437D', '#DDDEED', '#EEEFFF'];
     window.topCategoryColors.forEach((color, index) => {
         document.documentElement.style.setProperty(`--color${index}`, color);
     });
 
-    // 🧠 Init chart
     const ctx = canvas.getContext("2d");
     window.topCategoriesChart = new Chart(ctx, {
         type: 'doughnut',
@@ -29,16 +20,13 @@
             }]
         },
         options: {
-            plugins: {
-                legend: { display: false }
-            },
+            plugins: { legend: { display: false } },
             cutout: "70%",
             responsive: true,
             maintainAspectRatio: false
         }
     });
 
-    // 🧩 Dropdown: lyssna på range-ändring
     if (select) {
         select.addEventListener("change", async function () {
             const range = this.value;
@@ -52,7 +40,6 @@
         });
     }
 
-    // 🔁 Uppdatera chart + staplar
     function updateTopCategoryChart(data) {
         if (!data || !window.topCategoriesChart || !data.categories) return;
 
@@ -61,11 +48,9 @@
         chart.data.datasets[0].data = data.categories.map(c => c.count);
         chart.update();
 
-        // Uppdatera total bookings i mitten
         const totalEl = document.querySelector(".total-value");
         if (totalEl) totalEl.textContent = data.totalBookings;
 
-        // Uppdatera staplar
         const barContainer = document.querySelector(".category-bars");
         if (barContainer) {
             barContainer.innerHTML = "";
@@ -83,5 +68,10 @@
                 barContainer.appendChild(div);
             });
         }
+    }
+
+    // ⏱️ Kör direkt efter sidladdning
+    if (window.topCategoryData && window.topCategoryData.categories) {
+        updateTopCategoryChart(window.topCategoryData);
     }
 });
