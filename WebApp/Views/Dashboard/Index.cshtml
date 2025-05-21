@@ -1,4 +1,98 @@
-﻿@{
+﻿@model DashboardViewModel
+
+@{
     ViewData["Title"] = "Dashboard";
 }
-<h1>@ViewData["Title"]</h1>
+
+<div class="dashboard-wrapper">
+
+    <div class="dashboard-data">
+        <div class="dashboard-data-item">
+            <span class="material-symbols-rounded">
+                event
+            </span>
+
+            <div>
+                <p>Upcoming events</p>
+                <p>@Model.UpcomingEvents</p>
+            </div>
+        </div>
+
+
+        <div class="dashboard-data-item">
+            <span class="material-symbols-rounded">
+                check_box
+            </span>
+
+            <div>
+                <p>Total bookings</p>
+                <p>@Model?.BookingStats?.TotalBookings</p>
+            </div>
+        </div>
+
+
+        <div class="dashboard-data-item">
+            <span class="material-symbols-rounded">
+                confirmation_number
+            </span>
+
+            <div>
+                <p>Tickets sold</p>
+                <p>@Model?.BookingStats?.TotalTicketsSold</p>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="dashboard-all-events">
+        <div class="dashboard-section-heading">
+            <h4>Top Events</h4>
+            <a class="btn btn-secondary" asp-controller="Event" asp-action="Index">View all events</a>
+        </div>
+
+        <div class="dashboard-events-wrapper">
+
+            @foreach (var e in Model!.Events)
+            {
+                <div class="dashboard-event-card">
+                    <span class="dashboard-event-category">@e.Category.CategoryName</span>
+
+                        <img src="~/images/ventixe-logo.svg" alt="Event image" />
+
+                        <div class="dashboard-event-card-text">
+                            <h3 class="dashboard-event-title">@e.EventName</h3>
+
+                            <p class="dashboard-event-desc">@e.Description</p>
+
+                            @* <p class="dashboard-event-tickets-sold">Tickets sold: @e.TicketTypes.Sum(t => t.TicketsSold)</p> *@
+
+                            <div class="dashboard-event-card-bottom">
+                                <p class="dashboard-event-date">
+                                    <span class="material-symbols-rounded">
+                                        calendar_month
+                                    </span>
+                                    <span>@e.StartDate.ToString("MMMM d, yyyy")</span>
+                                </p>
+
+                                <p class="dashboard-event-price">$@e.TicketTypes[0].Price</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+        </div>
+    </div>
+
+
+
+    @* <div class="dashboard-recent-bookings">
+        <div class="dashboard-section-heading">
+            <h4>Recent Bookings</h4>
+            <a class="btn btn-secondary" asp-controller="Bookings" asp-action="Index">View all bookings</a>
+        </div>
+
+
+
+    </div> *@
+</div>
