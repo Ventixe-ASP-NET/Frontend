@@ -11,6 +11,11 @@ using System.Security.Claims;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddHttpClient("invoiceGateway", c =>
+{
+    c.BaseAddress = new Uri("https://invoiceservice-gtg3ajc5htdcgpgs.swedencentral-01.azurewebsites.net");
+});
+
 builder.Services.AddHttpClient("bookingGateway", c =>
 {
     c.BaseAddress = new Uri("https://bookingeventgateway-f8b4d2ahagc5faev.swedencentral-01.azurewebsites.net/");
