@@ -90,13 +90,11 @@ namespace WebApp.Controllers.Event
         [HttpGet("Edit/{id:guid}")]
         public async Task<IActionResult> Edit(Guid id)
         {
-          
             var ev = await _events.GetEventByIdAsync(id);
-            if (ev == null)
-                return NotFound();
+            if (ev == null) return NotFound();
 
-   
-            var vm = new EventCreateDto
+            // map to EventUpdateDto instead of EventCreateDto
+            var vm = new EventUpdateDto
             {
                 EventName = ev.EventName,
                 EventDescription = ev.Description,
@@ -110,56 +108,49 @@ namespace WebApp.Controllers.Event
                 EndTime = ev.EndDate.TimeOfDay,
 
                 TicketTypes = ev.TicketTypes
-                                      .Select(t => new TicketTypeCreateDto
-                                      {
-                                          Id = t.Id,
-                                          TicketType = t.TicketType,
-                                          Price = t.Price,
-                                          TotalTickets = t.TicketsSold + t.TicketsLeft
-                                      })
-                                      .ToList()
+                                .Select(t => new TicketTypeUpdateDto
+                                {
+                                    Id = t.Id,
+                                    TicketType = t.TicketType,
+                                    Price = t.Price,
+                                    TotalTickets = t.TicketsSold + t.TicketsLeft
+                                })
+                                .ToList()
             };
 
-     
             await PopulateSelectLists();
 
-         
             ViewData["IsEdit"] = true;
             ViewData["Id"] = id;
-
-            // ← NEW: only allow ticket editing on Draft events
-            //ViewData["AllowTicketEdit"] = (ev.StatusEnum == EventStatus.Draft);
-            //new
             ViewData["AllowTicketEdit"] = true;
 
-        
-            return View("New", vm);
+            return View("Edit", vm);   // or View(vm) if your view name matches
         }
 
+        // POST /Event/Edit/{id}
         [HttpPost("Edit/{id:guid}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, EventCreateDto vm)
+        public async Task<IActionResult> Edit(Guid id, EventUpdateDto vm)
         {
             var existing = await _events.GetEventByIdAsync(id);
             if (existing == null) return NotFound();
 
             ViewData["IsEdit"] = true;
             ViewData["Id"] = id;
-            ViewData["AllowTicketEdit"] = true;    // always allow
+            ViewData["AllowTicketEdit"] = true;
 
             if (!ModelState.IsValid)
             {
                 await PopulateSelectLists();
-                return View("New", vm);
+                return View("Edit", vm);
             }
-
 
             var ok = await _events.UpdateEventAsync(id, vm);
             if (!ok)
             {
                 ModelState.AddModelError("", "Unable to update event.");
                 await PopulateSelectLists();
-                return View("New", vm);
+                return View("Edit", vm);
             }
 
             return RedirectToAction(nameof(Details), new { id });

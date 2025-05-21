@@ -7,7 +7,9 @@ public class EventCreateDto
     {
 
     [Required] public string EventName { get; set; } = null!;
-    [Required] public string EventDescription { get; set; } = null!;
+    [Required]
+    //[JsonPropertyName("description")]
+    public string EventDescription { get; set; } = null!;
     [Required, DataType(DataType.Date)] public DateTime StartDate { get; set; }
     [Required, DataType(DataType.Time)] public TimeSpan StartTime { get; set; }
 
@@ -32,7 +34,7 @@ public class EventCreateDto
         public class TicketTypeCreateDto
             {
             public Guid Id { get; set; }
-            [Required, JsonPropertyName("TicketType_")]
+            //[Required, JsonPropertyName("TicketType_")]
             public string TicketType { get; set; } = null!;
 
             [Required]

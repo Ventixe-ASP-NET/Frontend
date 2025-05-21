@@ -1,28 +1,24 @@
-﻿using System.Net;
+﻿using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using WebApp.Dtos.Event;
 
 namespace WebApp.Services.Event
 {
-
     public interface IEventService
     {
         Task<IEnumerable<DisplayEventsDto>> GetAllEventsAsync();
-
-        // ? or not
         Task<DisplayEventsDto?> GetEventByIdAsync(Guid id);
-
         Task<DisplayEventsDto?> CreateEventAsync(EventCreateDto dto);
-
         Task<bool> ActivateEventAsync(Guid id);
-
         Task<IEnumerable<CategoryDto>> GetAllCategoriesAsync();
         Task<IEnumerable<LocationDto>> GetLocationsAsync();
-
-        Task<bool> UpdateEventAsync(Guid id, EventCreateDto dto);
+        Task<bool> UpdateEventAsync(Guid id, EventUpdateDto dto);
         Task<bool> DeleteEventAsync(Guid id);
-
     }
-
 
     public class HttpEventService : IEventService
     {
@@ -42,7 +38,7 @@ namespace WebApp.Services.Event
                 var wrapper = await _api
                      .GetFromJsonAsync<EventListDtoWrapper>("/api/Event");
 
-                
+
                 if (wrapper == null)
                     return Array.Empty<DisplayEventsDto>();
 
@@ -50,7 +46,7 @@ namespace WebApp.Services.Event
             }
             catch
             {
-           
+
                 return Array.Empty<DisplayEventsDto>();
             }
         }
@@ -62,13 +58,12 @@ namespace WebApp.Services.Event
                 var resp = await _api.GetAsync($"/api/Event/{id}");
                 if (resp.StatusCode == HttpStatusCode.NotFound)
                     return null;
-
                 resp.EnsureSuccessStatusCode();
                 return await resp.Content.ReadFromJsonAsync<DisplayEventsDto>();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to fetch event {Id}", id);
+                _logger.LogError(ex, "Failed to fetch event {EventId}", id);
                 return null;
             }
         }
@@ -77,11 +72,10 @@ namespace WebApp.Services.Event
         {
             try
             {
-                var payload = BuildPayload(dto);
+                var payload = BuildCreatePayload(dto);
                 var resp = await _api.PostAsJsonAsync("/api/Event", payload);
                 if (resp.StatusCode == HttpStatusCode.BadRequest)
                     return null;
-
                 resp.EnsureSuccessStatusCode();
                 return await resp.Content.ReadFromJsonAsync<DisplayEventsDto>();
             }
@@ -92,12 +86,31 @@ namespace WebApp.Services.Event
             }
         }
 
-        public async Task<bool> UpdateEventAsync(Guid id, EventCreateDto dto)
+        public async Task<bool> UpdateEventAsync(Guid id, EventUpdateDto dto)
         {
             try
             {
-                var payload = BuildPayload(dto);
-                var resp = await _api.PutAsJsonAsync($"/api/Event/{id}", payload);
+                var start = dto.StartDate.Date.Add(dto.StartTime);
+                var end = dto.EndDate.Date.Add(dto.EndTime);
+
+                var updatePayload = new
+                {
+                    eventName = dto.EventName,
+                    eventDescription = dto.EventDescription,
+                    startDate = start.ToString("o"),
+                    endDate = end.ToString("o"),
+                    imageUrl = dto.ImageUrl,
+                    categoryId = dto.CategoryId,
+                    eventLocationId = dto.EventLocationId,
+                    ticketTypes = dto.TicketTypes.Select(t => new {
+                        id = t.Id,
+                        ticketType = t.TicketType,
+                        price = t.Price,
+                        totalTickets = t.TotalTickets
+                    }).ToList()
+                };
+
+                var resp = await _api.PutAsJsonAsync($"/api/Event/{id}", updatePayload);
                 return resp.IsSuccessStatusCode;
             }
             catch (Exception ex)
@@ -168,8 +181,7 @@ namespace WebApp.Services.Event
             }
         }
 
-        // helper to merge date/time + duration => create the API payload
-        private object BuildPayload(EventCreateDto dto)
+        private object BuildCreatePayload(EventCreateDto dto)
         {
             var start = dto.StartDate.Date.Add(dto.StartTime);
             var end = dto.EndDate.Date.Add(dto.EndTime);
@@ -177,15 +189,19 @@ namespace WebApp.Services.Event
             return new
             {
                 EventName = dto.EventName,
-                EventDescription = dto.EventDescription,
-                StartDate = start,
-                EndDate = end,
+                Description = dto.EventDescription,
+                StartDate = start.ToString("o"),
+                EndDate = end.ToString("o"),
                 ImageUrl = dto.ImageUrl,
                 CategoryId = dto.CategoryId,
                 EventLocationId = dto.EventLocationId,
-                TicketTypes = dto.TicketTypes
+                TicketTypes = dto.TicketTypes.Select(t => new
+                {
+                    TicketType = t.TicketType,
+                    Price = t.Price,
+                    TotalTickets = t.TotalTickets
+                })
             };
         }
     }
 }
-
