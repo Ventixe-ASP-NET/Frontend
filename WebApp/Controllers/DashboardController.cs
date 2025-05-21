@@ -14,8 +14,8 @@ public class DashboardController : Controller
 
     public DashboardController(IHttpClientFactory factory)
     {
-        _eventClient = factory.CreateClient("eventApi");
-        _bookingClient = factory.CreateClient("bookingApi");
+        _eventClient = factory.CreateClient("EventApi");
+        _bookingClient = factory.CreateClient("BookingApi");
     }
 
     public async Task<IActionResult> Index()

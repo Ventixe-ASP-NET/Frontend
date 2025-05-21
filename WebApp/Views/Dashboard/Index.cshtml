@@ -14,7 +14,7 @@
 
             <div>
                 <p>Upcoming events</p>
-                <p>@Model.UpcomingEvents</p>
+                <p>@Model.UpcomingEvents.ToString("N0")</p>
             </div>
         </div>
 
@@ -26,7 +26,7 @@
 
             <div>
                 <p>Total bookings</p>
-                <p>@Model?.BookingStats?.TotalBookings</p>
+                <p>@Model?.BookingStats?.TotalBookings.ToString("N0")</p>
             </div>
         </div>
 
@@ -38,7 +38,7 @@
 
             <div>
                 <p>Tickets sold</p>
-                <p>@Model?.BookingStats?.TotalTicketsSold</p>
+                <p>@Model?.BookingStats?.TotalTicketsSold.ToString("N0")</p>
             </div>
         </div>
     </div>
