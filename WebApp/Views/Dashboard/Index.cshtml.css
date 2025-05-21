@@ -2,7 +2,16 @@
     display: flex;
     flex-direction: column;
     gap: 3rem;
-    max-width: 800px;
+    max-width: 860px;
+}
+
+.dashboard-section-heading {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 
@@ -65,26 +74,19 @@
     gap: 1rem;
 }
 
-.dashboard-all-events-heading {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
 .dashboard-events-wrapper {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     gap: 1rem;
     overflow-x: auto;
+    padding-bottom: 1rem;
 }
 
 
 .dashboard-event-card {
     flex: 0 0 auto;
-    width: 250px;
+    width: 270px;
     position: relative;
     background-color: var(--background-color);
     border-radius: var(--border-radius);
@@ -126,6 +128,11 @@
     color: var(--gray-70);
 }
 
+
+.dashboard-event-tickets-sold {
+    margin-bottom: 0.8rem;
+}
+
 .dashboard-event-card-bottom {
     display: flex;
     flex-direction: row;
@@ -158,6 +165,12 @@
 }
 
 
+/* bookings */
+.dashboard-recent-bookings {
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+}
 
 
 

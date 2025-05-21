@@ -24,16 +24,18 @@ public class DashboardController : Controller
         var events = await _eventClient.GetFromJsonAsync<EventListWrapper>("api/event");
 
         List<EventDto> firstEvents = [];
+        int activeEvents = 0;
 
         if (events != null)
         {
-            firstEvents = events.Events.Take(3).ToList();
+            firstEvents = events.Events.OrderByDescending(e => e.TicketTypes.Sum(t => t.TicketsSold)).Take(3).ToList();
+            activeEvents = events.Events.Count(e => e.Status == 1);
         }
 
         var viewModel = new DashboardViewModel
         {
             BookingStats = bookingStats,
-            UpcomingEvents = 0,
+            UpcomingEvents = activeEvents,
             Events = firstEvents
         };
 
