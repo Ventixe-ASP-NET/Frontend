@@ -1,4 +1,5 @@
-﻿using WebApp.Dtos.Event;
+﻿using System.Net;
+using WebApp.Dtos.Event;
 
 namespace WebApp.Services.Event
 {
@@ -17,6 +18,9 @@ namespace WebApp.Services.Event
         Task<IEnumerable<CategoryDto>> GetAllCategoriesAsync();
         Task<IEnumerable<LocationDto>> GetLocationsAsync();
 
+        Task<bool> UpdateEventAsync(Guid id, EventCreateDto dto);
+        Task<bool> DeleteEventAsync(Guid id);
+
     }
 
 
@@ -31,21 +35,55 @@ namespace WebApp.Services.Event
             _logger = logger;
         }
 
+        public async Task<IEnumerable<DisplayEventsDto>> GetAllEventsAsync()
+        {
+            try
+            {
+                var wrapper = await _api
+                     .GetFromJsonAsync<EventListDtoWrapper>("/api/Event");
+
+                
+                if (wrapper == null)
+                    return Array.Empty<DisplayEventsDto>();
+
+                return wrapper.Events;
+            }
+            catch
+            {
+           
+                return Array.Empty<DisplayEventsDto>();
+            }
+        }
+
+        public async Task<DisplayEventsDto?> GetEventByIdAsync(Guid id)
+        {
+            try
+            {
+                var resp = await _api.GetAsync($"/api/Event/{id}");
+                if (resp.StatusCode == HttpStatusCode.NotFound)
+                    return null;
+
+                resp.EnsureSuccessStatusCode();
+                return await resp.Content.ReadFromJsonAsync<DisplayEventsDto>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to fetch event {Id}", id);
+                return null;
+            }
+        }
+
         public async Task<DisplayEventsDto?> CreateEventAsync(EventCreateDto dto)
         {
             try
             {
-                
-                var response = await _api.PostAsJsonAsync("/api/Event", dto);
-                if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                {
-                   
+                var payload = BuildPayload(dto);
+                var resp = await _api.PostAsJsonAsync("/api/Event", payload);
+                if (resp.StatusCode == HttpStatusCode.BadRequest)
                     return null;
-                }
-                response.EnsureSuccessStatusCode();
 
-                
-                return await response.Content.ReadFromJsonAsync<DisplayEventsDto>();
+                resp.EnsureSuccessStatusCode();
+                return await resp.Content.ReadFromJsonAsync<DisplayEventsDto>();
             }
             catch (Exception ex)
             {
@@ -54,60 +92,46 @@ namespace WebApp.Services.Event
             }
         }
 
-        public async Task<IEnumerable<DisplayEventsDto>> GetAllEventsAsync()
+        public async Task<bool> UpdateEventAsync(Guid id, EventCreateDto dto)
         {
             try
             {
-                var response = await _api.GetAsync("/api/Event");
-                response.EnsureSuccessStatusCode();
-                var wrapper = await response.Content.ReadFromJsonAsync<EventListDtoWrapper>();
-                return wrapper?.Events ?? Enumerable.Empty<DisplayEventsDto>();
+                var payload = BuildPayload(dto);
+                var resp = await _api.PutAsJsonAsync($"/api/Event/{id}", payload);
+                return resp.IsSuccessStatusCode;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to fetch events");
-                return Enumerable.Empty<DisplayEventsDto>();
+                _logger.LogError(ex, "Failed to update event {EventId}", id);
+                return false;
             }
         }
 
-        public async Task<DisplayEventsDto?> GetEventByIdAsync(Guid id)
+        public async Task<bool> DeleteEventAsync(Guid id)
         {
             try
             {
-                var response = await _api.GetAsync($"/api/Event/{id}");
-                if(response.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    return null;
-                }
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadFromJsonAsync<DisplayEventsDto>();
-
+                var resp = await _api.DeleteAsync($"/api/Event/{id}");
+                return resp.IsSuccessStatusCode;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to fetch event with id {Id}", id);
-                return null;
+                _logger.LogError(ex, "Failed to delete event {EventId}", id);
+                return false;
             }
-
         }
 
         public async Task<bool> ActivateEventAsync(Guid id)
         {
             try
             {
-                var reqDto = new ChangeStatusRequest
+                var req = new ChangeStatusRequest
                 {
                     Id = id.ToString(),
                     Status = (int)EventStatus.Active
                 };
-
-             
-                var response = await _api.PatchAsJsonAsync(
-                    $"api/event/{id}/status",
-                    reqDto
-                );
-
-                return response.IsSuccessStatusCode;
+                var resp = await _api.PatchAsJsonAsync($"/api/Event/{id}/status", req);
+                return resp.IsSuccessStatusCode;
             }
             catch (Exception ex)
             {
@@ -115,22 +139,53 @@ namespace WebApp.Services.Event
                 return false;
             }
         }
+
         public async Task<IEnumerable<CategoryDto>> GetAllCategoriesAsync()
         {
-            var resp = await _api.GetAsync("/api/Category");
-            resp.EnsureSuccessStatusCode();
-            return (await resp.Content
-                              .ReadFromJsonAsync<IEnumerable<CategoryDto>>())
-                   ?? Enumerable.Empty<CategoryDto>();
+            try
+            {
+                return await _api.GetFromJsonAsync<IEnumerable<CategoryDto>>("/api/Category")
+                       ?? Array.Empty<CategoryDto>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to fetch categories");
+                return Array.Empty<CategoryDto>();
+            }
         }
 
         public async Task<IEnumerable<LocationDto>> GetLocationsAsync()
         {
-            var resp = await _api.GetAsync("/api/locations");
-            resp.EnsureSuccessStatusCode();
-            return (await resp.Content
-                              .ReadFromJsonAsync<IEnumerable<LocationDto>>())
-                   ?? Enumerable.Empty<LocationDto>();
+            try
+            {
+                return await _api.GetFromJsonAsync<IEnumerable<LocationDto>>("/api/Event/locations")
+                       ?? Array.Empty<LocationDto>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to fetch locations");
+                return Array.Empty<LocationDto>();
+            }
+        }
+
+        // helper to merge date/time + duration => create the API payload
+        private object BuildPayload(EventCreateDto dto)
+        {
+            var start = dto.StartDate.Date.Add(dto.StartTime);
+            var end = dto.EndDate.Date.Add(dto.EndTime);
+
+            return new
+            {
+                EventName = dto.EventName,
+                EventDescription = dto.EventDescription,
+                StartDate = start,
+                EndDate = end,
+                ImageUrl = dto.ImageUrl,
+                CategoryId = dto.CategoryId,
+                EventLocationId = dto.EventLocationId,
+                TicketTypes = dto.TicketTypes
+            };
         }
     }
 }
+

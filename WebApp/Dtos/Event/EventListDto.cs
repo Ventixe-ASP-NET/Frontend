@@ -1,4 +1,7 @@
-﻿namespace WebApp.Dtos.Event
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+
+namespace WebApp.Dtos.Event
 {
     public class EventListDtoWrapper
     {
@@ -12,7 +15,9 @@
         public string EventName { get; set; } = null!;
         public string Description { get; set; } = null!;
 
-        // Status as an int or use the enum name
+        // Status as an int or use the enum name [Required]
+       //ADDED IMAGEURL
+        public string ImageUrl { get; set; } = "";
         public int Status { get; set; }
         public EventStatus StatusEnum => (EventStatus)Status;
 
@@ -37,13 +42,13 @@
         public int TotalTickets { get; set; }
 
         //Slug Test
-        public string Slug
-                => EventName
-                .ToLowerInvariant()
-                .Replace(" ", "-")
-                .Replace(".", "")
-                .Replace(",", "")
-                ;
+        //public string Slug
+        //        => EventName
+        //        .ToLowerInvariant()
+        //        .Replace(" ", "-")
+        //        .Replace(".", "")
+        //        .Replace(",", "")
+        //        ;
     }
 }
 
@@ -60,6 +65,8 @@
     public class TicketTypeDto
     {
         public Guid Id { get; set; }
+
+        [JsonPropertyName("ticketType_")]
         public string TicketType { get; set; } = null!; //Change the name 
         public decimal Price { get; set; }
         public int TotalTickets { get; set; }
