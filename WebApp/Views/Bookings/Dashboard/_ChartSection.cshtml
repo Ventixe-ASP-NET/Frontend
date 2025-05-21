@@ -1,0 +1,25 @@
+﻿@model WebApp.Views.Bookings.BookingModels.BookingChartModel
+<script>
+    window.chartLabels = @Html.Raw(Json.Serialize(Model.Labels));
+    window.chartData = @Html.Raw(Json.Serialize(Model.Data));
+</script>
+<div class="top-left-section fixed">
+    <div class="info-section">
+        <div class="info-box fixed-height">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h4>Bookings Overview</h4>
+                    <select id="chartRangeSelect" class="chart-select">
+                        <option value="today">Today</option>
+                        <option value="week" selected>This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="all">All Time</option>
+                    </select>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="bookingChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -7,20 +7,44 @@ namespace WebApp.Controllers
 {
     public class BookingsController : Controller
     {
-        private readonly HttpClient _bookingClient;
+        private readonly HttpClient _bookingGatewayClient;
         private readonly HttpClient _eventClient;
+        private readonly HttpClient _bookingClient;
 
         public BookingsController(IHttpClientFactory factory)
         {
-            _bookingClient = factory.CreateClient("bookingGateway");
-            _eventClient = factory.CreateClient("eventApi");
+            _bookingGatewayClient = factory.CreateClient("BookingGateway");
+            _eventClient = factory.CreateClient("EventApi");
+            _bookingClient = factory.CreateClient("BookingApi");
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sort = "date", string order = "desc", int page = 1, int pageSize = 8)
         {
-            var bookings = await _bookingClient.GetFromJsonAsync<List<BookingWithEventModel>>("api/bookingwithevents");
-            return View(bookings);
+            var response = await _bookingGatewayClient.GetFromJsonAsync<PagedResponse<BookingWithEventModel>>(
+                $"api/bookingwithevents/paged?sort={sort}&order={order}&page={page}&pageSize={pageSize}");
+
+            var bookings = response?.Items ?? new List<BookingWithEventModel>();
+            var totalCount = response?.TotalCount ?? 0;
+
+            var stats = await _bookingClient.GetFromJsonAsync<BookingStatsModel>("api/bookings/stats");
+            var chart = await _bookingClient.GetFromJsonAsync<BookingChartModel>("api/bookings/stats/overview?range=week");
+            var topCategories = await _bookingGatewayClient.GetFromJsonAsync<TopCategoriesModel>("api/bookingwithevents/stats/top-categories");
+
+            var model = new BookingIndexViewModel
+            {
+                Bookings = bookings,
+                Stats = stats,
+                Chart = chart,
+                TopCategories = topCategories
+            };
+
+            ViewBag.TotalCount = totalCount;
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+
+            return View("Dashboard/Index", model);
         }
+
 
         public async Task<IActionResult> Create()
         {
@@ -37,10 +61,10 @@ namespace WebApp.Controllers
                     Value = e.Id.ToString(),
                     Text = $"{e.EventName} ({e.StartDate:yyyy-MM-dd})"
                 }).ToList(),
-                EventData = activeEvents // 👈 detta används i dina boxes
+                EventData = activeEvents 
             };
 
-            return View(viewModel);
+            return View("CreateBooking/Create", viewModel);
         }
     }
 }

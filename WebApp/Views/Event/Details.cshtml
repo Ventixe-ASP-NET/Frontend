@@ -1,0 +1,32 @@
+﻿@model DisplayEventsDto
+
+@{
+    ViewData["Title"] = "Event Details";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="event-details">
+    <h2>@Model.EventName</h2>
+    <p class="category">@*@Model.Category.CategoryName*@</p>
+    <p class="when">
+        @Model.StartDate:MMMM d, yyyy · @Model.StartDate:HH:mm
+        – @Model.EndDate:HH:mm
+    </p>
+    <p class="where">
+        @Model.Location.VenueName<br />
+        @Model.Location.StreetAddress<br />
+        @Model.Location.City, @Model.Location.PostalCode
+    </p>
+    <p class="description">@Model.Description</p>
+
+    <h3>Tickets</h3>
+    <ul>
+        @foreach (var t in Model.TicketTypes)
+        {
+            <li>
+                @t.TicketType_: @t.Price:C
+                (Left: @t.TicketsLeft of @t.TotalTickets)
+            </li>
+        }
+    </ul>
+</div>
