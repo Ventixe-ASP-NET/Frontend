@@ -1,146 +1,67 @@
-﻿
-.event-details-page {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 24px;
-    font-family: sans-serif;
-}
-
-.event-header {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    text-align: center;
-}
-
-.event-hero {
-    width: 100%;
-    max-height: 300px;
-    object-fit: cover;
-    border-radius: 12px;
-}
-
-.header-content {
-    padding: 16px;
-}
-
-.event-title {
-    font-size: 28px;
-    margin: 0;
-}
-
-.event-category {
-    background: var(--primary-50, #e0e0ff);
-    padding: 4px 10px;
-    border-radius: 10px;
-    font-size: 14px;
-    display: inline-block;
-    color: #000;
-}
-
-.event-meta {
-    font-size: 14px;
-    color: #555;
-}
-
-.event-main-area {
-    display: flex;
-    gap: 32px;
-    margin-top: 32px;
-    flex-wrap: wrap;
-}
-
-.event-info {
-    flex: 2;
-    min-width: 300px;
-}
-
-.ticket-packages {
-    flex: 1;
-    min-width: 280px;
-    background: #f9f9ff;
-    padding: 16px;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-.ticket-package {
-    border-bottom: 1px solid #ccc;
-    padding: 12px 0;
-}
-
-.ticket-price {
-    font-size: 18px;
-    font-weight: bold;
-    color: var(--primary-100, #3333cc);
-}
-
-.btn-select {
-    margin-top: 8px;
-    background: var(--primary-100, #3333cc);
-    color: white;
-    padding: 6px 12px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.event-footer {
-    margin-top: 48px;
-    text-align: center;
-}
-
-.partners {
-    display: flex;
-    justify-content: center;
-    gap: 32px;
-    margin-top: 16px;
-}
-
-    .partners img {
-        height: 40px;
-        object-fit: contain;
-    }
-
-/* Responsive tweaks */
-@media (max-width: 600px) {
-    .event-details {
-        padding: 1rem;
-        margin: 1rem;
-    }
-
-        .event-details h2 {
-            font-size: 1.5rem;
-        }
-
-        .event-details h3 {
-            font-size: 1.1rem;
-        }
-
-        .event-details ul li {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 0.5rem;
-        }
-}
-
-
-/* ==========================================================================
-   Event Card Heading (new styles)
+﻿/* ==========================================================================
+   EventDetails.css
    ========================================================================== */
 
-/* Block container */
-.event-card {
-    max-width: 720px;
-    margin: 2rem auto;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    overflow: hidden;
-    background: #fff;
-    font-family: var(--font-family, sans-serif);
+/*---------------------------------------------------------------------------
+  IMPORTS
+---------------------------------------------------------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+/*---------------------------------------------------------------------------
+  RESET & BOX-SIZING
+---------------------------------------------------------------------------*/
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-/* MEDIA + LABELS */
+/*---------------------------------------------------------------------------
+  ROOT VARIABLES
+---------------------------------------------------------------------------*/
+:root {
+    --font: "Inter", sans-serif;
+    --primary-100: #F26CF9;
+    --primary-90: #F589FA;
+    --gray-20: #F7F7F7;
+    --gray-40: #E0E0E1;
+    --card-bg: var(--gray-20);
+    --card-border: var(--gray-40);
+    --border-radius: 1rem;
+    --transition: all 0.2s ease-in-out;
+}
+
+/*---------------------------------------------------------------------------
+  BASE STYLES
+---------------------------------------------------------------------------*/
+html, body {
+    font-family: var(--font);
+    background-color: var(--card-bg);
+    color: #333;
+    line-height: 1.5;
+}
+
+/*---------------------------------------------------------------------------
+  PAGE LAYOUT
+---------------------------------------------------------------------------*/
+.event-details-page {
+    width: 100%;
+    padding: 24px;
+    background-color: var(--card-bg);
+}
+
+/*---------------------------------------------------------------------------
+  EVENT CARD
+---------------------------------------------------------------------------*/
+.event-card {
+    width: 100%;
+    background: #fff;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
 .event-card__media {
     position: relative;
 }
@@ -148,73 +69,53 @@
 .event-card__hero {
     display: block;
     width: 100%;
-    max-height: 300px;
+    max-height: 350px;
     object-fit: cover;
 }
 
-/* Label container */
 .event-card__labels {
     position: absolute;
-    top: 12px;
-    left: 12px;
+    top: 16px;
+    left: 16px;
     display: flex;
     gap: 8px;
-    z-index: 2;
 }
 
-/* Base label */
 .event-card__label {
     display: inline-flex;
     align-items: center;
     padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 14px;
-    color: #262c4a;
+    border-radius: var(--border-radius);
     background: rgba(255,255,255,0.8);
+    font-size: 0.875rem;
+    color: #262c4a;
 }
 
-/* Category modifier */
 .event-card__label--category {
-    background: var(--primary-30, #e0e0ff);
+    background: var(--primary-90);
+    color: #fff;
 }
 
-/* Status modifier */
-.event-card__label--status {
-    background: #fdedfe;
-    gap: 4px;
-}
-
-/* Little pink dot */
-.event-card__status-dot {
-    width: 8px;
-    height: 8px;
-    background: #f26cf9;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-/* BODY (title, desc, meta, actions) */
 .event-card__body {
-    padding: 16px;
+    padding: 24px;
 }
 
 .event-card__title {
-    font-size: 28px;
-    margin: 0 0 8px;
+    font-size: 2.5rem;
+    margin-bottom: 8px;
 }
 
 .event-card__description {
-    font-size: 16px;
-    color: #555;
-    margin: 0 0 16px;
+    font-size: 1rem;
+    margin-bottom: 16px;
 }
 
 .event-card__meta {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
-    font-size: 14px;
-    color: #777;
+    font-size: 0.875rem;
+    color: #555;
     margin-bottom: 16px;
 }
 
@@ -222,85 +123,141 @@
     color: #1e1e20;
 }
 
-/* Action buttons */
-.event-card__actions {
+/* Header action icons */
+.event-card__body > .event-card__actions {
     display: flex;
     gap: 12px;
+    margin-top: 16px;
 }
 
 .event-card__btn {
-    background: #fff;
-    border: none;
-    padding: 8px;
+    background: rgba(0,0,0,0.05);
+    padding: 10px;
     border-radius: 50%;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: var(--transition);
+    border: none;
     cursor: pointer;
 }
+
+    .event-card__btn:hover {
+        background: rgba(0,0,0,0.1);
+    }
 
     .event-card__btn img {
         width: 16px;
         height: 16px;
     }
 
-.event-card {
-    padding: 1rem 0; /* push the media/body away from edges */
+/*---------------------------------------------------------------------------
+  MAIN CONTENT AREA
+---------------------------------------------------------------------------*/
+.event-main-area {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
 }
 
-/* Main info panel */
+/*---------------------------------------------------------------------------
+  TERMS & CONDITIONS PANEL
+---------------------------------------------------------------------------*/
 .event-info {
-    background: var(--card-background-color);
-    border: 1px solid var(--card-border-color);
-    border-radius: var(--border-radius);
-    padding: 1.25rem;
-    margin-bottom: 2rem;
-}
-
-/* Ticket packages (already a card, just ensure margin) */
-.ticket-packages {
-    margin-bottom: 2rem;
-}
-
-/* Partners footer */
-.event-footer {
-    background: var(--card-background-color);
-    border: 1px solid var(--card-border-color);
+    flex: 2;
+    min-width: 300px;
+    background: #fff;
+    border: 1px solid var(--card-border);
     border-radius: var(--border-radius);
     padding: 1.5rem;
     margin-bottom: 2rem;
+    max-height: 320px;
+    overflow-y: auto;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.03);
 }
 
-    /* And even box the partner grid itself */
+    .event-info h2 {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid var(--primary-100);
+        padding-bottom: 0.5rem;
+    }
+
+    .event-info h3 {
+        font-size: 1rem;
+        margin-top: 1rem;
+        color: var(--primary-90);
+    }
+
+    .event-info ul {
+        list-style: disc;
+        margin-left: 1.25rem;
+    }
+
+    .event-info li {
+        margin-bottom: 0.5rem;
+    }
+
+/*---------------------------------------------------------------------------
+  TICKET PACKAGES PANEL
+---------------------------------------------------------------------------*/
+.ticket-packages {
+    flex: 1;
+    min-width: 280px;
+    background: #fff;
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+}
+
+.ticket-package {
+    border-bottom: 1px solid var(--card-border);
+    padding: 0.75rem 0;
+}
+
+.ticket-price {
+    font-size: 1.125rem;
+    font-weight: bold;
+    color: var(--primary-100);
+}
+
+/*---------------------------------------------------------------------------
+  FOOTER & BOTTOM ACTIONS
+---------------------------------------------------------------------------*/
+.event-footer {
+    background: #fff;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    margin-bottom: 1rem;
+}
+
     .event-footer .partners {
-        padding: 1rem;
+        display: flex;
+        justify-content: center;
+        gap: 32px;
+        padding: 1rem 0;
         background: var(--gray-20);
         border-radius: calc(var(--border-radius) / 2);
     }
 
-/* If you have an “Event Information” heading inside .event-info, give it some breathing room */
-.event-info h2 {
-    margin-top: 0;
-    margin-bottom: 0.75rem;
-}
+        .event-footer .partners img {
+            height: 40px;
+            object-fit: contain;
+        }
 
-/* Tweak the overall page wrapper */
-.event-details-page {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-}
-
-    .event-details-page > .event-card {
-        /* Remove the 720px cap */
-        max-width: none;
-        /* Stretch to fill the padded container */
-        width: 100%;
-        /* Align flush with the inner edges (the other sections use margin-bottom only) */
-        margin: 0 0 2rem;
+    /* Edit/Delete buttons below footer */
+    .event-footer + .event-card__actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 1rem;
     }
 
-/* Ensure the hero image truly spans 100% of that area */
-.event-card__hero {
-    width: 100%;
-    height: auto;
-    max-height: 350px; /* match placeholder aspect */
-    object-fit: cover;
+/*---------------------------------------------------------------------------
+  RESPONSIVE
+---------------------------------------------------------------------------*/
+@media (max-width: 800px) {
+    .event-main-area {
+        flex-direction: column;
+    }
 }

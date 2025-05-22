@@ -1,229 +1,190 @@
-﻿/* 
-@import url('site.css');
+﻿/* event.css */
 
-.card-container {
+/*────────────────────────────────────────────────────────────────────────────*/
+/* 1. STATUS TABS                                                           */
+/*────────────────────────────────────────────────────────────────────────────*/
+.status-tabs {
     display: flex;
-    flex-direction: column;
-    gap: 24px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 16px;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
 }
 
-.card-event {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    background: #fff;
-    padding: 16px;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.event-image {
-    flex-shrink: 0;
-    width: 150px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 8px;
-    background: #e0e0e1;
-}
-
-.event-main {
-    display: flex;
-    align-items: center;
-    gap: 32px; 
-    flex-wrap: wrap; 
-    flex: 1;
-}
-
-.event-overview {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    flex: 2; 
-}
-
-.event-category {
-    display: inline-block;
-    background: var(--primary-50);
-    padding: 4px 10px;
-    border-radius: 10px;
-    font-size: 12px;
-    color: black;
-}
-
-.event-title {
-    margin: 0;
-    font-size: 18px;
-    color: #1e1e20;
-}
-
-.event-description {
-    margin: 0;
-    font-size: 14px;
-    color:black;
-}
-
-.event-location-time,
-.event-sold,
-.event-left,
-.event-price {
-    font-size: 14px;
-    color: #555;
-    white-space: nowrap;
-}
-
-
-.event-sold,
-.event-left {
-    font-size: 12px;
-    color: #777;
-}
-
-.event-price {
-    background: #eeefff;
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 16px;
-    color: var(--primary-100);
-    font-weight: bold;
-}
-
-
-@media (max-width: 768px) {
-    .event-main {
-        flex-direction: column;
-        gap: 12px;
+    .status-tabs a {
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        color: var(--text-muted-color);
+        transition: var(--transition);
     }
 
-        .event-main > div {
-            white-space: normal;
+        .status-tabs a.active-tab {
+            color: var(--headline-color);
+            border-color: var(--link-color);
         }
-}
-    */
 
+        .status-tabs a:hover:not(.active-tab) {
+            color: var(--link-hover-color);
+            border-color: transparent;
+        }
+
+/*────────────────────────────────────────────────────────────────────────────*/
+/* 2. CARD GRID                                                             */
+/*────────────────────────────────────────────────────────────────────────────*/
 .card-container {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
 }
 
+/*────────────────────────────────────────────────────────────────────────────*/
+/* 3. CARD LINK RESET                                                       */
+/*────────────────────────────────────────────────────────────────────────────*/
 .card-event-link {
     text-decoration: none;
     color: inherit;
+    display: block;
 }
 
+/*────────────────────────────────────────────────────────────────────────────*/
+/* 4. CARD                                                                   */
+/*────────────────────────────────────────────────────────────────────────────*/
 .card-event {
+    background: var(--card-background-color);
+    border: 1px solid var(--card-border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
     display: flex;
-    gap: 16px;
-    background: #fff;
-    padding: 16px;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    transition: transform 0.2s ease;
+    flex-direction: column;
+    height: 100%;
+    transition: var(--transition);
 }
 
     .card-event:hover {
-        transform: translateY(-2px);
+        transform: translateY(-4px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
-.event-image {
-    width: 150px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 8px;
-    background: #e0e0e1;
+/*────────────────────────────────────────────────────────────────────────────*/
+/* 5. IMAGE                                                                  */
+/*────────────────────────────────────────────────────────────────────────────*/
+.card-event .event-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+
+
+  background-color: transparent !important;
+  -webkit-filter: none !important;
+  filter: none !important;
+
+ 
+  border: 1px solid var(--gray-20);
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+
+  transition: border-color var(--transition);
 }
 
+
+.card-event:hover .event-image {
+  border-color: var(--gray-40);
+}
+
+/*────────────────────────────────────────────────────────────────────────────*/
+/* 6. CONTENT LAYOUT                                                        */
+/*────────────────────────────────────────────────────────────────────────────*/
 .event-main {
     display: flex;
     flex-direction: column;
     flex: 1;
-    gap: 16px;
+    padding: 1rem;
+    gap: 1rem;
 }
 
+/*────────────────────────────────────────────────────────────────────────────*/
+/* 7. OVERVIEW                                                               */
+/*────────────────────────────────────────────────────────────────────────────*/
 .event-overview {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    flex: 1;
 }
 
 .event-category {
     display: inline-block;
-    background: var(--primary-50, #e0e0ff);
-    padding: 4px 10px;
-    border-radius: 10px;
-    font-size: 12px;
-    color: #000;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--secondary-70);
+    margin-bottom: 0.25rem;
 }
 
 .event-title {
-    font-size: 18px;
-    font-weight: 600;
-    margin: 0;
-    color: #1e1e20;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
 }
 
 .event-description {
-    font-size: 14px;
-    color: #444;
-    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted-color);
+    line-height: 1.4;
+    max-height: 3.5em; 
+    overflow: hidden;
 }
 
+/*────────────────────────────────────────────────────────────────────────────*/
+/* 8. INFO GROUP                                                            */
+/*────────────────────────────────────────────────────────────────────────────*/
 .event-info-group {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 0.75rem;
 }
 
-.event-location-time,
-.event-sold,
-.event-left,
-.event-price {
-    font-size: 14px;
-    color: #555;
+.event-location-time {
+    font-size: 0.85rem;
+    color: var(--text-muted-color);
+    line-height: 1.3;
 }
 
+/*────────────────────────────────────────────────────────────────────────────*/
+/* 9. STATS & PRICE                                                         */
+/*────────────────────────────────────────────────────────────────────────────*/
 .event-stats {
     display: flex;
-    gap: 12px;
+    flex-direction: column;
+    font-size: 0.85rem;
+    text-align: right;
 }
 
-.event-sold,
+.event-sold {
+    font-weight: 600;
+    color: var(--primary-100);
+}
+
 .event-left {
-    font-size: 12px;
-    color: #777;
+    color: var(--text-muted-color);
 }
 
 .event-price {
-    background: #eeefff;
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    color: var(--primary-100, #3333cc);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--secondary-100);
+    align-self: flex-end;
 }
 
-@media (max-width: 768px) {
-    .card-event {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
+/*────────────────────────────────────────────────────────────────────────────*/
+/* 10. RESPONSIVE                                                           */
+/*────────────────────────────────────────────────────────────────────────────*/
+@media (max-width: 640px) {
     .event-info-group {
         flex-direction: column;
-        align-items: flex-start;
+        gap: 0.5rem;
     }
 
-    .event-image {
-        width: 100%;
-        height: auto;
+    .event-stats,
+    .event-location-time {
+        text-align: left;
     }
 }
-

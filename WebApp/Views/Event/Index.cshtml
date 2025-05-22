@@ -31,6 +31,9 @@
     <a asp-action="Index" asp-route-status="Past" class="@(activeClass(EventStatus.Past))">
         Past (@countPast)
     </a>
+    <a asp-action="New" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Create New Event
+    </a>
 </nav>
 
 <div class="card-container">
@@ -55,7 +58,7 @@
            class="card-event-link">
             <div class="card-event">
                 <img class="event-image"
-                     src="~/images/placeholder.png"
+                     src="~/images/event-placeholder.png"
                      alt="@ev.EventName" />
 
                 <div class="event-main">

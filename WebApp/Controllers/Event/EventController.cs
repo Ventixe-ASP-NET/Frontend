@@ -63,7 +63,17 @@ namespace WebApp.Controllers.Event
         public async Task<IActionResult> New()
         {
             await PopulateSelectLists();
-            return View(new EventCreateDto());
+
+            var vm = new EventCreateDto();
+            // make sure there's at least one slot
+            vm.TicketTypes = new List<TicketTypeCreateDto> {
+            new TicketTypeCreateDto { Id = Guid.Empty }
+    };
+
+            return View(vm);
+
+            //await PopulateSelectLists();
+            //return View(new EventCreateDto());
         }
 
         // POST /Event/New

@@ -189,7 +189,7 @@ namespace WebApp.Services.Event
             return new
             {
                 EventName = dto.EventName,
-                Description = dto.EventDescription,
+                EventDescription = dto.EventDescription,
                 StartDate = start.ToString("o"),
                 EndDate = end.ToString("o"),
                 ImageUrl = dto.ImageUrl,
@@ -205,3 +205,19 @@ namespace WebApp.Services.Event
         }
     }
 }
+//return new
+//{
+//    EventName = dto.EventName,
+//    Description = dto.EventDescription,
+//    StartDate = start.ToString("o"),
+//    EndDate = end.ToString("o"),
+//    ImageUrl = dto.ImageUrl,
+//    CategoryId = dto.CategoryId,
+//    EventLocationId = dto.EventLocationId,
+//    TicketTypes = dto.TicketTypes.Select(t => new
+//    {
+//        TicketType = t.TicketType,
+//        Price = t.Price,
+//        TotalTickets = t.TotalTickets
+//    })
+//};
