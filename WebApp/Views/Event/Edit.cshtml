@@ -1,6 +1,13 @@
 ﻿@* EventEdit.cshtml *@
 @model WebApp.Dtos.Event.EventUpdateDto
 @using Microsoft.AspNetCore.Mvc.Rendering
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/EditAndNew.css" asp-append-version="true" />
+}
+
+
 @{
     ViewData["Title"] = "Edit Event";
     var id = (ViewData["Id"] as Guid?) ?? Guid.Empty;

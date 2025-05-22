@@ -104,11 +104,12 @@ namespace WebApp.Services.Event
                     eventLocationId = dto.EventLocationId,
                     ticketTypes = dto.TicketTypes.Select(t => new {
                         id = t.Id,
-                        ticketType = t.TicketType,
+                        ticketType_ = t.TicketType,
                         price = t.Price,
                         totalTickets = t.TotalTickets
                     }).ToList()
                 };
+                //payload here letss
 
                 var resp = await _api.PutAsJsonAsync($"/api/Event/{id}", updatePayload);
                 return resp.IsSuccessStatusCode;

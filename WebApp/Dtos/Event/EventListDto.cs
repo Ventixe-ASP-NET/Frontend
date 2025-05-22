@@ -34,21 +34,13 @@ namespace WebApp.Dtos.Event
 
         public double DurationHours =>
              (EndDate - StartDate).TotalHours;
-
-        // Now a nested object
+  
         public LocationDto Location { get; set; } = null!;
 
         public List<TicketTypeDto> TicketTypes { get; set; } = new();
         public int TotalTickets { get; set; }
 
-        //Slug Test
-        //public string Slug
-        //        => EventName
-        //        .ToLowerInvariant()
-        //        .Replace(" ", "-")
-        //        .Replace(".", "")
-        //        .Replace(",", "")
-        //        ;
+
     }
 }
 

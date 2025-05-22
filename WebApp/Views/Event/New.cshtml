@@ -1,5 +1,11 @@
 ﻿@model WebApp.Dtos.Event.EventCreateDto
 @using Microsoft.AspNetCore.Mvc.Rendering
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/EditAndNew.css" asp-append-version="true" />
+}
+
 @{
     ViewData["Title"] = "Create New Event";
     var categories = ViewData["Categories"] as SelectList;
