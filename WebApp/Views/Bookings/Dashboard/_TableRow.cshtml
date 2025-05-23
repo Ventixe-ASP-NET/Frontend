@@ -17,5 +17,16 @@
     <td>@Model.Ticket.Quantity</td>
     <td>$@((Model.Ticket.PricePerTicket * Model.Ticket.Quantity).ToString("0.00"))</td>
     <td><span class="status confirmed">Confirmed</span></td>
-    <td>–</td>
+    <td>
+        @if (!string.IsNullOrWhiteSpace(Model.Booking.EvoucherId))
+        {
+            <a asp-controller="Bookings" asp-action="Evoucher" asp-route-code="@Model.Booking.EvoucherId">
+                @Model.Booking.EvoucherId
+            </a>
+        }
+        else
+        {
+            <span>–</span>
+        }
+    </td>
 </tr>

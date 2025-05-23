@@ -44,7 +44,16 @@ namespace WebApp.Controllers
 
             return View("Dashboard/Index", model);
         }
+        public async Task<IActionResult> Evoucher(string code)
+        {
+            var booking = await _bookingGatewayClient.GetFromJsonAsync<BookingWithEventModel>(
+                $"api/bookingwithevents/evoucher/{code}");
 
+            if (booking == null)
+                return NotFound("E-Voucher not found");
+
+            return View("Evoucher/EvoucherIndex", booking);
+        }
 
         public async Task<IActionResult> Create()
         {
@@ -66,5 +75,6 @@ namespace WebApp.Controllers
 
             return View("CreateBooking/Create", viewModel);
         }
+
     }
 }

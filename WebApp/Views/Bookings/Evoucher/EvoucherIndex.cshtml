@@ -1,0 +1,28 @@
+﻿<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" />
+@{
+    ViewData["Title"] = "E-Voucher";
+}
+@model WebApp.Views.Bookings.BookingModels.BookingWithEventModel
+
+<link rel="stylesheet" href="~/css/BookingStyling/layout.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/BookingStyling/evoucher.css" asp-append-version="true" />
+
+<div class="evoucher-container">
+    <!-- Toppsektion -->
+    <div class="evoucher-top">
+        @await Html.PartialAsync("Evoucher/_TicketView", Model)
+    </div>
+
+    <!-- Botten-sektion med två kolumner -->
+    <div class="evoucher-bottom">
+        <div class="evoucher-left">
+            @await Html.PartialAsync("Evoucher/_EventSchedule")
+            @await Html.PartialAsync("Evoucher/_TermsConditions")
+        </div>
+
+        <div class="evoucher-right">
+            @await Html.PartialAsync("Evoucher/_VenueMap")
+            @await Html.PartialAsync("Evoucher/_ProhibitedItems")
+        </div>
+    </div>
+</div>
