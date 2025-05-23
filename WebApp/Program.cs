@@ -18,21 +18,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 
-var cofig = builder.Configuration.GetSection("EventApi");
-var localUrl = cofig["localEventUrl"];
-var azureUrl = cofig["azureEventUrl"];
-
-var eventBaseApi = localUrl ?? azureUrl;
+var azureUrl = builder.Configuration["EventApi:azureEventUrl"]!;
+if (string.IsNullOrWhiteSpace(azureUrl))
+    throw new InvalidOperationException("EventApi:azureEventUrl must be configured");
 
 builder.Services.AddHttpClient("EventApi", client =>
 {
-    client.BaseAddress = new Uri(eventBaseApi!);
+    client.BaseAddress = new Uri(azureUrl);
     client.DefaultRequestHeaders.Accept.Add(
         new MediaTypeWithQualityHeaderValue("application/json"));
 });
 
+// 2) Wire up your IEventService
 builder.Services.AddScoped<IEventService, HttpEventService>();
-
 
 
 
@@ -44,12 +42,12 @@ builder.Services.AddHttpClient("bookingGateway", c =>
     c.BaseAddress = new Uri("https://bookingeventgateway-f8b4d2ahagc5faev.swedencentral-01.azurewebsites.net/");
 });
 
-builder.Services.AddHttpClient("eventApi", c =>
-{
-    c.BaseAddress = new Uri("https://ventixe-event-rest-api-cxeqehfrcqcvdkck.swedencentral-01.azurewebsites.net/");
+//builder.Services.AddHttpClient("eventApi", c =>
+//{
+//    c.BaseAddress = new Uri("https://ventixe-event-rest-api-cxeqehfrcqcvdkck.swedencentral-01.azurewebsites.net/");
     
 
-});
+//});
 builder.Services.AddHttpClient("bookingApi", c =>
 {
     c.BaseAddress = new Uri("https://bookingserviceventixe-fbb7amdzfsh4b4d6.swedencentral-01.azurewebsites.net");

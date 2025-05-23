@@ -2,21 +2,27 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using WebApp.Dtos.Event;
+//using WebApp.Dtos.Event;
+using WebApp.Models.Event.CategoryViewModels;
+using WebApp.Models.Event.EventViewModels;
+using WebApp.Models.Event.TicketViewModels;
+using WebApp.Models.Event.VenueViewModels;
+using WebApp.Models.Event;
 
 namespace WebApp.Services.Event
 {
     public interface IEventService
     {
-        Task<IEnumerable<DisplayEventsDto>> GetAllEventsAsync();
-        Task<DisplayEventsDto?> GetEventByIdAsync(Guid id);
-        Task<DisplayEventsDto?> CreateEventAsync(EventCreateDto dto);
+        Task<IEnumerable<EventViewModel>> GetAllEventsAsync();
+        Task<EventViewModel?> GetEventByIdAsync(Guid id);
+        Task<EventViewModel?> CreateEventAsync(EventCreateViewModel dto);
         Task<bool> ActivateEventAsync(Guid id);
-        Task<IEnumerable<CategoryDto>> GetAllCategoriesAsync();
-        Task<IEnumerable<LocationDto>> GetLocationsAsync();
-        Task<bool> UpdateEventAsync(Guid id, EventUpdateDto dto);
+        Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync();
+        Task<IEnumerable<LocationViewModel>> GetLocationsAsync();
+        Task<bool> UpdateEventAsync(Guid id, EventUpdateViewModel dto);
         Task<bool> DeleteEventAsync(Guid id);
     }
 
@@ -31,27 +37,27 @@ namespace WebApp.Services.Event
             _logger = logger;
         }
 
-        public async Task<IEnumerable<DisplayEventsDto>> GetAllEventsAsync()
+        public async Task<IEnumerable<EventViewModel>> GetAllEventsAsync()
         {
             try
             {
                 var wrapper = await _api
-                     .GetFromJsonAsync<EventListDtoWrapper>("/api/Event");
+                     .GetFromJsonAsync<EventViewModelWrapper>("/api/Event");
 
 
                 if (wrapper == null)
-                    return Array.Empty<DisplayEventsDto>();
+                    return Array.Empty<EventViewModel>();
 
                 return wrapper.Events;
             }
             catch
             {
 
-                return Array.Empty<DisplayEventsDto>();
+                return Array.Empty<EventViewModel>();
             }
         }
 
-        public async Task<DisplayEventsDto?> GetEventByIdAsync(Guid id)
+        public async Task<EventViewModel?> GetEventByIdAsync(Guid id)
         {
             try
             {
@@ -59,7 +65,7 @@ namespace WebApp.Services.Event
                 if (resp.StatusCode == HttpStatusCode.NotFound)
                     return null;
                 resp.EnsureSuccessStatusCode();
-                return await resp.Content.ReadFromJsonAsync<DisplayEventsDto>();
+                return await resp.Content.ReadFromJsonAsync<EventViewModel>();
             }
             catch (Exception ex)
             {
@@ -68,25 +74,35 @@ namespace WebApp.Services.Event
             }
         }
 
-        public async Task<DisplayEventsDto?> CreateEventAsync(EventCreateDto dto)
+        public async Task<EventViewModel?> CreateEventAsync(EventCreateViewModel vm)
         {
-            try
+            // Build the payload exactly as your API expects:
+            var start = vm.StartDate.Date.Add(vm.StartTime);
+            var end = vm.EndDate.Date.Add(vm.EndTime);
+
+            var payload = new
             {
-                var payload = BuildCreatePayload(dto);
-                var resp = await _api.PostAsJsonAsync("/api/Event", payload);
-                if (resp.StatusCode == HttpStatusCode.BadRequest)
-                    return null;
-                resp.EnsureSuccessStatusCode();
-                return await resp.Content.ReadFromJsonAsync<DisplayEventsDto>();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to create event");
-                return null;
-            }
+                EventName = vm.EventName,
+                EventDescription = vm.EventDescription,
+                StartDate = start.ToString("o"),
+                EndDate = end.ToString("o"),
+                ImageUrl = vm.ImageUrl,
+                CategoryId = vm.CategoryId,
+                EventLocationId = vm.EventLocationId,
+                TicketTypes = vm.TicketTypes.Select(t => new {
+                    TicketType = t.TicketType,
+                    Price = t.Price,
+                    TotalTickets = t.TotalTickets
+                })
+            };
+
+            var resp = await _api.PostAsJsonAsync("/api/Event", payload);
+            if (resp.StatusCode == HttpStatusCode.BadRequest) return null;
+            resp.EnsureSuccessStatusCode();
+            return await resp.Content.ReadFromJsonAsync<EventViewModel>();
         }
 
-        public async Task<bool> UpdateEventAsync(Guid id, EventUpdateDto dto)
+        public async Task<bool> UpdateEventAsync(Guid id, EventUpdateViewModel dto)
         {
             try
             {
@@ -104,15 +120,24 @@ namespace WebApp.Services.Event
                     eventLocationId = dto.EventLocationId,
                     ticketTypes = dto.TicketTypes.Select(t => new {
                         id = t.Id,
-                        ticketType_ = t.TicketType,
+                        ticketType = t.TicketType,
                         price = t.Price,
                         totalTickets = t.TotalTickets
                     }).ToList()
                 };
                 //payload here letss
 
+                var json = JsonSerializer.Serialize(updatePayload);
+                _logger.LogDebug("PUT /api/Event/{Id} payload: {Json}", id, json);
+                //error tester
                 var resp = await _api.PutAsJsonAsync($"/api/Event/{id}", updatePayload);
-                return resp.IsSuccessStatusCode;
+                if (!resp.IsSuccessStatusCode)
+                {
+                    var error = await resp.Content.ReadAsStringAsync();
+                    _logger.LogError("Update failed ({StatusCode}): {Error}", resp.StatusCode, error);
+                    return false;
+                }
+                return true;
             }
             catch (Exception ex)
             {
@@ -139,7 +164,7 @@ namespace WebApp.Services.Event
         {
             try
             {
-                var req = new ChangeStatusRequest
+                var req = new ChangeEventStatusViewModel
                 {
                     Id = id.ToString(),
                     Status = (int)EventStatus.Active
@@ -154,71 +179,37 @@ namespace WebApp.Services.Event
             }
         }
 
-        public async Task<IEnumerable<CategoryDto>> GetAllCategoriesAsync()
+        public async Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync()
         {
             try
             {
-                return await _api.GetFromJsonAsync<IEnumerable<CategoryDto>>("/api/Category")
-                       ?? Array.Empty<CategoryDto>();
+                return await _api.GetFromJsonAsync<IEnumerable<CategoryViewModel>>("/api/Category")
+                       ?? Array.Empty<CategoryViewModel>();
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to fetch categories");
-                return Array.Empty<CategoryDto>();
+                return Array.Empty<CategoryViewModel>();
             }
         }
 
-        public async Task<IEnumerable<LocationDto>> GetLocationsAsync()
+        public async Task<IEnumerable<LocationViewModel>> GetLocationsAsync()
         {
             try
             {
-                return await _api.GetFromJsonAsync<IEnumerable<LocationDto>>("/api/Event/locations")
-                       ?? Array.Empty<LocationDto>();
+                return await _api.GetFromJsonAsync<IEnumerable<LocationViewModel>>("/api/Event/locations")
+                       ?? Array.Empty<LocationViewModel>();
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to fetch locations");
-                return Array.Empty<LocationDto>();
+                return Array.Empty<LocationViewModel>();
             }
         }
 
-        private object BuildCreatePayload(EventCreateDto dto)
-        {
-            var start = dto.StartDate.Date.Add(dto.StartTime);
-            var end = dto.EndDate.Date.Add(dto.EndTime);
 
-            return new
-            {
-                EventName = dto.EventName,
-                EventDescription = dto.EventDescription,
-                StartDate = start.ToString("o"),
-                EndDate = end.ToString("o"),
-                ImageUrl = dto.ImageUrl,
-                CategoryId = dto.CategoryId,
-                EventLocationId = dto.EventLocationId,
-                TicketTypes = dto.TicketTypes.Select(t => new
-                {
-                    TicketType = t.TicketType,
-                    Price = t.Price,
-                    TotalTickets = t.TotalTickets
-                })
-            };
-        }
+
+    
     }
+
 }
-//return new
-//{
-//    EventName = dto.EventName,
-//    Description = dto.EventDescription,
-//    StartDate = start.ToString("o"),
-//    EndDate = end.ToString("o"),
-//    ImageUrl = dto.ImageUrl,
-//    CategoryId = dto.CategoryId,
-//    EventLocationId = dto.EventLocationId,
-//    TicketTypes = dto.TicketTypes.Select(t => new
-//    {
-//        TicketType = t.TicketType,
-//        Price = t.Price,
-//        TotalTickets = t.TotalTickets
-//    })
-//};

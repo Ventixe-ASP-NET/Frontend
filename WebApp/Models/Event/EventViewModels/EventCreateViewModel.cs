@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using WebApp.Dtos.Event;
+using System.Text.Json.Serialization;
+
 using WebApp.Models.Event.TicketViewModels;
 
 namespace WebApp.Models.Event.EventViewModels
@@ -8,7 +9,7 @@ namespace WebApp.Models.Event.EventViewModels
     {
         [Required] public string EventName { get; set; } = null!;
         [Required]
-        //[JsonPropertyName("description")]
+        [JsonPropertyName("description")]
         public string EventDescription { get; set; } = null!;
         [Required, DataType(DataType.Date)] public DateTime StartDate { get; set; }
         [Required, DataType(DataType.Time)] public TimeSpan StartTime { get; set; }

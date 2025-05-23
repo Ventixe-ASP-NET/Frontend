@@ -1,5 +1,11 @@
-﻿@model IEnumerable<DisplayEventsDto>
+﻿
+@* IEnumerable<DisplayEventsDto> *@
+
+
+@model IEnumerable<EventViewModel>
+
 @using System.Linq;
+@using WebApp.Models.Event.EventViewModels
 
 @section Styles {
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -13,7 +19,7 @@
     var countPast = (ViewData["CountPast"] as int?) ?? 0;
 
     var current = (ViewData["CurrentStatus"] as string) ?? "All";
-    Func<EventStatus?, string> activeClass = status =>
+    Func<WebApp.Models.Event.EventStatus?, string> activeClass = status =>
     {
         var name = status?.ToString() ?? "All";
         return name == current ? "active-tab" : "";
@@ -22,13 +28,13 @@
 
 <nav class="status-tabs">
     <a asp-action="Index" class="@(activeClass(null))">All (@countAll)</a>
-    <a asp-action="Index" asp-route-status="Draft" class="@(activeClass(EventStatus.Draft))">
+    <a asp-action="Index" asp-route-status="Draft" class="@(activeClass( WebApp.Models.Event.EventStatus.Draft))">
         Draft (@countDraft)
     </a>
-    <a asp-action="Index" asp-route-status="Active" class="@(activeClass(EventStatus.Active))">
+    <a asp-action="Index" asp-route-status="Active" class="@(activeClass( WebApp.Models.Event.EventStatus.Active))">
         Active (@countActive)
     </a>
-    <a asp-action="Index" asp-route-status="Past" class="@(activeClass(EventStatus.Past))">
+    <a asp-action="Index" asp-route-status="Past" class="@(activeClass( WebApp.Models.Event.EventStatus.Past))">
         Past (@countPast)
     </a>
     <a asp-action="New" class="btn btn-primary">
@@ -67,7 +73,7 @@
                             @ev.Category.CategoryName
                         </span>
                         <h3 class="event-title">@ev.EventName</h3>
-                        <p class="event-description">@ev.Description</p>
+                        <p class="event-description">@ev.EventDescription</p>
                     </div>
 
                     <div class="event-info-group">

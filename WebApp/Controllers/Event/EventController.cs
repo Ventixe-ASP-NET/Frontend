@@ -1,8 +1,11 @@
 ﻿using AspNetCoreGeneratedDocument;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using WebApp.Dtos.Event;
+
 using WebApp.Services.Event;
+using WebApp.Models.Event;
+using WebApp.Models.Event.EventViewModels;
+using WebApp.Models.Event.TicketViewModels;
 
 namespace WebApp.Controllers.Event
 {
@@ -20,15 +23,15 @@ namespace WebApp.Controllers.Event
 
         // GET /Event
         [HttpGet("")]
-        public async Task<IActionResult> Index(EventStatus? status)
+        public async Task<IActionResult> Index(Models.Event.EventStatus? status)
         {
             var all = (await _events.GetAllEventsAsync()).ToList();
             _logger.LogInformation("Index: fetched {Count} events", all.Count);
 
             ViewData["CountAll"] = all.Count;
-            ViewData["CountDraft"] = all.Count(e => e.StatusEnum == EventStatus.Draft);
-            ViewData["CountActive"] = all.Count(e => e.StatusEnum == EventStatus.Active);
-            ViewData["CountPast"] = all.Count(e => e.StatusEnum == EventStatus.Past);
+            ViewData["CountDraft"] = all.Count(e => e.StatusEnum == Models.Event.EventStatus.Draft);
+            ViewData["CountActive"] = all.Count(e => e.StatusEnum == Models.Event.EventStatus.Active);
+            ViewData["CountPast"] = all.Count(e => e.StatusEnum == Models.Event.EventStatus.Past);
 
             var filtered = status.HasValue
                  ? all.Where(e => e.StatusEnum == status.Value)
@@ -64,22 +67,21 @@ namespace WebApp.Controllers.Event
         {
             await PopulateSelectLists();
 
-            var vm = new EventCreateDto();
-            // make sure there's at least one slot
-            vm.TicketTypes = new List<TicketTypeCreateDto> {
-            new TicketTypeCreateDto { Id = Guid.Empty }
+            var vm = new EventCreateViewModel();
+          
+            vm.TicketTypes = new List<TicketTypeCreateViewModel> {
+            new TicketTypeCreateViewModel { Id = Guid.Empty }
     };
 
             return View(vm);
 
-            //await PopulateSelectLists();
-            //return View(new EventCreateDto());
+         
         }
 
         // POST /Event/New
         [HttpPost("New")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> New(EventCreateDto vm)
+        public async Task<IActionResult> New(EventCreateViewModel vm)
         {
             if (!ModelState.IsValid)
             {
@@ -103,11 +105,11 @@ namespace WebApp.Controllers.Event
             var ev = await _events.GetEventByIdAsync(id);
             if (ev == null) return NotFound();
 
-            // map to EventUpdateDto instead of EventCreateDto
-            var vm = new EventUpdateDto
+        
+            var vm = new EventUpdateViewModel
             {
                 EventName = ev.EventName,
-                EventDescription = ev.Description,
+                EventDescription = ev.EventDescription,
                 ImageUrl = ev.ImageUrl,
                 CategoryId = ev.Category.Id,
                 EventLocationId = ev.Location.Id,
@@ -118,7 +120,7 @@ namespace WebApp.Controllers.Event
                 EndTime = ev.EndDate.TimeOfDay,
 
                 TicketTypes = ev.TicketTypes
-                                .Select(t => new TicketTypeUpdateDto
+                                .Select(t => new TicketTypeUpdateViewModel
                                 {
                                     Id = t.Id,
                                     TicketType = t.TicketType,
@@ -134,13 +136,14 @@ namespace WebApp.Controllers.Event
             ViewData["Id"] = id;
             ViewData["AllowTicketEdit"] = true;
 
-            return View("Edit", vm);   // or View(vm) if your view name matches
+            return View("Edit", vm);   
         }
+
 
         // POST /Event/Edit/{id}
         [HttpPost("Edit/{id:guid}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, EventUpdateDto vm)
+        public async Task<IActionResult> Edit(Guid id, EventUpdateViewModel vm)
         {
             var existing = await _events.GetEventByIdAsync(id);
             if (existing == null) return NotFound();
@@ -153,6 +156,13 @@ namespace WebApp.Controllers.Event
             {
                 await PopulateSelectLists();
                 return View("Edit", vm);
+            }
+
+            _logger.LogInformation("POST Edit: bound {Count} ticket(s)", vm.TicketTypes.Count);
+            foreach (var t in vm.TicketTypes)
+            {
+                _logger.LogInformation(" → Ticket idx: Id={Id}, Type=\"{Type}\", Price={Price}, Total={Total}",
+                    t.Id, t.TicketType, t.Price, t.TotalTickets);
             }
 
             var ok = await _events.UpdateEventAsync(id, vm);

@@ -1,4 +1,9 @@
-﻿@model DisplayEventsDto
+﻿@using WebApp.Models.Event.EventViewModels
+
+
+
+@model EventViewModel;
+
 
 @section Styles {
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -24,7 +29,7 @@
        
         <div class="event-card__body">
             <h1 class="event-card__title">@Model.EventName</h1>
-            <p class="event-card__description">@Model.Description</p>
+            <p class="event-card__description">@Model.EventDescription</p>
             <div class="event-card__meta">
                 <div class="event-card__meta-item">
                     <strong>@Model.StartDate.ToString("MMMM d, yyyy")</strong>
@@ -48,74 +53,74 @@
 
     <div class="event-main-area">
         <section class="event-info">
-            <h2>Event Terms & Conditions</h2>
-            <p>By purchasing a ticket and attending this event, you agree to abide by the following terms. Please read them carefully.</p>
+  <h2>Event Terms & Conditions</h2>
+  <p>By purchasing a ticket and attending this event, you agree to abide by the following terms. Please read them carefully.</p>
 
-            <h3>1. Admission & Tickets</h3>
-            <ul>
-                <li>All sales are final. Tickets are non-refundable and non-transferable, except as required by law.</li>
-                <li>You must present a valid ticket (printed or on mobile) upon entry. Duplicate or photocopied tickets will not be accepted.</li>
-                <li>Management reserves the right to refuse admission or eject any person whose conduct is deemed inappropriate or unsafe.</li>
-            </ul>
+  <h3>1. Admission & Tickets</h3>
+  <ul>
+    <li>All sales are final. Tickets are non-refundable and non-transferable, except as required by law.</li>
+    <li>You must present a valid ticket (printed or on mobile) upon entry. Duplicate or photocopied tickets will not be accepted.</li>
+    <li>Management reserves the right to refuse admission or eject any person whose conduct is deemed inappropriate or unsafe.</li>
+  </ul>
 
-            <h3>2. Age & Identification</h3>
-            <ul>
-                <li>Attendees must be at least 18 years old. Valid government-issued photo ID is required at the door.</li>
-                <li>No one under 16 will be admitted under any circumstances. Persons aged 16–17 may attend only when accompanied by a parent or guardian.</li>
-            </ul>
+  <h3>2. Age & Identification</h3>
+  <ul>
+    <li>Attendees must be at least 18 years old. Valid government-issued photo ID is required at the door.</li>
+    <li>No one under 16 will be admitted under any circumstances. Persons aged 16–17 may attend only when accompanied by a parent or guardian.</li>
+  </ul>
 
-            <h3>3. Refund & Cancellation Policy</h3>
-            <ul>
-                <li>If the event is canceled or significantly rescheduled, ticketholders will be notified via the email they used at purchase.</li>
-                <li>In case of cancellation, you will have the option to receive a full refund or transfer your ticket to the new date.</li>
-                <li>No refunds will be issued for personal emergencies, travel issues, or change of mind.</li>
-            </ul>
+  <h3>3. Refund & Cancellation Policy</h3>
+  <ul>
+    <li>If the event is canceled or significantly rescheduled, ticketholders will be notified via the email they used at purchase.</li>
+    <li>In case of cancellation, you will have the option to receive a full refund or transfer your ticket to the new date.</li>
+    <li>No refunds will be issued for personal emergencies, travel issues, or change of mind.</li>
+  </ul>
 
-            <h3>4. Prohibited Items & Behavior</h3>
-            <ul>
-                <li>No outside food, drink, weapons, illegal substances, or professional camera/video equipment allowed.</li>
-                <li>Smoking (including e-cigarettes) is strictly prohibited inside the venue.</li>
-                <li>Harassment, discrimination or any form of violence will result in immediate removal without refund.</li>
-            </ul>
+  <h3>4. Prohibited Items & Behavior</h3>
+  <ul>
+    <li>No outside food, drink, weapons, illegal substances, or professional camera/video equipment allowed.</li>
+    <li>Smoking (including e-cigarettes) is strictly prohibited inside the venue.</li>
+    <li>Harassment, discrimination or any form of violence will result in immediate removal without refund.</li>
+  </ul>
 
-            <h3>5. Health & Safety</h3>
-            <ul>
-                <li>Please follow all posted venue safety guidelines and instructions from staff or security.</li>
-                <li>By entering, you consent to security screening (bag checks, metal detectors, pat‐downs) if deemed necessary.</li>
-                <li>If you feel unwell at any point, inform nearest staff member immediately.</li>
-            </ul>
+  <h3>5. Health & Safety</h3>
+  <ul>
+    <li>Please follow all posted venue safety guidelines and instructions from staff or security.</li>
+    <li>By entering, you consent to security screening (bag checks, metal detectors, pat‐downs) if deemed necessary.</li>
+    <li>If you feel unwell at any point, inform nearest staff member immediately.</li>
+  </ul>
 
-            <h3>6. Photography & Media</h3>
-            <ul>
-                <li>Event organizers may take photographs, video and audio recordings for marketing and archival purposes. Attendance constitutes your consent to be recorded.</li>
-                <li>Personal photography for non-commercial use is allowed, but flash photography and tripods are prohibited.</li>
-            </ul>
+  <h3>6. Photography & Media</h3>
+  <ul>
+    <li>Event organizers may take photographs, video and audio recordings for marketing and archival purposes. Attendance constitutes your consent to be recorded.</li>
+    <li>Personal photography for non-commercial use is allowed, but flash photography and tripods are prohibited.</li>
+  </ul>
 
-            <h3>7. Accessibility & Special Needs</h3>
-            <ul>
-                <li>If you require assistance or accommodations, please contact our accessibility team at least 72 hours before the event.</li>
-                <li>Service animals are permitted in accordance with applicable laws.</li>
-            </ul>
+  <h3>7. Accessibility & Special Needs</h3>
+  <ul>
+    <li>If you require assistance or accommodations, please contact our accessibility team at least 72 hours before the event.</li>
+    <li>Service animals are permitted in accordance with applicable laws.</li>
+  </ul>
 
-            <h3>8. Liability Waiver</h3>
-            <ul>
-                <li>By attending, you assume all risks associated with participation, including injury or property loss.</li>
-                <li>Organizers, sponsors and the venue are not responsible for personal injury, loss, or damage to personal property.</li>
-            </ul>
+  <h3>8. Liability Waiver</h3>
+  <ul>
+    <li>By attending, you assume all risks associated with participation, including injury or property loss.</li>
+    <li>Organizers, sponsors and the venue are not responsible for personal injury, loss, or damage to personal property.</li>
+  </ul>
 
-            <h3>9. Privacy & Data</h3>
-            <ul>
-                <li>Your personal information will be used only for event communication and ticket verification.</li>
-                <li>We will not sell your data to third parties; see our Privacy Policy for full details.</li>
-            </ul>
+  <h3>9. Privacy & Data</h3>
+  <ul>
+    <li>Your personal information will be used only for event communication and ticket verification.</li>
+    <li>We will not sell your data to third parties; see our Privacy Policy for full details.</li>
+  </ul>
 
-            <h3>10. Force Majeure</h3>
-            <ul>
-                <li>Organizers are not liable for delays, cancellations or changes due to circumstances beyond our control (e.g., weather, government actions, public health emergencies).</li>
-            </ul>
+  <h3>10. Force Majeure</h3>
+  <ul>
+    <li>Organizers are not liable for delays, cancellations or changes due to circumstances beyond our control (e.g., weather, government actions, public health emergencies).</li>
+  </ul>
 
-            <p class="mt-2"><strong>By remaining on the premises, you acknowledge that you have read, understood, and agree to these terms and conditions in full.</strong></p>
-        </section>
+  <p class="mt-2"><strong>By remaining on the premises, you acknowledge that you have read, understood, and agree to these terms and conditions in full.</strong></p>
+</section>
 
         <aside class="ticket-packages">
             <h2>Available Packages</h2>
@@ -165,7 +170,7 @@
     </footer>
 
     @* Activate button only for draft events *@
-    @if (Model.StatusEnum == EventStatus.Draft)
+    @if (Model.StatusEnum == WebApp.Models.Event.EventStatus.Draft)
     {
         <form asp-controller="Event"
               asp-action="Activate"
