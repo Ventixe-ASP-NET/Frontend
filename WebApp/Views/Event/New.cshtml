@@ -1,0 +1,130 @@
+﻿@model WebApp.Models.Event.EventViewModels.EventCreateViewModel;
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/EditAndNew.css" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "Create New Event";
+    var categories = ViewData["Categories"] as SelectList;
+    var locations = ViewData["Locations"] as SelectList;
+}
+
+<h1>@ViewData["Title"]</h1>
+<form asp-action="New" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label asp-for="EventName"></label>
+        <input asp-for="EventName" class="form-control" />
+        <span asp-validation-for="EventName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EventDescription"></label>
+        <textarea asp-for="EventDescription" class="form-control"></textarea>
+        <span asp-validation-for="EventDescription" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ImageUrl"></label>
+        <input asp-for="ImageUrl" class="form-control" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="StartDate"></label>
+                <input asp-for="StartDate" type="date" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartTime"></label>
+                <input asp-for="StartTime" type="time" class="form-control" />
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="EndDate"></label>
+                <input asp-for="EndDate" type="date" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndTime"></label>
+                <input asp-for="EndTime" type="time" class="form-control" />
+                <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CategoryId"></label>
+        <select asp-for="CategoryId" asp-items="categories" class="form-control">
+            <option value="">-- select a category --</option>
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EventLocationId"></label>
+        <select asp-for="EventLocationId" asp-items="locations" class="form-control">
+            <option value="">-- select a venue --</option>
+        </select>
+        <span asp-validation-for="EventLocationId" class="text-danger"></span>
+    </div>
+
+    <h3>Tickets</h3>
+    <div id="tickets">
+        @for (int i = 0; i < Model.TicketTypes.Count; i++)
+        {
+            <div class="row ticket-row mb-2">
+                <div class="col">
+                    <label>Type</label>
+                    <input asp-for="TicketTypes[@i].TicketType" class="form-control" />
+                </div>
+                <div class="col">
+                    <label>Price</label>
+                    <input asp-for="TicketTypes[@i].Price" type="number" step="0.01" class="form-control" />
+                </div>
+                <div class="col">
+                    <label>Total</label>
+                    <input asp-for="TicketTypes[@i].TotalTickets" type="number" class="form-control" />
+                </div>
+            </div>
+        }
+    </div>
+    <button type="button" class="btn btn-secondary mb-3" onclick="addTicket()">Add Ticket</button>
+
+    <button type="submit" class="btn btn-primary">Create Event</button>
+</form>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        const emptyGuid = '00000000-0000-0000-0000-000000000000';
+        function addTicket() {
+            var idx = $('#tickets .ticket-row').length;
+            $('#tickets').append(`
+                <input type="hidden" name="TicketTypes[${idx}].Id" value="${emptyGuid}" />
+                <div class="row ticket-row mb-2">
+                    <div class="col">
+                        <label>Type</label>
+                        <input name="TicketTypes[${idx}].TicketType" class="form-control" />
+                    </div>
+                    <div class="col">
+                        <label>Price</label>
+                        <input name="TicketTypes[${idx}].Price" type="number" step="0.01" class="form-control" />
+                    </div>
+                    <div class="col">
+                        <label>Total</label>
+                        <input name="TicketTypes[${idx}].TotalTickets" type="number" class="form-control" />
+                    </div>
+                </div>
+            `);
+        }
+    </script>
+}
