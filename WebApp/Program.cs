@@ -15,14 +15,17 @@ using WebApp.Services.Event;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
-
-var azureUrl = builder.Configuration["EventApi:azureEventUrl"]!;
-if (string.IsNullOrWhiteSpace(azureUrl))
-    throw new InvalidOperationException("EventApi:azureEventUrl must be configured");
+var eventBaseApi = builder.Configuration["EventApi:BaseEventUrl"];
+var bookingGatewayBaseApi = builder.Configuration["BookingGateway:BaseUrl"];
+var bookingBaseApi = builder.Configuration["BookingApi:BaseUrl"];
+if (string.IsNullOrEmpty(eventBaseApi))
+{
+    throw new ArgumentNullException("EventApi:BaseEventUrl", "BaseEventUrl is not set in appsettings.json");
+}
 
 builder.Services.AddHttpClient("EventApi", client =>
 {
-    client.BaseAddress = new Uri(azureUrl);
+    client.BaseAddress = new Uri(eventBaseApi);
     client.DefaultRequestHeaders.Accept.Add(
         new MediaTypeWithQualityHeaderValue("application/json"));
 });
