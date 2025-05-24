@@ -6,6 +6,7 @@ namespace WebApp.Views.Bookings.BookingModels
     {
         // Booking info
         public int Id { get; set; }
+        public string? EvoucherId { get; set; }
         public string BookingName { get; set; }
         public string InvoiceId { get; set; }
         public DateTime CreatedAt { get; set; }

@@ -1,7 +1,7 @@
 ﻿@model WebApp.Views.Bookings.BookingModels.TopCategoriesModel
 
 <script>
-    window.topCategoryData = @Html.Raw(Json.Serialize(Model.Categories));
+    window.topCategoryData = @Html.Raw(Json.Serialize(Model));
 </script>
 
 <div class="top-right-section fixed">
@@ -25,24 +25,11 @@
                 <canvas id="topCategoriesChart"></canvas>
             </div>
 
-            <div class="category-bars">
-                @for (int i = 0; i < Model.Categories.Count; i++)
-                {
-                    var cat = Model.Categories[i];
-                    <div class="category-item">
-                        <div class="bar-top">
-                            <span class="bar-name">@cat.Name <span class="bar-percent">(@cat.Percentage%)</span></span>
-                            <span class="bar-value">@cat.Count</span>
-                        </div>
-                        <div class="bar-outer">
-                            <div class="bar-fill"
-                                 style="width:@cat.Percentage%; background: @($"var(--color{i})");"></div>
-                        </div>
-                    </div>
-                }
-            </div>
+            <!-- 🔁 JS fyller denna -->
+            <div class="category-bars"></div>
         </div>
     </div>
+
     <div class="subcategory-card">
         <div class="subcategory-header">
             <span>Music</span>
@@ -74,4 +61,3 @@
         </div>
     </div>
 </div>
-

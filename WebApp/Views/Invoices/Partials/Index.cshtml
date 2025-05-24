@@ -1,0 +1,28 @@
+﻿@using WebApp.Views.Invoices.InvoiceModels
+@model List<ShowInvoiceViewModel>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" />
+@{
+    ViewData["Title"] = "Invoices";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/booking.css" asp-append-version="true" />
+}
+<section class="dashboard-wrapper">
+    <div class="top-stack">
+        @await Html.PartialAsync("Partials/_TopLeft")
+        @await Html.PartialAsync("Partials/_TopRight")
+    </div>
+    @await Html.PartialAsync("Partials/_BottomSection", Model)
+</section>
+
+@foreach(var invoice in Model)
+{
+    <div>
+        @invoice.InvoiceTitel
+        <a asp-controller="Invoice"
+           asp-action="UpdateInvoice"
+           asp-route-id="@invoice.Id">
+            @invoice.Status.IsPaid
+        </a>
+    </div>
+}

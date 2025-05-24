@@ -13,85 +13,28 @@ namespace WebApp.Controllers
 
         public BookingsController(IHttpClientFactory factory)
         {
-            _bookingGatewayClient = factory.CreateClient("bookingGateway");
-            _eventClient = factory.CreateClient("eventApi");
-            _bookingClient = factory.CreateClient("bookingApi");
+            _bookingGatewayClient = factory.CreateClient("BookingGateway");
+            _eventClient = factory.CreateClient("EventApi");
+            _bookingClient = factory.CreateClient("BookingApi");
         }
 
         public async Task<IActionResult> Index(string sort = "date", string order = "desc", int page = 1, int pageSize = 8)
         {
-            var bookings = await _bookingGatewayClient.GetFromJsonAsync<List<BookingWithEventModel>>("api/bookingwithevents");
+            var response = await _bookingGatewayClient.GetFromJsonAsync<PagedResponse<BookingWithEventModel>>(
+                $"api/bookingwithevents/paged?sort={sort}&order={order}&page={page}&pageSize={pageSize}");
+
+            var bookings = response?.Items ?? new List<BookingWithEventModel>();
+            var totalCount = response?.TotalCount ?? 0;
+
             var stats = await _bookingClient.GetFromJsonAsync<BookingStatsModel>("api/bookings/stats");
             var chart = await _bookingClient.GetFromJsonAsync<BookingChartModel>("api/bookings/stats/overview?range=week");
             var topCategories = await _bookingGatewayClient.GetFromJsonAsync<TopCategoriesModel>("api/bookingwithevents/stats/top-categories");
 
-            if (sort == "none")
-            {
-                var modelNoSort = new BookingIndexViewModel
-                {
-                    Bookings = bookings,
-                    Stats = stats,
-                    Chart = chart
-                };
-                return View(modelNoSort);
-            }
-
-            bookings = sort.ToLower() switch
-            {
-                "invoice" => order == "asc"
-                    ? bookings.OrderBy(b => b.InvoiceId).ToList()
-                    : bookings.OrderByDescending(b => b.InvoiceId).ToList(),
-
-                "date" => order == "asc"
-                    ? bookings.OrderBy(b => b.CreatedAt).ToList()
-                    : bookings.OrderByDescending(b => b.CreatedAt).ToList(),
-
-                "name" => order == "asc"
-                    ? bookings.OrderBy(b => b.BookingName).ToList()
-                    : bookings.OrderByDescending(b => b.BookingName).ToList(),
-
-                "event" => order == "asc"
-                    ? bookings.OrderBy(b => b.EventName).ToList()
-                    : bookings.OrderByDescending(b => b.EventName).ToList(),
-
-                "category" => order == "asc"
-                    ? bookings.OrderBy(b => b.Category).ToList()
-                    : bookings.OrderByDescending(b => b.Category).ToList(),
-
-                "price" => order == "asc"
-                    ? bookings.OrderBy(b => b.BookedTickets.Min(t => t.PricePerTicket)).ToList()
-                    : bookings.OrderByDescending(b => b.BookedTickets.Max(t => t.PricePerTicket)).ToList(),
-
-                "qty" => order == "asc"
-                    ? bookings.OrderBy(b => b.BookedTickets.Sum(t => t.Quantity)).ToList()
-                    : bookings.OrderByDescending(b => b.BookedTickets.Sum(t => t.Quantity)).ToList(),
-
-                "amount" => order == "asc"
-                    ? bookings.OrderBy(b => b.BookedTickets.Sum(t => t.TotalPrice)).ToList()
-                    : bookings.OrderByDescending(b => b.BookedTickets.Sum(t => t.TotalPrice)).ToList(),
-
-                "status" => order == "asc"
-                    ? bookings.OrderBy(b => "Confirmed").ToList()
-                    : bookings.OrderByDescending(b => "Confirmed").ToList(),
-
-                "evoucher" => order == "asc"
-                    ? bookings.OrderBy(b => "–").ToList()
-                    : bookings.OrderByDescending(b => "–").ToList(),
-
-                _ => bookings.OrderByDescending(b => b.CreatedAt).ToList()
-            };
-
-            var totalCount = bookings.Count;
-            var pagedBookings = bookings
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
-
             var model = new BookingIndexViewModel
             {
-                Bookings = pagedBookings,
+                Bookings = bookings,
                 Stats = stats,
-                Chart = chart, // ✅ Nyckeln
+                Chart = chart,
                 TopCategories = topCategories
             };
 
@@ -101,7 +44,16 @@ namespace WebApp.Controllers
 
             return View("Dashboard/Index", model);
         }
+        public async Task<IActionResult> Evoucher(string code)
+        {
+            var booking = await _bookingGatewayClient.GetFromJsonAsync<BookingWithEventModel>(
+                $"api/bookingwithevents/evoucher/{code}");
 
+            if (booking == null)
+                return NotFound("E-Voucher not found");
+
+            return View("Evoucher/EvoucherIndex", booking);
+        }
 
         public async Task<IActionResult> Create()
         {
@@ -118,10 +70,11 @@ namespace WebApp.Controllers
                     Value = e.Id.ToString(),
                     Text = $"{e.EventName} ({e.StartDate:yyyy-MM-dd})"
                 }).ToList(),
-                EventData = activeEvents // 👈 detta används i dina boxes
+                EventData = activeEvents 
             };
 
             return View("CreateBooking/Create", viewModel);
         }
+
     }
 }

@@ -1,0 +1,47 @@
+﻿@model WebApp.Views.Bookings.BookingModels.BookingWithEventModel
+
+<div class="ticket-view">
+    <div class="ticket-left">
+        <div class="ticket-image">
+            <img src="~/images/event-poster.png" alt="Event Poster" />
+            <div class="overlay">
+                <h4>@Model.EventName</h4>
+                <p>@Model.Description</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="ticket-center">
+        <div class="info-row">
+            <div><strong>Name</strong><br />@Model.BookingName</div>
+            <div><strong>Invoice ID</strong><br />@Model.InvoiceId</div>
+            <div></div>
+        </div>
+        <div class="info-row">
+            <div><strong>Ticket Category</strong><br />@Model.BookedTickets.FirstOrDefault()?.TicketType</div>
+            <div><strong>Seat Number</strong><br />B12</div>
+            <div><strong>Gate</strong><br />3</div>
+        </div>
+        <hr />
+        <div class="info-row">
+            <div>
+                <strong>Location</strong><br />
+                @Model.Location?.VenueName, @Model.Location?.City
+            </div>
+        </div>
+        <div class="info-row">
+            <div><strong>Date</strong><br />@Model.StartDate?.ToString("MMMM dd, yyyy")</div>
+            <div><strong>Time</strong><br />@Model.StartDate?.ToString("hh:mm tt") – @Model.EndDate?.ToString("hh:mm tt")</div>
+        </div>
+    </div>
+
+    <div class="ticket-right">
+        <p class="scan-label">Scan to Enter</p>
+        <img class="barcode-img" src="https://via.placeholder.com/150x50?text=@Model.InvoiceId" alt="Barcode" />
+        <p class="barcode-text">
+            Thank you for your purchase!<br />
+            Enjoy the festival and experience<br />
+            the rhythm like never before.
+        </p>
+    </div>
+</div>

@@ -21,5 +21,5 @@
     if (searchInput) searchInput.addEventListener('input', filterBookings);
     if (categorySelect) categorySelect.addEventListener('change', filterBookings);
 
-    filterBookings(); // Init vid load
+    filterBookings();
 });

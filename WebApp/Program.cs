@@ -1,8 +1,4 @@
 
-using System.Net.Http.Headers;
-using WebApp.Services.Event;
-
-
 using Account.Contexts;
 using Account.Entities;
 using Account.Interfaces;
@@ -11,8 +7,10 @@ using Account.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Net.Http.Headers;
 using System.Security.Claims;
-
+using WebApp.Services.Event;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
@@ -29,29 +27,44 @@ builder.Services.AddHttpClient("EventApi", client =>
         new MediaTypeWithQualityHeaderValue("application/json"));
 });
 
-// 2) Wire up your IEventService
+builder.Services.AddHttpClient("BookingGateway", client =>
+{
+    client.BaseAddress = new Uri(bookingGatewayBaseApi);
+    client.DefaultRequestHeaders.Accept.Add(
+        new MediaTypeWithQualityHeaderValue("application/json"));
+});
+
+builder.Services.AddHttpClient("BookingApi", client =>
+{
+    client.BaseAddress = new Uri(bookingBaseApi);
+    client.DefaultRequestHeaders.Accept.Add(
+        new MediaTypeWithQualityHeaderValue("application/json"));
+});
+
+builder.Services.AddHttpClient("invoiceGateway", c =>
+{
+    c.BaseAddress = new Uri("https://invoiceservice-gtg3ajc5htdcgpgs.swedencentral-01.azurewebsites.net");
+});
+
 builder.Services.AddScoped<IEventService, HttpEventService>();
 
 
 
 
 
-
-builder.Services.AddHttpClient("bookingGateway", c =>
-{
-    c.BaseAddress = new Uri("https://bookingeventgateway-f8b4d2ahagc5faev.swedencentral-01.azurewebsites.net/");
-});
+//builder.Services.AddHttpClient("bookingGateway", c =>
+//{
+//    c.BaseAddress = new Uri("https://bookingeventgateway-f8b4d2ahagc5faev.swedencentral-01.azurewebsites.net/");
+//});
 
 //builder.Services.AddHttpClient("eventApi", c =>
 //{
 //    c.BaseAddress = new Uri("https://ventixe-event-rest-api-cxeqehfrcqcvdkck.swedencentral-01.azurewebsites.net/");
-    
-
 //});
-builder.Services.AddHttpClient("bookingApi", c =>
-{
-    c.BaseAddress = new Uri("https://bookingserviceventixe-fbb7amdzfsh4b4d6.swedencentral-01.azurewebsites.net");
-});
+//builder.Services.AddHttpClient("bookingApi", c =>
+//{
+//    c.BaseAddress = new Uri("https://bookingserviceventixe-fbb7amdzfsh4b4d6.swedencentral-01.azurewebsites.net");
+//});
 
 
 builder.Services.AddHttpClient();
