@@ -29,10 +29,58 @@
 
             <li>
                 <a class="@(Context.Request.Path == "/event" ? "active" : "")" asp-controller="Event" asp-action="Index">
-                    <span class="material-symbols-rounded">
-                        check_box
+                    <span class="material-symbols-outlined">
+                        local_activity
                     </span>
                     <span>Events</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="material-symbols-outlined">
+                        order_approve
+                    </span>
+                    <span>Invoices</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="material-symbols-outlined">
+                        drafts
+                    </span>
+                    <span>Inbox</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="material-symbols-outlined">
+                        calendar_month
+                    </span>
+                    <span>Calender</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="material-symbols-outlined">
+                        paid
+                    </span>
+                    <span>Financials</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="material-symbols-outlined">
+                        imagesmode
+                    </span>
+                    <span>Gallery</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="material-symbols-outlined">
+                        star
+                    </span>
+                    <span>Feedback</span>
                 </a>
             </li>
         </ul>
