@@ -11,10 +11,11 @@ using System;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using WebApp.Services.Event;
+using WebApp.Services.Profile;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
-
+var profileApiUrl = builder.Configuration["ProfileApi:BaseUrl"];
 var eventBaseApi = builder.Configuration["EventApi:BaseEventUrl"];
 var bookingGatewayBaseApi = builder.Configuration["BookingGateway:BaseUrl"];
 var bookingBaseApi = builder.Configuration["BookingApi:BaseUrl"];
@@ -22,7 +23,12 @@ if (string.IsNullOrEmpty(eventBaseApi))
 {
     throw new ArgumentNullException("EventApi:BaseEventUrl", "BaseEventUrl is not set in appsettings.json");
 }
-
+builder.Services.AddHttpClient("ProfileApi", client =>
+{
+    client.BaseAddress = new Uri(profileApiUrl);
+    client.DefaultRequestHeaders.Accept.Add(
+        new MediaTypeWithQualityHeaderValue("application/json"));
+});
 builder.Services.AddHttpClient("EventApi", client =>
 {
     client.BaseAddress = new Uri(eventBaseApi);
@@ -50,6 +56,7 @@ builder.Services.AddHttpClient("invoiceGateway", c =>
 });
 
 builder.Services.AddScoped<IEventService, HttpEventService>();
+builder.Services.AddScoped<IProfileService, HttpProfileService>();
 
 
 

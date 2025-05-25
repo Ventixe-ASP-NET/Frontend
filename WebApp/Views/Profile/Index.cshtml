@@ -1,0 +1,60 @@
+﻿@model WebApp.Models.ProfileViewModels.SaveProfileViewModel
+
+@{
+    ViewData["Title"] = "Your profile";
+}
+
+<link rel="stylesheet" href="~/css/ProfileStyling/Profile.css" asp-append-version="true" />
+
+<div class="profile-container">
+    <h2>Your Profile</h2>
+
+    @if (TempData["RESP_MESSAGE"] != null)
+    {
+        <div class="alert success">@TempData["RESP_MESSAGE"]</div>
+    }
+
+    @if (TempData["ERROR_MESSAGE"] != null)
+    {
+        <div class="alert error">@TempData["ERROR_MESSAGE"]</div>
+    }
+
+    <form asp-action="Index" method="post" class="profile-form">
+        <div class="form-row">
+            <label asp-for="FirstName"></label>
+            <input asp-for="FirstName" />
+        </div>
+
+        <div class="form-row">
+            <label asp-for="LastName"></label>
+            <input asp-for="LastName" />
+        </div>
+
+        <div class="form-row">
+            <label asp-for="Phone"></label>
+            <input asp-for="Phone" />
+        </div>
+
+        <div class="form-row">
+            <label asp-for="EmailAddress"></label>
+            <input asp-for="EmailAddress" />
+        </div>
+
+        <div class="form-row">
+            <label asp-for="Address"></label>
+            <input asp-for="Address" />
+        </div>
+
+        <div class="form-row">
+            <label asp-for="Postal"></label>
+            <input asp-for="Postal" />
+        </div>
+
+        <div class="form-row">
+            <label asp-for="City"></label>
+            <input asp-for="City" />
+        </div>
+
+        <button type="submit" class="save-button">Spara</button>
+    </form>
+</div>

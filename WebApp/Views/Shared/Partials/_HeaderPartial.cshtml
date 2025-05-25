@@ -1,16 +1,25 @@
 ﻿@{
 }
 
-<header>
+<header class="header-bar">
     <a class="logo" href="@Url.Content("~/")">
-        <img src="images/ventixe-logo.svg" alt="Ventixe logo" />
+        <img src="/images/ventixe-logo.svg" alt="Ventixe logo" />
     </a>
 
     <p class="site-title">@ViewData["Title"]</p>
 
-    <button class="btn btn-rounded" id="menu-btn">
-        <span class="material-symbols-rounded">
-            menu
-        </span>
-    </button>
+    <div class="header-right">
+        <div class="profile-settings">
+            <span class="profile-text">Profile Settings</span>
+            <a href="/Profile/Index" title="Profilinställningar" class="profile-settings-link">
+                <img src="/images/settings.png" alt="Inställningar" class="settings-icon" />
+            </a>
+        </div>
+
+        <button class="btn btn-rounded" id="menu-btn">
+            <span class="material-symbols-rounded">
+                menu
+            </span>
+        </button>
+    </div>
 </header>
