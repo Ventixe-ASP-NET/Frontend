@@ -36,30 +36,6 @@
             color: var(--link-hover-color);
         }
 
-/*────────────────────────────────────────────────────────────────────────────*/
-/* “Create New Event” hook                                                    */
-/*────────────────────────────────────────────────────────────────────────────*/
-.new-event-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--link-color);
-    color: var(--gray-10);
-    padding: 0.5rem 1rem;
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    font-weight: 500;
-    transition: var(--transition);
-}
-
-    .new-event-btn:hover {
-        background: var(--primary-90);
-    }
-
-.new-event-btn__icon {
-    font-size: 1.1rem;
-    line-height: 1;
-}
 
 /*────────────────────────────────────────────────────────────────────────────*/
 /* 2. CARD GRID                                                               */
@@ -171,7 +147,7 @@
 }
 
 /*────────────────────────────────────────────────────────────────────────────*/
-/* 9. STATS & PRICE (grouped)                                                 */
+/* 9. STATS & PRICE                                                             */
 /*────────────────────────────────────────────────────────────────────────────*/
 .event-stats-wrapper {
     display: flex;
@@ -204,7 +180,7 @@
 }
 
 /*────────────────────────────────────────────────────────────────────────────*/
-/* 10. Pagination “Page X of Y” only                                          */
+/* 10. Pagination                              
 /*────────────────────────────────────────────────────────────────────────────*/
 .pagination-container {
     display: flex;

@@ -49,8 +49,7 @@
         Past (@countPast)
     </a>
 
-    <a asp-action="New" class="new-event-btn">
-        <span class="new-event-btn__icon">＋</span>
+    <a asp-action="New" class="create-event-btn">
         Create New Event
     </a>
 </nav>
@@ -67,8 +66,12 @@
             continue;
         }
 
+    
+        var totalTicketsLeft = ev.TicketTypes.Sum(t => t.TicketsLeft);
+
+    
         var soldPct = ev.TotalTickets > 0
-        ? (int)(100 * (ev.TotalTickets - primary.TicketsLeft) / (double)ev.TotalTickets)
+        ? (int)(100 * (ev.TotalTickets - totalTicketsLeft) / (double)ev.TotalTickets)
         : 0;
 
         <a asp-controller="Event"
@@ -94,7 +97,7 @@
                         <div class="event-stats-wrapper">
                             <div class="event-stats">
                                 <div class="event-sold">@soldPct% Sold</div>
-                                <div class="event-left">@primary.TicketsLeft Tickets Left</div>
+                                <div class="event-left">@totalTicketsLeft Tickets Left</div>
                             </div>
                             <div class="event-price">
                                 $@primary.Price

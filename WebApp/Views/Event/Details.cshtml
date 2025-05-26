@@ -2,9 +2,7 @@
 @model EventViewModel
 
 @{
-    // 1. Tell Razor which layout to use (it contains your <header> partial)
-    //Layout = "_Layout";
-    // 2. Set the page title so your header partial will render it
+   
     ViewData["Title"] = "Event Details";
 }
 
@@ -60,7 +58,8 @@
                       class="form--inline"
                       onsubmit="return confirm('Are you sure you want to delete this event?');">
                     @Html.AntiForgeryToken()
-                    <button type="submit" class="btn btn-danger">
+                    <button type="submit"
+                            class="event-card__btn event-card__btn--delete">
                         Delete
                     </button>
                 </form>
