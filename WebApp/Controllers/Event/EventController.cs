@@ -6,6 +6,8 @@ using WebApp.Services.Event;
 using WebApp.Models.Event;
 using WebApp.Models.Event.EventViewModels;
 using WebApp.Models.Event.TicketViewModels;
+using WebApp.Models.Event.VenueViewModels;
+using WebApp.Models.Event.CategoryViewModels;
 
 namespace WebApp.Controllers.Event
 {
@@ -20,27 +22,99 @@ namespace WebApp.Controllers.Event
             _logger = logger;
             _events = events;
         }
-
-        // GET /Event
         [HttpGet("")]
-        public async Task<IActionResult> Index(Models.Event.EventStatus? status)
+        public async Task<IActionResult> Index(Models.Event.EventStatus? status, int page = 1)
         {
+            const int PageSize = 8;
+
+            // 1) Fetch & log
             var all = (await _events.GetAllEventsAsync()).ToList();
             _logger.LogInformation("Index: fetched {Count} events", all.Count);
 
+            // 2) Sidebar counts & “current” status
             ViewData["CountAll"] = all.Count;
             ViewData["CountDraft"] = all.Count(e => e.StatusEnum == Models.Event.EventStatus.Draft);
             ViewData["CountActive"] = all.Count(e => e.StatusEnum == Models.Event.EventStatus.Active);
             ViewData["CountPast"] = all.Count(e => e.StatusEnum == Models.Event.EventStatus.Past);
-
-            var filtered = status.HasValue
-                 ? all.Where(e => e.StatusEnum == status.Value)
-                 : all;
             ViewData["CurrentStatus"] = status?.ToString() ?? "All";
 
-            _logger.LogInformation("Index: showing {Count} after filtering", filtered.Count());
-            return View(filtered);
+            // 3) Filter
+            var filtered = status.HasValue
+                ? all.Where(e => e.StatusEnum == status.Value).ToList()
+                : all;
+
+            // 4) Paging math
+            var totalItems = filtered.Count;
+            var totalPages = (int)Math.Ceiling(totalItems / (double)PageSize);
+
+            // 5) Slice out current page
+            var pageItems = filtered
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            // 6) Project into your existing EventViewModel
+            var vm = new EventListViewModel
+            {
+                Events = pageItems.Select(dto => new EventViewModel
+                {
+                    Id = dto.Id,
+                    EventName = dto.EventName,
+                    EventDescription = dto.EventDescription,
+                    ImageUrl = dto.ImageUrl,
+                    Status = (int)dto.StatusEnum,            // ← set the int
+                    Category = new CategoryViewModel
+                    {
+                        Id = dto.Category.Id,
+                        CategoryName = dto.Category.CategoryName
+                    },
+                    StartDate = dto.StartDate,
+                    EndDate = dto.EndDate,
+                    Location = new LocationViewModel
+                    {
+                        Id = dto.Location.Id,
+                        VenueName = dto.Location.VenueName,
+                        City = dto.Location.City
+                    },
+                    TicketTypes = dto.TicketTypes.Select(t => new TicketTypeViewModel
+                    {
+                        Id = t.Id,
+                        TicketType = t.TicketType,
+                        Price = t.Price,
+                        TicketsLeft = t.TicketsLeft
+                    }).ToList(),
+                    TotalTickets = dto.TicketTypes.Sum(t => t.TicketsLeft + t.TicketsSold)
+                }).ToList(),
+
+                PageNumber = page,
+                TotalPages = totalPages,
+                CurrentStatus = status
+            };
+
+            return View(vm);
         }
+
+        // GET /Event
+        //[HttpGet("")]
+        //public async Task<IActionResult> Index(Models.Event.EventStatus? status)
+        //{
+        //    var all = (await _events.GetAllEventsAsync()).ToList();
+        //    _logger.LogInformation("Index: fetched {Count} events", all.Count);
+
+        //    ViewData["CountAll"] = all.Count;
+        //    ViewData["CountDraft"] = all.Count(e => e.StatusEnum == Models.Event.EventStatus.Draft);
+        //    ViewData["CountActive"] = all.Count(e => e.StatusEnum == Models.Event.EventStatus.Active);
+        //    ViewData["CountPast"] = all.Count(e => e.StatusEnum == Models.Event.EventStatus.Past);
+
+        //    var filtered = status.HasValue
+        //         ? all.Where(e => e.StatusEnum == status.Value)
+        //         : all;
+        //    ViewData["CurrentStatus"] = status?.ToString() ?? "All";
+
+        //    _logger.LogInformation("Index: showing {Count} after filtering", filtered.Count());
+        //    return View(filtered);
+        //}
+
 
         // GET /Event/{id}
         [HttpGet("{id:guid}")]
@@ -71,7 +145,7 @@ namespace WebApp.Controllers.Event
           
             vm.TicketTypes = new List<TicketTypeCreateViewModel> {
             new TicketTypeCreateViewModel { Id = Guid.Empty }
-    };
+        };
 
             return View(vm);
 

@@ -1,14 +1,14 @@
-﻿/* ==========================================================================
-   EventDetails.css
+﻿/* ==========================================================================  
+   EventDetails.css  
    ========================================================================== */
 
-/*---------------------------------------------------------------------------
-  IMPORTS
+/*---------------------------------------------------------------------------  
+  IMPORTS  
 ---------------------------------------------------------------------------*/
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-/*---------------------------------------------------------------------------
-  RESET & BOX-SIZING
+/*---------------------------------------------------------------------------  
+  RESET & BOX-SIZING  
 ---------------------------------------------------------------------------*/
 *, *::before, *::after {
     box-sizing: border-box;
@@ -16,8 +16,8 @@
     padding: 0;
 }
 
-/*---------------------------------------------------------------------------
-  ROOT VARIABLES
+/*---------------------------------------------------------------------------  
+  ROOT VARIABLES  
 ---------------------------------------------------------------------------*/
 :root {
     --font: "Inter", sans-serif;
@@ -31,8 +31,8 @@
     --transition: all 0.2s ease-in-out;
 }
 
-/*---------------------------------------------------------------------------
-  BASE STYLES
+/*---------------------------------------------------------------------------  
+  BASE STYLES  
 ---------------------------------------------------------------------------*/
 html, body {
     font-family: var(--font);
@@ -41,8 +41,8 @@ html, body {
     line-height: 1.5;
 }
 
-/*---------------------------------------------------------------------------
-  PAGE LAYOUT
+/*---------------------------------------------------------------------------  
+  PAGE LAYOUT  
 ---------------------------------------------------------------------------*/
 .event-details-page {
     width: 100%;
@@ -50,8 +50,8 @@ html, body {
     background-color: var(--card-bg);
 }
 
-/*---------------------------------------------------------------------------
-  EVENT CARD
+/*---------------------------------------------------------------------------  
+  EVENT CARD  
 ---------------------------------------------------------------------------*/
 .event-card {
     width: 100%;
@@ -123,43 +123,36 @@ html, body {
     color: #1e1e20;
 }
 
-/* Header action icons */
-.event-card__body > .event-card__actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 16px;
-}
-
-.event-card__btn {
-    background: rgba(0,0,0,0.05);
-    padding: 10px;
-    border-radius: 50%;
-    transition: var(--transition);
-    border: none;
+/* -------------------------------------------------------------------  
+   Highlight the “Activate Event” button in primary pink  
+   ------------------------------------------------------------------- */
+.event-card__btn--activate {
+    background-color: var(--primary-100);
+    border: 1px solid var(--primary-100);
+    color: var(--gray-10);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
     cursor: pointer;
+    transition: var(--transition);
 }
 
-    .event-card__btn:hover {
-        background: rgba(0,0,0,0.1);
+    .event-card__btn--activate:hover {
+        background-color: var(--primary-90);
+        border-color: var(--primary-90);
     }
-
-    .event-card__btn img {
-        width: 16px;
-        height: 16px;
-    }
-
-/*---------------------------------------------------------------------------
-  MAIN CONTENT AREA
----------------------------------------------------------------------------*/
+/*===========================================================================  
+  MAIN CONTENT AREA  
+===========================================================================*/
 .event-main-area {
     display: flex;
     gap: 32px;
     flex-wrap: wrap;
+    align-items: stretch; /* force both children to be the same height */
 }
 
-/*---------------------------------------------------------------------------
-  TERMS & CONDITIONS PANEL
----------------------------------------------------------------------------*/
+/*===========================================================================  
+  TERMS & CONDITIONS PANEL  
+===========================================================================*/
 .event-info {
     flex: 2;
     min-width: 300px;
@@ -168,36 +161,17 @@ html, body {
     border-radius: var(--border-radius);
     padding: 1.5rem;
     margin-bottom: 2rem;
-    max-height: 320px;
+    /* removed the max-height so it can grow */
+    /* max-height: 320px; */
+    /* allow this flex item to shrink below its content’s min-height */
+    min-height: 0;
     overflow-y: auto;
     box-shadow: inset 0 0 8px rgba(0,0,0,0.03);
 }
 
-    .event-info h2 {
-        font-size: 1.25rem;
-        margin-bottom: 1rem;
-        border-bottom: 2px solid var(--primary-100);
-        padding-bottom: 0.5rem;
-    }
-
-    .event-info h3 {
-        font-size: 1rem;
-        margin-top: 1rem;
-        color: var(--primary-90);
-    }
-
-    .event-info ul {
-        list-style: disc;
-        margin-left: 1.25rem;
-    }
-
-    .event-info li {
-        margin-bottom: 0.5rem;
-    }
-
-/*---------------------------------------------------------------------------
-  TICKET PACKAGES PANEL
----------------------------------------------------------------------------*/
+/*===========================================================================  
+  TICKET PACKAGES PANEL  
+===========================================================================*/
 .ticket-packages {
     flex: 1;
     min-width: 280px;
@@ -206,6 +180,11 @@ html, body {
     padding: 1rem;
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     margin-bottom: 2rem;
+    /* allow this flex item to shrink/grow in sync with the T&C panel */
+    min-height: 0;
+    /* stack the ticket cards vertically */
+    display: flex;
+    flex-direction: column;
 }
 
 .ticket-package {
@@ -218,9 +197,8 @@ html, body {
     font-weight: bold;
     color: var(--primary-100);
 }
-
-/*---------------------------------------------------------------------------
-  FOOTER & BOTTOM ACTIONS
+/*---------------------------------------------------------------------------  
+  FOOTER  
 ---------------------------------------------------------------------------*/
 .event-footer {
     background: #fff;
@@ -245,19 +223,31 @@ html, body {
             object-fit: contain;
         }
 
-    /* Edit/Delete buttons below footer */
-    .event-footer + .event-card__actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 1rem;
-        margin-top: 1rem;
-    }
-
-/*---------------------------------------------------------------------------
-  RESPONSIVE
+/*---------------------------------------------------------------------------  
+  RESPONSIVE  
 ---------------------------------------------------------------------------*/
 @media (max-width: 800px) {
     .event-main-area {
         flex-direction: column;
     }
+}
+
+/* ---------------------------------------------------  
+   Inline form helper (replaces Bootstrap’s d-inline)  
+   --------------------------------------------------- */
+.form--inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ---------------------------------------------------  
+   Header management controls—push them to the right  
+   --------------------------------------------------- */
+.event-card__header-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end; /* right-align */
+    flex-wrap: wrap; /* wrap on small screens */
+    margin-top: 1rem; /* spacing under meta */
 }
