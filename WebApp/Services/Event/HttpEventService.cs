@@ -11,6 +11,7 @@ using WebApp.Models.Event.EventViewModels;
 using WebApp.Models.Event.TicketViewModels;
 using WebApp.Models.Event.VenueViewModels;
 using WebApp.Models.Event;
+using WebApp.Models.Event.ProfileViewModels;
 
 namespace WebApp.Services.Event
 {
@@ -208,8 +209,6 @@ namespace WebApp.Services.Event
         }
 
 
-
-    
     }
 
 }
