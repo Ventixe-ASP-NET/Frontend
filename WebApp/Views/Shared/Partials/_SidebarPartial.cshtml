@@ -87,26 +87,35 @@
     </nav>
 
 
-    @if (signInManager.IsSignedIn(User))
-    {
-        <a asp-controller="Auth" asp-action="SignOut" class="btn btn-secondary logout-btn">
+    <div class="sidebar-bottom">
+        <a asp-controller="Profile" asp-action="Index" class="btn btn-secondary sidebar-btn sidebar-settings">
             <span class="material-symbols-rounded">
-                logout
+                settings
             </span>
-            <span>
-                Sign out
-            </span>
+            <span>Settings</span>
         </a>
-    }
-    else
-    {
-        <a asp-controller="Auth" asp-action="SignIn" class="btn btn-secondary logout-btn">
-            <span class="material-symbols-rounded">
-                login
-            </span>
-            <span>
-                Sign in
-            </span>
-        </a>
-    }
+
+        @if (signInManager.IsSignedIn(User))
+        {
+            <a asp-controller="Auth" asp-action="SignOut" class="btn btn-secondary sidebar-btn">
+                <span class="material-symbols-rounded">
+                    logout
+                </span>
+                <span>
+                    Sign out
+                </span>
+            </a>
+        }
+        else
+        {
+            <a asp-controller="Auth" asp-action="SignIn" class="btn btn-secondary logout-btn">
+                <span class="material-symbols-rounded">
+                    login
+                </span>
+                <span>
+                    Sign in
+                </span>
+            </a>
+        }
+    </div>
 </aside>
