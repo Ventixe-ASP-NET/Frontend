@@ -1,4 +1,5 @@
 ﻿using Account.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models.Event.ProfileViewModels;
 using WebApp.Models.ProfileViewModels;
@@ -6,6 +7,7 @@ using WebApp.Services.Profile;
 
 namespace WebApp.Controllers.Event
 {
+    [Authorize(Roles = "Admin")]
     public class ProfileController : Controller
     {
         private readonly IProfileService _profileService;
