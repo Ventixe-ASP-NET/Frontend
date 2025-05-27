@@ -36,7 +36,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a class="@(Context.Request.Path == "/invoice" ? "active" : "")" asp-controller="Invoice" asp-action="Index">
                     <span class="material-symbols-outlined">
                         order_approve
                     </span>
