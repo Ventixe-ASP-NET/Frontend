@@ -77,7 +77,7 @@ namespace WebApp.Services.Event
 
         public async Task<EventViewModel?> CreateEventAsync(EventCreateViewModel vm)
         {
-            // Build the payload exactly as your API expects:
+            
             var start = vm.StartDate.Date.Add(vm.StartTime);
             var end = vm.EndDate.Date.Add(vm.EndTime);
 
