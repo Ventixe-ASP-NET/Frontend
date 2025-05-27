@@ -20,6 +20,8 @@
     }
 
     <form asp-action="Index" method="post" class="profile-form">
+        <input type="hidden" asp-for="Id" value="@Model.Id"/>
+
         <div class="form-row">
             <label asp-for="FirstName"></label>
             <input asp-for="FirstName" />
@@ -50,6 +52,6 @@
             <input asp-for="City" />
         </div>
 
-        <button type="submit" class="save-button">Spara</button>
+        <button type="submit" class="save-button">Save</button>
     </form>
 </div>

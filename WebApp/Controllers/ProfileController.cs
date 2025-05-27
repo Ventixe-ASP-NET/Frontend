@@ -1,24 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Account.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebApp.Models.Event.ProfileViewModels;
 using WebApp.Models.ProfileViewModels;
-using WebApp.Services.Event;
 using WebApp.Services.Profile;
 
 namespace WebApp.Controllers.Event
 {
+    [Authorize(Roles = "Admin")]
     public class ProfileController : Controller
     {
         private readonly IProfileService _profileService;
+        private readonly IAccountService _accountService;
 
-        public ProfileController(IProfileService profileService)
+        public ProfileController(IProfileService profileService, IAccountService accountService)
         {
             _profileService = profileService;
+            _accountService = accountService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var model = await _profileService.GetProfileAsync();
+            var signedInUser = await _accountService.GetSignedInAppUserAsync(User);
+            var model = await _profileService.GetProfileAsync(signedInUser!.Id);
 
             if (model == null)
             {

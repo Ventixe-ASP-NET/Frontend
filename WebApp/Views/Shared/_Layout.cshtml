@@ -10,7 +10,7 @@
     </title>
     <link rel="icon" type="image/svg+xml" href="~/favicon.svg" />
     <script type="importmap"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,300,0,0&icon_names=calendar_month,check_box,confirmation_number,event,grid_view,login,logout,menu&display=block" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,300,0,0&icon_names=calendar_month,check_box,confirmation_number,event,grid_view,login,logout,menu,settings&display=block" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/BookingStyling/layout.css" asp-append-version="true" />
@@ -22,7 +22,7 @@
 
     <div class="wrapper">
         <partial name="Partials/_SidebarPartial" />
-        <partial name="Partials/_HeaderPartial" />
+        @await Component.InvokeAsync("HeaderViewComponent")
         <main>
             @RenderBody()
         </main>
