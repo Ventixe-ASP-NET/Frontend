@@ -324,3 +324,23 @@ html, body {
     flex-wrap: wrap;
     margin-top: 1rem;
 }
+/* partners section wrapper */
+.partners {
+    width: 100%; /* full width of the container above */
+    padding: 2rem 0;
+}
+
+/* grid of logos */
+.partners__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    align-items: center;
+}
+
+    /* logos */
+    .partners__grid img {
+        width: 100%; /* each cell takes full width */
+        max-height: 60px; /* constrain height if you like */
+        object-fit: contain;
+    }
