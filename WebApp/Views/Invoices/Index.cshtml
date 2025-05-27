@@ -15,7 +15,7 @@
         <div class="invoice-item">
             <span class="invoice-title">#@invoice.InvoiceTitel</span>
             <a class="invoice-status" asp-controller="Invoice"
-               asp-action="UpdateInvoice"
+               asp-action="Index"
                asp-route-id="@invoice.Id">
                 @invoice.Status.IsPaid
             </a>

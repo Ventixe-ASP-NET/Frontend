@@ -17,10 +17,10 @@ namespace WebApp.Controllers
             return View("~/Views/Invoices/Index.cshtml", invoices);
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> UpdateInvoice(string id)
         {
-            var invoice = await _invoiceClient.GetFromJsonAsync<ShowInvoiceViewModel>("api/update?code=WXgN_-IZC21f1ntwaHtUN6QX6-vuTrwTyRUhc6ycIfbuAzFuwsLiTw==");
+            var invoice = await _invoiceClient.GetFromJsonAsync<ShowInvoiceViewModel>($"api/invoices/{id}?code=WXgN_-IZC21f1ntwaHtUN6QX6-vuTrwTyRUhc6ycIfbuAzFuwsLiTw==");
             return RedirectToAction("Index", "Invoice");
         }
     }
@@ -45,8 +45,7 @@ GetInvoiceById: [GET]
 https://invoiceservice-gtg3ajc5htdcgpgs.swedencentral-01.azurewebsites.net/api/invoices/{id}?code=tGq5_bnSYXpoU7clqiGxuPjy8hFe7IlHnKMqtQjaZ7snAzFuLzYjgQ==
 
 UpdateInvoice: [PUT]
-https://invoiceservice-gtg3ajc5htdcgpgs.swedencentral-01.azurewebsites.net/api/invoices?code=WXgN_-IZC21f1ntwaHtUN6QX6-vuTrwTyRUhc6ycIfbuAzFuwsLiTw==
-
+https://invoiceservice-gtg3ajc5htdcgpgs.swedencentral-01.azurewebsites.net/api/invoices/{id}?code=WXgN_-IZC21f1ntwaHtUN6QX6-vuTrwTyRUhc6ycIfbuAzFuwsLiTw==
 
 INVOICE ID:
 ef875fd7-ac84-4552-9493-5e8d49e961e3
