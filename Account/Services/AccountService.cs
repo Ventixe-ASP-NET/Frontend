@@ -46,7 +46,9 @@ public class AccountService(UserManager<AppUserEntity> userManager, SignInManage
 
             var role = await GetRoleByAppUserEntity(appUserEntity);
 
-            var appUser = AccountFactory.EntityToAppUser(appUserEntity, role);
+            var profile = await _profileService.GetProfileAsync(appUserEntity.Id);
+
+            var appUser = AccountFactory.EntityToAppUser(appUserEntity, profile!, role);
 
             return appUser;
         }
@@ -67,7 +69,9 @@ public class AccountService(UserManager<AppUserEntity> userManager, SignInManage
 
             var role = await GetRoleByAppUserEntity(appUserEntity);
 
-            var appUser = AccountFactory.EntityToAppUser(appUserEntity, role);
+            var profile = await _profileService.GetProfileAsync(appUserEntity.Id);
+
+            var appUser = AccountFactory.EntityToAppUser(appUserEntity, profile!, role);
 
             return appUser;
         }
@@ -92,7 +96,9 @@ public class AccountService(UserManager<AppUserEntity> userManager, SignInManage
 
             var role = await GetRoleByAppUserEntity(appUserEntity);
 
-            var appUser = AccountFactory.EntityToAppUser(appUserEntity, role);
+            var profile = await _profileService.GetProfileAsync(appUserEntity.Id);
+
+            var appUser = AccountFactory.EntityToAppUser(appUserEntity, profile!, role);
 
             return appUser;
         }

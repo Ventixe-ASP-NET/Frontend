@@ -81,32 +81,3 @@
         color: #bf2f2f;
         border: 1px solid #f2b6b6;
     }
-.header-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background-color: #f8f8f8;
-}
-
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.profile-settings {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.profile-text {
-    font-weight: 600;
-    font-size: 1.1rem;
-}
-
-.settings-icon {
-    width: 24px;
-    height: 24px;
-}

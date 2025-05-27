@@ -26,7 +26,7 @@ namespace WebApp.Services.Profile
         {
             try
             {
-                var response = await _api.GetAsync("/api/profile/getProfile");
+                var response = await _api.GetAsync($"/api/profile/getProfile/{id}");
 
                 if (!response.IsSuccessStatusCode)
                 {

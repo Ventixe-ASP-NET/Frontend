@@ -5,6 +5,7 @@
     background-color: var(--header-background-color);
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 .logo {
@@ -13,11 +14,49 @@
 
 .site-title {
     font-size: 24px;
-    font-weight:600;
+    font-weight: 600;
+}
+
+.right {
+    margin-left: auto;
+}
+
+
+.info {
+    display: flex; 
+    flex-direction: row;
+    gap: 1rem;
+
+    a
+{
+    background-color: #37437D;
+    color: var(--background-color);
+
+    &:hover
+{
+    opacity: 0.8;
+}
+}
+}
+
+.profile-info p:first-of-type {
+    margin-bottom: 0.4rem;
+}
+
+.profile-info p:last-of-type{
+    font-size: 0.8rem;
+    color: var(--gray-70);
 }
 
 #menu-btn {
     display: none;
+}
+
+
+@media screen and (max-width: 800px) {
+    .profile-info {
+        display: none;
+    }
 }
 
 
@@ -34,10 +73,15 @@
 
     .logo {
         display: initial;
+        margin-right: 0.5rem;
     }
 
     .site-title {
         font-size: 1rem;
+    }
+
+    .info {
+        display: none;
     }
 
     #menu-btn {

@@ -1,0 +1,33 @@
+﻿@model HeaderViewModel
+
+<header>
+    <a class="logo" href="@Url.Content("~/")">
+        <img src="/images/ventixe-logo.svg" alt="Ventixe logo" />
+    </a>
+
+    <p class="site-title">@ViewData["Title"]</p>
+
+
+
+
+    <div class="right">
+        <div class="info">
+            <a asp-controller="Profile" asp-action="Index" class="btn btn-rounded">
+                <span class="material-symbols-rounded">
+                    settings
+                </span>
+            </a>
+
+            <div class="profile-info">
+                <p>@Model.AppUser.AppUserProfile.FirstName @Model.AppUser.AppUserProfile.LastName</p>
+                <p>@Model.AppUser.Role</p>
+            </div>
+        </div>
+
+        <button class="btn btn-rounded" id="menu-btn">
+            <span class="material-symbols-rounded">
+                menu
+            </span>
+        </button>
+    </div>
+</header>

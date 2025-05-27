@@ -32,7 +32,7 @@ public class AccountFactory
         {
             Id = Guid.Parse(appUserEntity.Id),
             FirstName = firstName,
-            LastName = "Last name",
+            LastName = "Lastname",
             Phone = "123",
             Address = "Address",
             Postal = "123",
@@ -62,7 +62,7 @@ public class AccountFactory
         }
 
         if (string.IsNullOrEmpty(lastName))
-            lastName = "Last name";
+            lastName = "Lastname";
 
 
         var profile = new SaveProfileViewModel
@@ -80,31 +80,31 @@ public class AccountFactory
     }
 
 
-    public static AppUser? EntityToAppUser(AppUserEntity entity, string role = "")
+    public static AppUser? EntityToAppUser(AppUserEntity entity, SaveProfileViewModel profile, string role = "")
     {
         if (entity == null) return null;
 
-        var profile = new AppUserProfile
+        var appUserProfile = new AppUserProfile
         {
-            FirstName = "",
-            LastName = "",
-            Phone = "",
+            FirstName = profile.FirstName,
+            LastName = profile.LastName,
+            Phone = profile.Phone,
             Email = entity?.Email!
         };
 
-        var address = new AppUserAddress
+        var appUserAddress = new AppUserAddress
         {
-            StreetAddress = "",
-            PostalCode = "",
-            City = ""
+            StreetAddress = profile.Address,
+            PostalCode = profile.Postal,
+            City = profile.City
         };
 
         var appUser = new AppUser
         {
             Id = entity?.Id!,
             Role = role,
-            AppUserProfile = profile,
-            AppUserAddress = address
+            AppUserProfile = appUserProfile,
+            AppUserAddress = appUserAddress
         };
 
         return appUser;
