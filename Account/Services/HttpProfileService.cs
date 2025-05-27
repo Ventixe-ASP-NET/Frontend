@@ -1,7 +1,5 @@
-﻿using System.Net.Http;
+﻿using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using WebApp.Models.Event.ProfileViewModels;
 using WebApp.Models.ProfileViewModels;
 
@@ -9,7 +7,7 @@ namespace WebApp.Services.Profile
 {
     public interface IProfileService
     {
-        Task<SaveProfileViewModel?> GetProfileAsync();
+        Task<SaveProfileViewModel?> GetProfileAsync(string id);
         Task<BaseResponse> SaveProfileAsync(SaveProfileViewModel model);
     }
 
@@ -24,7 +22,7 @@ namespace WebApp.Services.Profile
             _logger = logger;
         }
 
-        public async Task<SaveProfileViewModel?> GetProfileAsync()
+        public async Task<SaveProfileViewModel?> GetProfileAsync(string id)
         {
             try
             {

@@ -6,13 +6,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http.Json;
 using System.Security.Claims;
+using WebApp.Services.Profile;
 
 namespace Account.Services;
 
-public class AccountService(UserManager<AppUserEntity> userManager, SignInManager<AppUserEntity> signInManager, HttpClient httpClient, IConfiguration configuration) : IAccountService
+public class AccountService(UserManager<AppUserEntity> userManager, SignInManager<AppUserEntity> signInManager, IProfileService profileService, HttpClient httpClient, IConfiguration configuration) : IAccountService
 {
     private readonly UserManager<AppUserEntity> _userManager = userManager;
     private readonly SignInManager<AppUserEntity> _signInManager = signInManager;
+    private readonly IProfileService _profileService = profileService;
     private readonly HttpClient _http = httpClient;
     private readonly IConfiguration _configuration = configuration;
 
@@ -182,6 +184,10 @@ public class AccountService(UserManager<AppUserEntity> userManager, SignInManage
                 return new AccountResult { Succeeded = false, Message = string.Join(", ", result.Errors) };
 
             var roleResult = await _userManager.AddToRoleAsync(appUserEntity, "Admin");
+
+            var profile = AccountFactory.MapProfile(appUserEntity);
+            await _profileService.SaveProfileAsync(profile);
+
             return roleResult.Succeeded
                 ? new AccountResult { Succeeded = true }
                 : new AccountResult { Succeeded = true, Message = "User was added but not assigned a role" };
@@ -211,6 +217,8 @@ public class AccountService(UserManager<AppUserEntity> userManager, SignInManage
             if (result.Succeeded)
             {
                 await _userManager.AddLoginAsync(appUserEntity, info);
+                var profile = AccountFactory.MapProfileExternal(info, appUserEntity);
+                await _profileService.SaveProfileAsync(profile);
             }
 
             var roleResult = await _userManager.AddToRoleAsync(appUserEntity, "Admin");
