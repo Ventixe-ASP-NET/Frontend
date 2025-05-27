@@ -14,7 +14,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Index()
         {
             var invoices = await _invoiceClient.GetFromJsonAsync<List<ShowInvoiceViewModel>>("api/invoices?code=DRMrLNX-3fbx6GeIP9o3vN_Pa1g21n4gJyNHUfcqjFERAzFu1SZVGw==");
-            return View("Invoices/Index", invoices);
+            return View("~/Views/Invoices/Index.cshtml", invoices);
         }
 
         [HttpPost]
