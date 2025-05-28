@@ -1,11 +1,14 @@
-﻿.create-booking-wrapper {
+﻿
+
+.create-booking-wrapper {
     display: flex;
     flex-direction: column;
+    flex: 1;
     height: 100%;
-    box-sizing: border-box;
+    min-height: 0;
 }
 
-.create-top,
+
 .create-middle,
 .create-bottom {
     width: 100%;
